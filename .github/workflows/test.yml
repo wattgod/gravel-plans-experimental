@@ -11,12 +11,15 @@ on:
     paths:
       - 'races/**/*.py'
       - '.github/workflows/test.yml'
+  # Allow manual trigger
+  workflow_dispatch:
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false  # Don't cancel other jobs if one fails
       matrix:
         python-version: ['3.9', '3.10', '3.11', '3.12']
 
@@ -33,12 +36,27 @@ jobs:
         run: |
           python -m pip install --upgrade pip
 
-      - name: Run Nate generator integration tests
-        run: |
-          cd races/tests
-          python -m unittest test_nate_generator_integration -v
+      - name: Verify Python version
+        run: python --version
 
-      - name: Run ZWO validation tests
+      - name: Run all tests
         run: |
           cd races/tests
-          python -m unittest test_zwo_validation -v
+          python -m unittest discover -v
+        env:
+          PYTHONPATH: ${{ github.workspace }}/races/generation_modules:${{ github.workspace }}/races/nate_archetypes
+
+      - name: Test count summary
+        run: |
+          cd races/tests
+          echo "Test modules found:"
+          ls -la test_*.py
+          echo ""
+          echo "Running test count..."
+          python -c "
+          import unittest
+          loader = unittest.TestLoader()
+          suite = loader.discover('.', pattern='test_*.py')
+          count = suite.countTestCases()
+          print(f'Total tests: {count}')
+          "

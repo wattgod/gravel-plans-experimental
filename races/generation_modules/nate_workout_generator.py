@@ -47,12 +47,47 @@ import html
 import logging
 import sys
 from dataclasses import dataclass
-from enum import Enum
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Any, Union
 
-# Configure logging
-logger = logging.getLogger(__name__)
+# Import constants
+from constants import (
+    PowerZones,
+    CriticalPower,
+    Durations,
+    Cadence,
+    Levels,
+    ValidationLimits,
+    ZWODefaults,
+    MethodologyDefaults,
+)
+
+# =============================================================================
+# LOGGING CONFIGURATION
+# =============================================================================
+
+def configure_logging(level: int = logging.INFO) -> logging.Logger:
+    """
+    Configure logging for the workout generator.
+
+    Args:
+        level: Logging level (default: INFO)
+
+    Returns:
+        Configured logger instance
+    """
+    logger = logging.getLogger(__name__)
+    if not logger.handlers:
+        handler = logging.StreamHandler()
+        formatter = logging.Formatter(
+            '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        )
+        handler.setFormatter(formatter)
+        logger.addHandler(handler)
+    logger.setLevel(level)
+    return logger
+
+logger = configure_logging(logging.WARNING)  # Default to WARNING to reduce noise
 
 # Import Nate archetypes
 sys.path.insert(0, str(Path(__file__).parent.parent / "nate_archetypes"))
@@ -447,11 +482,6 @@ def get_all_archetypes_for_category(category: str) -> List[Dict]:
     return NEW_ARCHETYPES.get(category, [])
 
 
-class ArchetypeSelectionError(Exception):
-    """Raised when archetype selection fails for a known reason."""
-    pass
-
-
 def select_archetype_for_workout(
     workout_type: str,
     methodology: str = "POLARIZED",
@@ -639,11 +669,42 @@ def select_archetype_for_workout(
     return get_archetype_by_category_and_index(category, variation)
 
 
+def is_recovery_week(week_num: int, recovery_pattern: str = "3:1") -> bool:
+    """
+    Determine if a given week is a recovery/deload week.
+
+    Args:
+        week_num: Current week number (1-indexed)
+        recovery_pattern: Pattern string like "3:1" (3 load weeks, 1 recovery)
+            or "4:1" (4 load weeks, 1 recovery)
+
+    Returns:
+        True if this week should be a recovery week
+
+    Examples:
+        >>> is_recovery_week(4, "3:1")  # Week 4 of 3:1 pattern
+        True
+        >>> is_recovery_week(3, "3:1")  # Week 3 of 3:1 pattern
+        False
+        >>> is_recovery_week(5, "4:1")  # Week 5 of 4:1 pattern
+        True
+    """
+    try:
+        load_weeks, recovery_weeks = map(int, recovery_pattern.split(":"))
+        cycle_length = load_weeks + recovery_weeks
+        position_in_cycle = (week_num - 1) % cycle_length
+        return position_in_cycle >= load_weeks
+    except (ValueError, AttributeError):
+        # Default to 3:1 if pattern is invalid
+        return (week_num - 1) % 4 == 3
+
+
 def calculate_level_from_week(
     week_num: int,
     total_weeks: int,
-    taper_weeks: int = 2,
-    methodology: str = "POLARIZED"
+    taper_weeks: int = MethodologyDefaults.DEFAULT_TAPER_WEEKS,
+    methodology: str = MethodologyDefaults.DEFAULT_METHODOLOGY,
+    recovery_pattern: str = "3:1"
 ) -> int:
     """
     Calculate the progression level (1-6) based on week position and methodology.
@@ -658,6 +719,10 @@ def calculate_level_from_week(
     - density_increase (G_SPOT): Aggressive 2→6
     - block_staircase (BLOCK): 2-week overload, 1-week recovery pattern
 
+    Also handles:
+    - Recovery weeks (3:1 or 4:1 patterns) - reduces level by 2
+    - Taper weeks at end of plan - returns moderate level
+
     Args:
         week_num: Current week number (1-indexed).
         total_weeks: Total weeks in the training plan.
@@ -665,11 +730,13 @@ def calculate_level_from_week(
             Defaults to 2. During taper, returns a moderate level (typically 4).
         methodology: Training methodology from TRAINING_METHODOLOGIES.
             Defaults to 'POLARIZED'.
+        recovery_pattern: Recovery week pattern (e.g., "3:1" = 3 load, 1 recovery).
+            Set to "" or None to disable mid-plan recovery weeks.
 
     Returns:
         Integer level from 1 to 6:
         - 1: Introductory / recovery week
-        - 2: Base building
+        - 2: Base building / recovery week
         - 3: Moderate development
         - 4: Standard training load
         - 5: High training load
@@ -680,9 +747,9 @@ def calculate_level_from_week(
         >>> calculate_level_from_week(2, 12, 2, 'POLARIZED')
         4
 
-        >>> # G-Spot plan progresses more aggressively
-        >>> calculate_level_from_week(8, 12, 2, 'G_SPOT')
-        5
+        >>> # Recovery week (week 4 in 3:1 pattern)
+        >>> calculate_level_from_week(4, 12, 2, 'PYRAMIDAL', '3:1')
+        2
 
         >>> # Taper week always returns moderate level
         >>> calculate_level_from_week(11, 12, 2, 'POLARIZED')
@@ -691,105 +758,114 @@ def calculate_level_from_week(
     # Get progression style from methodology
     method_config = TRAINING_METHODOLOGIES.get(methodology, TRAINING_METHODOLOGIES["POLARIZED"])
     progression_style = method_config.get("progression_style", "volume_first")
+    meso_pattern = method_config.get("meso_pattern", "3:1")
 
     # Exclude taper weeks from progression
     build_weeks = total_weeks - taper_weeks
 
-    if week_num >= build_weeks:
+    # Check for taper weeks first
+    if week_num > build_weeks:
         # In taper - use appropriate level based on progression style
         if progression_style == "intensity_first":
-            return 3  # Reverse - volume phase at end, use moderate level
+            return Levels.DEFAULT_LEVEL  # Reverse - volume phase at end, use moderate level
         else:
-            return 4  # Standard - maintain fitness without max stress
+            return Levels.TAPER_LEVEL  # Standard - maintain fitness without max stress
+
+    # Check for recovery week (mid-plan deload)
+    # Use methodology's meso_pattern if no explicit recovery_pattern provided
+    effective_pattern = recovery_pattern if recovery_pattern else meso_pattern
+    is_recovery = False
+    if effective_pattern and effective_pattern not in ("maintain_ratio", "adaptive", "flexible"):
+        is_recovery = is_recovery_week(week_num, effective_pattern)
 
     # Calculate base progress through build phase
     progress = week_num / build_weeks
 
-    # Apply progression style
+    # Calculate base level from progression style
     if progression_style == "intensity_first":
         # Reverse periodization: Start hard, end easier
-        # Early weeks = high level, late weeks = lower level
         if progress < 0.25:
-            return 6  # Peak intensity early
+            base_level = Levels.MAX_LEVEL  # Peak intensity early
         elif progress < 0.50:
-            return 5
+            base_level = 5
         elif progress < 0.75:
-            return 4
+            base_level = 4
         else:
-            return 3  # Back off before taper
+            base_level = 3  # Back off before taper
 
     elif progression_style == "intensity_stable":
-        # Polarized: Maintain consistent intensity level, vary volume
-        # Level stays relatively stable, around 4-5
+        # Polarized: Maintain consistent intensity level
         if progress < 0.33:
-            return 4
-        elif progress < 0.67:
-            return 5
+            base_level = 4
         else:
-            return 5
+            base_level = 5
 
     elif progression_style == "density_increase":
-        # G-Spot: Increase time-in-zone and sessions
-        # More aggressive progression for threshold work
+        # G-Spot: More aggressive progression for threshold work
         if progress < 0.20:
-            return 2
+            base_level = 2
         elif progress < 0.40:
-            return 3
+            base_level = 3
         elif progress < 0.60:
-            return 4
+            base_level = 4
         elif progress < 0.80:
-            return 5
+            base_level = 5
         else:
-            return 6
+            base_level = Levels.MAX_LEVEL
 
     elif progression_style == "block_staircase":
         # Block: 2-week overload, 1-week consolidation pattern
         block_position = week_num % 3  # 0, 1, 2 pattern
-        base_level = min(6, 2 + (week_num // 3))  # Base level increases each block
+        block_base = min(Levels.MAX_LEVEL, 2 + (week_num // 3))
         if block_position < 2:  # Overload weeks
-            return min(6, base_level + 1)
+            base_level = min(Levels.MAX_LEVEL, block_base + 1)
         else:  # Consolidation week
-            return max(1, base_level - 1)
+            base_level = max(Levels.MIN_LEVEL, block_base - 1)
 
     elif progression_style == "duration_increase":
         # MAF/LT1: Level represents duration, not intensity
-        # Slow progression, lots of time at each level
         if progress < 0.25:
-            return 2
+            base_level = 2
         elif progress < 0.50:
-            return 3
+            base_level = 3
         elif progress < 0.75:
-            return 4
+            base_level = 4
         else:
-            return 5
+            base_level = 5
 
     elif progression_style == "volume_accumulation":
         # HVLI: Volume builds progressively
         if progress < 0.20:
-            return 1
+            base_level = Levels.MIN_LEVEL
         elif progress < 0.40:
-            return 2
+            base_level = 2
         elif progress < 0.60:
-            return 3
+            base_level = 3
         elif progress < 0.80:
-            return 4
+            base_level = 4
         else:
-            return 5
+            base_level = 5
 
     else:
         # Default: Traditional linear progression (volume_first)
-        if progress < 0.17:
-            return 1
-        elif progress < 0.33:
-            return 2
-        elif progress < 0.50:
-            return 3
-        elif progress < 0.67:
-            return 4
-        elif progress < 0.83:
-            return 5
+        if progress < Levels.LEVEL_1_THRESHOLD:
+            base_level = Levels.MIN_LEVEL
+        elif progress < Levels.LEVEL_2_THRESHOLD:
+            base_level = 2
+        elif progress < Levels.LEVEL_3_THRESHOLD:
+            base_level = 3
+        elif progress < Levels.LEVEL_4_THRESHOLD:
+            base_level = 4
+        elif progress < Levels.LEVEL_5_THRESHOLD:
+            base_level = 5
         else:
-            return 6
+            base_level = Levels.MAX_LEVEL
+
+    # Apply recovery week adjustment (reduce by 2 levels, minimum 1)
+    if is_recovery:
+        return max(Levels.MIN_LEVEL, base_level - 2)
+
+    return base_level
 
 
 def get_level_data(archetype: Dict, level: int) -> Optional[Dict]:
@@ -812,20 +888,113 @@ def get_level_data(archetype: Dict, level: int) -> Optional[Dict]:
 # ZWO BLOCK GENERATION
 # =============================================================================
 
-def generate_warmup_block(duration: int = 900) -> str:
-    """Generate warmup block."""
-    return f'    <Warmup Duration="{duration}" PowerLow="0.50" PowerHigh="0.75"/>\n'
+def generate_text_event(offset: int, message: str) -> str:
+    """
+    Generate a text event for coaching cues during workout.
+
+    Args:
+        offset: Time offset in seconds from start of parent block
+        message: Coaching message to display
+
+    Returns:
+        XML textevent element
+    """
+    escaped_message = html.escape(message, quote=True)
+    return f'      <textevent timeoffset="{offset}" message="{escaped_message}"/>\n'
 
 
-def generate_cooldown_block(duration: int = 600) -> str:
-    """Generate cooldown block."""
-    return f'    <Cooldown Duration="{duration}" PowerLow="0.70" PowerHigh="0.50"/>\n'
+def generate_warmup_block(
+    duration: int = Durations.WARMUP_EXTENDED,
+    include_text: bool = True
+) -> str:
+    """
+    Generate warmup block with optional coaching text.
+
+    Args:
+        duration: Warmup duration in seconds (default: 15 min)
+        include_text: Whether to include coaching text events
+
+    Returns:
+        XML warmup block with optional text events
+    """
+    block = (
+        f'    <Warmup Duration="{duration}" '
+        f'PowerLow="{ZWODefaults.WARMUP_POWER_LOW:.2f}" '
+        f'PowerHigh="{ZWODefaults.WARMUP_POWER_HIGH:.2f}"'
+    )
+
+    if include_text:
+        block += '>\n'
+        block += generate_text_event(0, "Begin warmup - easy spinning")
+        block += generate_text_event(duration // 3, "Gradually increase effort")
+        block += generate_text_event(duration - 60, "Warmup complete in 1 minute")
+        block += '    </Warmup>\n'
+    else:
+        block += '/>\n'
+
+    return block
 
 
-def generate_steady_state_block(duration: int, power: float, cadence: int = None) -> str:
-    """Generate a steady state block."""
+def generate_cooldown_block(
+    duration: int = Durations.COOLDOWN_STANDARD,
+    include_text: bool = True
+) -> str:
+    """
+    Generate cooldown block with optional coaching text.
+
+    Args:
+        duration: Cooldown duration in seconds (default: 10 min)
+        include_text: Whether to include coaching text events
+
+    Returns:
+        XML cooldown block with optional text events
+    """
+    block = (
+        f'    <Cooldown Duration="{duration}" '
+        f'PowerLow="{ZWODefaults.COOLDOWN_POWER_LOW:.2f}" '
+        f'PowerHigh="{ZWODefaults.COOLDOWN_POWER_HIGH:.2f}"'
+    )
+
+    if include_text:
+        block += '>\n'
+        block += generate_text_event(0, "Cool down - great work!")
+        block += generate_text_event(duration - 60, "Almost done - easy spin")
+        block += '    </Cooldown>\n'
+    else:
+        block += '/>\n'
+
+    return block
+
+
+def generate_steady_state_block(
+    duration: int,
+    power: float,
+    cadence: Optional[int] = None,
+    text: Optional[str] = None
+) -> str:
+    """
+    Generate a steady state block.
+
+    Args:
+        duration: Duration in seconds
+        power: Power target as FTP fraction
+        cadence: Optional cadence target in RPM
+        text: Optional coaching text to display at start
+
+    Returns:
+        XML steady state block
+    """
     cadence_attr = f' Cadence="{cadence}"' if cadence else ""
-    return f'    <SteadyState Duration="{duration}" Power="{power:.2f}"{cadence_attr}/>\n'
+
+    if text:
+        escaped_text = html.escape(text, quote=True)
+        return (
+            f'    <SteadyState Duration="{duration}" Power="{power:.2f}"{cadence_attr}>\n'
+            f'      <textevent timeoffset="0" message="{escaped_text}"/>\n'
+            f'    </SteadyState>\n'
+        )
+    else:
+        return f'    <SteadyState Duration="{duration}" Power="{power:.2f}"{cadence_attr}/>\n'
 
 
 def generate_intervals_block(
@@ -833,28 +1002,74 @@ def generate_intervals_block(
     on_duration: int,
     on_power: float,
     off_duration: int,
-    off_power: float = 0.55,
-    cadence: int = 90
+    off_power: float = ZWODefaults.RECOVERY_POWER,
+    cadence: int = Cadence.STANDARD,
+    include_text: bool = True
 ) -> str:
-    """Generate an IntervalsT block."""
-    return (
+    """
+    Generate an IntervalsT block with optional coaching text.
+
+    Args:
+        repeats: Number of interval repeats
+        on_duration: Work interval duration in seconds
+        on_power: Work interval power as FTP fraction
+        off_duration: Recovery interval duration in seconds
+        off_power: Recovery interval power as FTP fraction
+        cadence: Cadence target during work intervals
+        include_text: Whether to include coaching text
+
+    Returns:
+        XML intervals block with optional text events
+    """
+    block = (
         f'    <IntervalsT Repeat="{repeats}" '
         f'OnDuration="{on_duration}" OnPower="{on_power:.2f}" '
         f'Cadence="{cadence}" OffDuration="{off_duration}" '
-        f'OffPower="{off_power:.2f}"/>\n'
+        f'OffPower="{off_power:.2f}"'
     )
+
+    if include_text:
+        block += '>\n'
+        block += generate_text_event(0, f"Interval 1 of {repeats} - GO!")
+        block += generate_text_event(on_duration, "Recovery - breathe deep")
+        block += '    </IntervalsT>\n'
+    else:
+        block += '/>\n'
+
+    return block
 
 
 def generate_ramp_block(
     duration: int,
     power_low: float,
-    power_high: float
+    power_high: float,
+    text: Optional[str] = None
 ) -> str:
-    """Generate a ramp block."""
-    return (
-        f'    <Ramp Duration="{duration}" '
-        f'PowerLow="{power_low:.2f}" PowerHigh="{power_high:.2f}"/>\n'
-    )
+    """
+    Generate a ramp block.
+
+    Args:
+        duration: Ramp duration in seconds
+        power_low: Starting power as FTP fraction
+        power_high: Ending power as FTP fraction
+        text: Optional coaching text
+
+    Returns:
+        XML ramp block
+    """
+    if text:
+        escaped_text = html.escape(text, quote=True)
+        return (
+            f'    <Ramp Duration="{duration}" '
+            f'PowerLow="{power_low:.2f}" PowerHigh="{power_high:.2f}">\n'
+            f'      <textevent timeoffset="0" message="{escaped_text}"/>\n'
+            f'    </Ramp>\n'
+        )
+    else:
+        return (
+            f'    <Ramp Duration="{duration}" '
+            f'PowerLow="{power_low:.2f}" PowerHigh="{power_high:.2f}"/>\n'
+        )
 
 
 def generate_blocks_from_archetype(archetype: Dict, level: int) -> str:
@@ -1435,20 +1650,6 @@ def get_category_purpose(archetype_name: str) -> str:
 # =============================================================================
 # MAIN WORKOUT GENERATION
 # =============================================================================
-
-@dataclass
-class WorkoutGenerationResult:
-    """Result of workout generation with success/failure information."""
-    name: Optional[str]
-    description: Optional[str]
-    blocks: Optional[str]
-    success: bool
-    error_message: Optional[str] = None
-
-    def as_tuple(self) -> Tuple[Optional[str], Optional[str], Optional[str]]:
-        """Return legacy tuple format (name, description, blocks)."""
-        return (self.name, self.description, self.blocks)
-
 
 def generate_nate_workout(
     workout_type: str,

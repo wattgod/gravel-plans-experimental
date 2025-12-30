@@ -133,12 +133,14 @@ class TestProgressionStyles(unittest.TestCase):
         self.assertLess(levels[0], levels[-1])
 
     def test_intensity_stable_progression(self):
-        """Polarized should maintain stable intensity levels."""
-        levels = [calculate_level_from_week(w, 12, 2, 'POLARIZED') for w in range(1, 11)]
-        # Levels should stay in 4-5 range mostly
-        for level in levels:
-            self.assertGreaterEqual(level, 4)
-            self.assertLessEqual(level, 5)
+        """Polarized should maintain stable intensity levels (excluding recovery weeks)."""
+        # Test non-recovery weeks only (weeks 1-3, 5-7, 9 in a 3:1 pattern)
+        non_recovery_weeks = [1, 2, 3, 5, 6, 7, 9]
+        levels = [calculate_level_from_week(w, 12, 2, 'POLARIZED') for w in non_recovery_weeks]
+        # Levels should stay in 4-5 range for non-recovery weeks
+        for i, level in enumerate(levels):
+            self.assertGreaterEqual(level, 4, f"Week {non_recovery_weeks[i]} level {level} < 4")
+            self.assertLessEqual(level, 5, f"Week {non_recovery_weeks[i]} level {level} > 5")
 
     def test_density_increase_progression(self):
         """G-Spot should have more aggressive progression."""
