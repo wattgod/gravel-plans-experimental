@@ -1,0 +1,149 @@
+{
+  "race_id": "traka-360",
+  "race_name": "Traka 360",
+  "race_slug": "traka-360",
+  "tier": 1,
+  "tier_label": "TIER 1",
+  "tagline": "Europe's answer to Unbound—born in Girona, the pro cycling mecca",
+  "race_date": "2026: May 2-3",
+  "year": null,
+  "course": {
+    "distance_miles": 224,
+    "elevation_gain_feet": 23000,
+    "terrain_type": "Rocky Mediterranean gravel with forest singletrack",
+    "terrain_surface": "Rocky Mediterranean gravel, forest trails, technical descents—not smooth gravel",
+    "technical_rating": 4,
+    "signature_challenge": "23,000 feet of climbing on technical Mediterranean terrain. The pro cycling training ground becomes YOUR proving ground.",
+    "character": "Relentless climbing on Mediterranean gravel. Not one killer climb—7,000 meters of accumulated suffering spread across 360km.",
+    "key_features": [
+      "Sustained Category 1 climbs on gravel",
+      "Pyrenean foothill terrain",
+      "Forest singletrack that punishes tired legs",
+      "Exposed ridgeline traverses",
+      "Technical descents at hour 18"
+    ],
+    "suffering_zones": [
+      {
+        "mile": 50,
+        "label": "First Mountain Pass",
+        "desc": "The opening act. Legs still fresh, ego intact. You think you've got this.",
+        "terrain_detail": "First real test of the day",
+        "named_section": "The Selection Point"
+      },
+      {
+        "mile": 112,
+        "label": "Halfway Reality",
+        "desc": "The climbing doesn't stop. Your legs know exactly what's coming for the next 180km.",
+        "terrain_detail": "Pyrenean foothills reveal themselves",
+        "named_section": "The Grind Begins"
+      },
+      {
+        "mile": 186,
+        "label": "Night Falls",
+        "desc": "Headlamps on. The final 60km in darkness. Technical terrain on empty legs.",
+        "terrain_detail": "Forest singletrack on fried legs",
+        "named_section": "The Dark Hours"
+      }
+    ],
+    "location": "Girona, Catalonia, Spain",
+    "climate_primary": "Variable spring weather",
+    "climate_description": "18-28°C (65-82°F), variable spring weather with morning cold, afternoon heat, possible mountain rain",
+    "climate_challenges": [
+      "Temperature swings throughout the day",
+      "Mountain weather unpredictability",
+      "Layer management critical",
+      "Possible rain in Pyrenean sections"
+    ]
+  },
+  "ratings": {
+    "overall_score": 91,
+    "tier": 1,
+    "tier_label": "TIER 1",
+    "length_score": 5,
+    "technicality_score": 4,
+    "elevation_score": 5,
+    "climate_score": 3,
+    "altitude_score": 2,
+    "adventure_score": 5,
+    "logistics_score": 4,
+    "prestige_score": 5
+  },
+  "biased_opinion": {
+    "overall_score": 45,
+    "course_quality": null,
+    "organization": null,
+    "value": null,
+    "atmosphere": null,
+    "summary": "If you're serious about gravel and have any connection to European cycling culture, Traka is a must. It's not just a race—it's a pilgrimage to the sport's spiritual home. Where else can you suffer on the same roads that Pogačar trains on?"
+  },
+  "tldr": {
+    "best_for": null,
+    "not_for": null,
+    "key_considerations": []
+  },
+  "logistics": {
+    "location": "Girona, Catalonia, Spain",
+    "location_badge": "GIRONA, CATALONIA, SPAIN",
+    "county": "",
+    "city": "Girona",
+    "state": "Catalonia",
+    "country": "USA",
+    "date": "Early May annually",
+    "date_specific": "2026: May 2-3",
+    "venue": null,
+    "parking": "Limited. Public transport or hotel shuttles recommended.",
+    "lodging": null,
+    "travel_tips": null,
+    "registration": "Opens winter/spring. Cost: €80-200",
+    "start_time": "Saturday early morning",
+    "field_size": "4,000+ riders from 74 countries"
+  },
+  "final_verdict": {
+    "overall_score": 91,
+    "recommendation": null,
+    "best_for_riders": [],
+    "key_strengths": [],
+    "considerations": [],
+    "summary": null
+  },
+  "history": {
+    "founded": 2019,
+    "editions": null,
+    "notable_facts": [],
+    "random_facts": [
+      "4,000+ riders from 74 countries",
+      "WorldTour pros cross over to race",
+      "Girona is cycling's spiritual home—where Pogačar trains",
+      "UCI Gravel World Series event",
+      "Equal prize purse men/women"
+    ],
+    "timeline": []
+  },
+  "training_plans": {
+    "available": true,
+    "model": "on-demand",
+    "questionnaire_url": "https://wattgod.github.io/training-plans-component/training-plan-questionnaire.html?race=traka-360",
+    "race_challenge_tagline": "23,000 feet of climbing on technical Mediterranean terrain"
+  },
+  "seo": {
+    "title": "Traka 360 Race Guide | Training Plans & Girona Course Intel",
+    "meta_description": "Traka 360 Girona guide: 224-mile Spanish gravel race. Europe's Unbound with 23,000 feet of climbing on technical Mediterranean terrain. Get training plans & course breakdown.",
+    "focus_keyword": "traka 360 race",
+    "slug": "traka-360"
+  },
+  "index_generated_at": "2025-12-19T21:40:23.740568",
+  "landing_page_url": "/races/traka-360",
+  "ridewithgps_id": "TBD",
+  "prize_purse": "Varies",
+  "field_size": "4,000+ riders from 74 countries",
+  "searchable_text": "Traka 360 Europe's answer to Unbound—born in Girona, the pro cycling mecca Relentless climbing on Mediterranean gravel. Not one killer climb—7,000 meters of accumulated suffering spread across 360km. 23,000 feet of climbing on technical Mediterranean terrain. The pro cycling training ground becomes YOUR proving ground. Sustained Category 1 climbs on gravel Pyrenean foothill terrain Forest singletrack that punishes tired legs Exposed ridgeline traverses Technical descents at hour 18 Girona, Catalonia, Spain Variable spring weather Rocky Mediterranean gravel with forest singletrack",
+  "filter_tags": [
+    "tier-1",
+    "distance-ultra",
+    "elevation-extreme",
+    "terrain-gravel",
+    "terrain-singletrack",
+    "technical-moderate",
+    "score-excellent"
+  ]
+}

@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<workout_file>
+  <author>Gravel God Training</author>
+  <name>W02 Sat - Polarized Hard Session #2</name>
+  <description>WARM-UP:
+• 20min building from Z1 to Z2
+
+MAIN SET:
+• 6x4min @ 112% FTP (4min recovery)
+• 0min @ 110% FTP
+• 0min @ 110% FTP
+• 0min @ 110% FTP
+• Cadence: 85-95rpm (race cadence)
+• Position: Seated, drops or hoods
+
+COOL-DOWN:
+• 10min easy spin Z1-Z2
+
+PURPOSE:
+Threshold development. Raising the power you can sustain for 20-60 minutes—the foundation of race-pace performance.
+
+Level 1: Introduction to the pattern. Focus on execution quality over power targets.
+
+• HYDRATION:
+&lt;90 min (any intensity): 1 bottle/hr with electrolytes mandatory. Before hard efforts, take 1 gel. Light urine color (not clear) = well hydrated.
+
+• DAILY BASELINE HYDRATION:
+Start day hydrated: ~500 ml water + 500-1000 mg sodium with breakfast. Pre-ride (60 min before): 500 ml fluid + 300-600 mg sodium. Aim for light urine color (not clear).</description>
+  <sportType>bike</sportType>
+      <workout>
+    <Warmup Duration="1200" PowerLow="0.50" PowerHigh="0.75"/>
+    <SteadyState Duration="30" Power="1.10"/>
+    <SteadyState Duration="30" Power="0.55"/>
+    <SteadyState Duration="30" Power="1.10"/>
+    <SteadyState Duration="30" Power="0.55"/>
+    <SteadyState Duration="30" Power="1.10"/>
+    <SteadyState Duration="30" Power="0.55"/>
+    <IntervalsT Repeat="6" OnDuration="240" OnPower="1.12" Cadence="100" OffDuration="240" OffPower="0.55"/>
+    <Cooldown Duration="600" PowerLow="0.70" PowerHigh="0.50"/>
+  </workout>
+</workout_file>

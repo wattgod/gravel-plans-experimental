@@ -1,0 +1,29 @@
+{
+  "race": "Mid South",
+  "tier": "Ayahuasca",
+  "plan_weeks": 12,
+  "race_date": "2025-06-07",
+  "start_date": "2025-03-15",
+  "phase_breakdown": {
+    "base_1": 2,
+    "base_2": 2,
+    "build_1": 3,
+    "build_2": 2,
+    "peak": 2,
+    "taper": 1
+  },
+  "workout_counts": {
+    "cycling": 169,
+    "strength": 23
+  },
+  "strength_customization": {
+    "emphasized_exercises": [
+      "KB Swing",
+      "Farmer Carry",
+      "Suitcase Carry",
+      "Dead Bug",
+      "Single-Leg RDL"
+    ],
+    "notes": "Mud demands constant power application and core stability. Grip work helps with wet bar control. Hip hinge power for punching through soft surfaces."
+  }
+}

@@ -1,0 +1,248 @@
+{
+  "race": {
+    "name": "Gravel Locos",
+    "slug": "gravel-locos",
+    "display_name": "Gravel Locos",
+    "tagline": "La Loca is FREE. 150 miles of Texas Hill Country. Unbound tune-up for pros.",
+    "race_challenge_tagline": "7,884 ft of relentless rollers plus Texas heat that can read 120°F on your Wahoo",
+    "vitals": {
+      "distance_mi": 157,
+      "elevation_ft": 7884,
+      "location": "Hico, Texas",
+      "location_badge": "HICO, TEXAS",
+      "county": "Hamilton County (northern edge of Texas Hill Country)",
+      "date": "Late May annually",
+      "date_specific": "2025: May 24 (Saturday)",
+      "terrain_types": [
+        "Smooth limestone gravel",
+        "Fast Hill Country ranch roads",
+        "Wildflower-lined paths",
+        "Endless rollers",
+        "Occasional chunky gravel patches"
+      ],
+      "distance_options": "La Loca ~157 mi (FREE), La Gran Piedra ~110 mi, La Mediana ~70 mi, La Pequeña ~30 mi",
+      "field_size": "Deep pro field (Gomez Gagne, Barrow, etc.) plus large amateur turnout - key Unbound tune-up",
+      "start_time": "Hico, Texas (cowboy town associated with Billy the Kid)",
+      "registration": "La Loca 150 is COMPLETELY FREE with donation-driven fundraising for Hico first responders",
+      "prize_purse": "None - charity event",
+      "aid_stations": "Multiple well-stocked. 2022 had one run out of water after 3B climbs - riders waited 30+ minutes.",
+      "cutoff_time": "Not strictly enforced but heat and water logistics are bigger constraints"
+    },
+    "climate": {
+      "primary": "Texas Hill Country late May - heat is the primary challenge",
+      "description": "Late May means starting warm and climbing into 80s-90s°F with high sun. 2022's Wahoo reading of 120°F on fresh tarmac shows how brutal heat reflection can be.",
+      "challenges": [
+        "2022: 'The weather was hell' - 120°F tarmac readings",
+        "Heat and sun on open ranch roads",
+        "Dehydration risk is the primary concern",
+        "One aid station ran out of water in 2022"
+      ]
+    },
+    "terrain": {
+      "primary": "Smooth, fast Hill Country gravel with endless rollers",
+      "surface": "'Gorgeous' wildflower-lined gravel roads and fast limestone surfaces. 'Smooth' and 'perfect for gravel' per riders. Some chunkier patches but no singletrack or rock gardens.",
+      "gravel_percentage": 85,
+      "pavement_percentage": 15,
+      "technical_rating": 2,
+      "features": [
+        "Well-packed limestone gravel",
+        "Loco Hill (60-mile route signature climb)",
+        "Endless rollers (7,884 ft distributed)",
+        "Pavement connectors",
+        "Open ranch roads with little shade"
+      ]
+    },
+    "altitude": {
+      "start_elevation_ft": 1000,
+      "max_elevation_ft": 1500,
+      "min_elevation_ft": 800,
+      "altitude_impact": "NONE - Classic Texas Hill Country elevations. Heat and humidity, not oxygen, are the physiological challenge.",
+      "acclimatization_required": false
+    },
+    "gravel_god_rating": {
+      "overall_score": 79,
+      "course_profile": 24,
+      "biased_opinion": 31,
+      "tier": 2,
+      "tier_label": "TIER 2",
+      "length": 5,
+      "technicality": 2,
+      "elevation": 4,
+      "climate": 5,
+      "altitude": 1,
+      "adventure": 4,
+      "logistics": 3,
+      "prestige": 4,
+      "race_quality": 4,
+      "experience": 5,
+      "community": 5,
+      "field_depth": 4,
+      "value": 5,
+      "expenses": 4
+    },
+    "history": {
+      "founded": 2021,
+      "founder": "Community-driven charity event",
+      "origin_story": "Launched as a charity-focused, pro-heavy but community-driven event in 'cowboy town' Hico (associated with Billy the Kid). Flagship 150-mile race offered for FREE with donations to Hico first responders. In just a few years became a major pro tune-up for Unbound.",
+      "notable_moments": [
+        "2021: First year - rain but still fun",
+        "2022: 'The weather was hell' - 120°F tarmac, aid station ran out of water",
+        "2023: 'Rough' conditions compared to 2024",
+        "2024: 'Just about perfect' - ideal Unbound tune-up weather",
+        "Pro winners: Justine Barrow, Julien Gagne"
+      ],
+      "reputation": "'Go ride this race.' Free, community-driven, pro-heavy. The anti-corporate gravel race with legendary Texas hospitality and BBQ."
+    },
+    "course_description": {
+      "character": "'The scenery around Hico was stunning, adorned with wildflowers, and the gravel paths were as smooth as other riders had mentioned.' Difficulty is about relentless rollers, heat, and length - not technical terrain.",
+      "suffering_zones": [
+        {
+          "mile": 60,
+          "label": "Heat-Soaked Mid-Race",
+          "desc": "Heat typically spikes. Shade is scarce. If you've under-hydrated, you start to unravel here while still far from home.",
+          "terrain_detail": "Open ranch roads, no shade, heat builds",
+          "named_section": "The Heat Zone"
+        },
+        {
+          "mile": 100,
+          "label": "After the 3B Climbs",
+          "desc": "This is where the 2022 aid station ran out of water. Riders waited 30+ minutes at 120°F. Even in good years, this is where under-prepared riders crack.",
+          "terrain_detail": "2022: aid station ran dry here",
+          "named_section": "The Breaking Point"
+        },
+        {
+          "mile": 150,
+          "label": "Final Ascent to Hico",
+          "desc": "Rolling climb back into town. 7,884 ft of gain catches up to you here. Cramps and mental fatigue hit hardest in the final miles.",
+          "terrain_detail": "Final rollers after 150+ miles",
+          "named_section": "The Final Push"
+        }
+      ],
+      "signature_challenge": "The heat-soaked late race is the defining suffer zone. In normal years, cumulative rollers plus Texas heat near the end are what everyone talks about. In 2022, riders literally ran out of water.",
+      "map_url": "https://www.gravellocos.bike/hico"
+    },
+    "ratings_breakdown": {
+      "prestige": {
+        "score": 4,
+        "explanation": "Major pro tune-up for Unbound. Velo and CyclingNews cover it. Winners like Justine Barrow and Julien Gagne. Deep international field."
+      },
+      "length": {
+        "score": 5,
+        "explanation": "157 miles with 7,884 ft of climbing. This is an all-day effort that rivals Unbound in distance. The 'free' entry doesn't mean easy."
+      },
+      "technicality": {
+        "score": 2,
+        "explanation": "Not technical - smooth limestone, no singletrack or rock gardens. Loco Hill is the only real climb on the 60-mile. Difficulty comes from heat and distance."
+      },
+      "elevation": {
+        "score": 4,
+        "explanation": "7,884 ft distributed across endless rollers. No big climbs but never truly flat. The cumulative effect is significant."
+      },
+      "climate": {
+        "score": 5,
+        "explanation": "'The 2022 weather was hell. The fresh tarmac read like 120° on my Wahoo.' Texas heat in late May is the primary challenge. Aid stations have run dry."
+      },
+      "altitude": {
+        "score": 1,
+        "explanation": "Texas Hill Country = low altitude. Heat and humidity, not oxygen, are the challenge."
+      },
+      "adventure": {
+        "score": 4,
+        "explanation": "Charming cowboy town (Billy the Kid connection), wildflower-lined roads, Texas BBQ, community vibes. 'What else could you possibly want?'"
+      },
+      "logistics": {
+        "score": 3,
+        "explanation": "DFW is a few hours drive. Hico is 'the middle of nowhere.' Boondocking on site available. Glen Rose, Stephenville nearby for lodging."
+      },
+      "race_quality": {
+        "score": 4,
+        "explanation": "Well-organized charity event with good aid stations and community support. The 2022 water shortage was a one-time issue. Solid execution for a free event."
+      },
+      "experience": {
+        "score": 5,
+        "explanation": "Legendary Texas hospitality, wildflower-lined roads, cowboy town charm, and post-race BBQ. 'What else could you possibly want?'"
+      },
+      "community": {
+        "score": 5,
+        "explanation": "Community-driven charity event raising money for Hico first responders. Free entry with donation model creates incredible grassroots atmosphere."
+      },
+      "field_depth": {
+        "score": 4,
+        "explanation": "Deep pro field uses this as Unbound tune-up. Justine Barrow, Julien Gagne among winners. International competitors and serious amateurs."
+      },
+      "value": {
+        "score": 5,
+        "explanation": "IT'S FREE. $0 entry for 150 miles of world-class gravel racing. Donations go to first responders. Best value in gravel by definition."
+      },
+      "expenses": {
+        "score": 4,
+        "explanation": "Texas is affordable. Camping/boondocking on site. DFW flights are cheap. Hico lodging is budget-friendly. No Colorado/California prices."
+      }
+    },
+    "biased_opinion": {
+      "verdict": "THE FREE UNBOUND TUNE-UP",
+      "summary": "Gravel Locos is what happens when you make a 150-mile Unbound tune-up free. Pros use it as their final rehearsal. Amateurs get to ride with them on gorgeous Texas gravel for zero entry fee. The catch? Texas heat that can hit 120°F and aid stations that occasionally run dry.",
+      "quote": "'It exceeded all of my expectations… beautiful views, fast gravel roads, and excellent race support. What else could you possibly want?' - Reddit rider",
+      "strengths": [
+        "It's FREE: La Loca 150 costs $0 with donations to first responders",
+        "Pro field: Major Unbound tune-up with international winners",
+        "The gravel: 'Smooth' and 'perfect' limestone Hill Country roads"
+      ],
+      "weaknesses": [
+        "Texas heat: 2022 had 120°F tarmac readings and a dry aid station",
+        "Distance: 157 miles is serious even without heat",
+        "Hico logistics: 'Middle of nowhere' Texas requires planning"
+      ],
+      "bottom_line": "If you want a legitimate 150-mile gravel race for free with pro-level competition and legendary Texas hospitality, Gravel Locos delivers. Just train for heat."
+    },
+    "black_pill": {
+      "title": "THE THING NOBODY TELLS YOU",
+      "reality": "'The 2022 weather was hell. The fresh tarmac read like 120° on my Wahoo at some points AND they ran out of water after the 3B climbs. Waited over 30 minutes at that aid station.' Free doesn't mean easy. Texas heat is the great equalizer.",
+      "consequences": [
+        "Heat can end your race. 2022 proved aid stations can run dry.",
+        "157 miles at altitude-free doesn't mean 157 easy miles. 7,884 ft of gain adds up.",
+        "Late May Texas = potential for brutal conditions. 2024 was 'perfect' but that's not guaranteed."
+      ],
+      "quote": "'The 2022 weather was hell.' - BATTLECATHOTS on Reddit",
+      "expectation_reset": "Train for heat specifically. Have a solid hydration/electrolyte plan. This is an Unbound tune-up for pros - respect it accordingly."
+    },
+    "tldr": {
+      "should_race_if": "You want a free 150-mile gravel race with pro competition, you can handle Texas heat, and you love wildflowers, BBQ, and community vibes.",
+      "skip_if": "You can't handle heat, you expect technical terrain, or you need a 'name' race for your gravel resume."
+    },
+    "final_verdict": {
+      "score": "79 / 100",
+      "one_liner": "Free 150-mile Unbound tune-up on gorgeous Texas gravel where Texas heat is the great equalizer.",
+      "should_you_race": "Yes if you want a legitimate ultra-gravel experience for free with international competition and legendary Texas hospitality. Gravel Locos proves you don't need a $250 entry fee to have a world-class gravel race. Just train for heat.",
+      "alternatives": "If you want similar distance with mud risk: Unbound. If you want Texas gravel with less heat: wait for fall events. If you want free racing: this is the gold standard."
+    },
+    "logistics": {
+      "airport": "Dallas-Fort Worth (DFW) - 'a few hours' drive. Hico is 'the middle of nowhere.'",
+      "lodging_strategy": "Many camp - Gravel Locos offers boondocking on site. Glen Rose, Stephenville 10-30 minutes away. Cabins and Airbnbs available. Book early.",
+      "food": "Hico has BBQ and Tex-Mex. 'Great barbecue and Tex-Mex cuisine' - post-race is legendary.",
+      "packet_pickup": "Pre-race in town with local vendors and food. Community-centric weekend vibe.",
+      "parking": "Town-center event with plenty of space and festival atmosphere.",
+      "official_site": "https://www.gravellocos.bike"
+    },
+    "training_plans": {
+      "total_count": 15,
+      "tiers": [
+        "Ayahuasca",
+        "Finisher",
+        "Compete",
+        "Podium"
+      ],
+      "base_price": 99,
+      "save_my_race_price": 59,
+      "marketplace_base_url": "https://www.trainingpeaks.com/training-plans/cycling",
+      "plans": []
+    },
+    "seo": {
+      "title": "Gravel Locos Race Guide | Training Plans & Hico Course Intel",
+      "meta_description": "Gravel Locos Hico guide: FREE 150-mile Texas gravel race with 7,884 ft climbing. Pro Unbound tune-up on gorgeous Hill Country limestone. Heat is the challenge.",
+      "focus_keyword": "gravel locos race",
+      "slug": "gravel-locos"
+    },
+    "validation_tier": "gold"
+  }
+}

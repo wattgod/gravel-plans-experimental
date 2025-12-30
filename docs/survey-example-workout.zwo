@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<workout_file>
+  <author>Gravel God Training</author>
+  <name>W12 Sun - Race Day or Recovery</name>
+  <description>• Race day or recovery day. You've completed the training plan!
+
+• TRAINING PLAN SURVEY (POST-COMPLETION):
+You've finished your training plan! Share your experience to help us improve plans for future athletes. Takes 3-4 minutes.
+
+Survey: https://wattgod.github.io/gravel-landing-page-project/survey.html?race=Mid%20South&amp;plan=Ayahuasca%20Beginner
+
+Your feedback helps us make each plan better. Thank you!</description>
+  <sportType>bike</sportType>
+  <workout>
+    <FreeRide Duration="60"/>
+  </workout>
+</workout_file>

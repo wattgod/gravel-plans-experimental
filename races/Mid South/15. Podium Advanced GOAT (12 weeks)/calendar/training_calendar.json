@@ -1,0 +1,782 @@
+[
+  {
+    "week": 1,
+    "cycling_phase": "base_1",
+    "strength_phase": "Learn to Lift",
+    "strength_sessions": 2,
+    "start_date": "2025-03-15",
+    "days": {
+      "monday": {
+        "date": "2025-03-15",
+        "am": "strength",
+        "pm": null,
+        "is_key_day": false,
+        "notes": "Fresh from Sunday rest, ideal for strength",
+        "strength_file": "W01_STR_Learn_to_Lift_A.zwo"
+      },
+      "tuesday": {
+        "date": "2025-03-16",
+        "am": null,
+        "pm": "intervals",
+        "is_key_day": true,
+        "notes": "Key session #1 - intervals or threshold work",
+        "strength_file": null
+      },
+      "wednesday": {
+        "date": "2025-03-17",
+        "am": null,
+        "pm": "easy_ride",
+        "is_key_day": false,
+        "notes": "Recovery from Tuesday, prep for Thursday strength",
+        "strength_file": null
+      },
+      "thursday": {
+        "date": "2025-03-18",
+        "am": "strength",
+        "pm": "easy_ride",
+        "is_key_day": false,
+        "notes": "Strength + optional easy spin",
+        "strength_file": "W01_STR_Learn_to_Lift_B.zwo"
+      },
+      "friday": {
+        "date": "2025-03-19",
+        "am": null,
+        "pm": "rest_or_easy",
+        "is_key_day": false,
+        "notes": "Pre-long-ride rest",
+        "strength_file": null
+      },
+      "saturday": {
+        "date": "2025-03-20",
+        "am": "long_ride",
+        "pm": null,
+        "is_key_day": true,
+        "notes": "Key session #2 - long ride or race sim",
+        "strength_file": null
+      },
+      "sunday": {
+        "date": "2025-03-21",
+        "am": "easy_ride_or_rest",
+        "pm": null,
+        "is_key_day": false,
+        "notes": "Recovery day",
+        "strength_file": null
+      }
+    }
+  },
+  {
+    "week": 2,
+    "cycling_phase": "base_1",
+    "strength_phase": "Learn to Lift",
+    "strength_sessions": 2,
+    "start_date": "2025-03-22",
+    "days": {
+      "monday": {
+        "date": "2025-03-22",
+        "am": "strength",
+        "pm": null,
+        "is_key_day": false,
+        "notes": "Fresh from Sunday rest, ideal for strength",
+        "strength_file": "W02_STR_Learn_to_Lift_A.zwo"
+      },
+      "tuesday": {
+        "date": "2025-03-23",
+        "am": null,
+        "pm": "intervals",
+        "is_key_day": true,
+        "notes": "Key session #1 - intervals or threshold work",
+        "strength_file": null
+      },
+      "wednesday": {
+        "date": "2025-03-24",
+        "am": null,
+        "pm": "easy_ride",
+        "is_key_day": false,
+        "notes": "Recovery from Tuesday, prep for Thursday strength",
+        "strength_file": null
+      },
+      "thursday": {
+        "date": "2025-03-25",
+        "am": "strength",
+        "pm": "easy_ride",
+        "is_key_day": false,
+        "notes": "Strength + optional easy spin",
+        "strength_file": "W02_STR_Learn_to_Lift_B.zwo"
+      },
+      "friday": {
+        "date": "2025-03-26",
+        "am": null,
+        "pm": "rest_or_easy",
+        "is_key_day": false,
+        "notes": "Pre-long-ride rest",
+        "strength_file": null
+      },
+      "saturday": {
+        "date": "2025-03-27",
+        "am": "long_ride",
+        "pm": null,
+        "is_key_day": true,
+        "notes": "Key session #2 - long ride or race sim",
+        "strength_file": null
+      },
+      "sunday": {
+        "date": "2025-03-28",
+        "am": "easy_ride_or_rest",
+        "pm": null,
+        "is_key_day": false,
+        "notes": "Recovery day",
+        "strength_file": null
+      }
+    }
+  },
+  {
+    "week": 3,
+    "cycling_phase": "base_2",
+    "strength_phase": "Learn to Lift",
+    "strength_sessions": 2,
+    "start_date": "2025-03-29",
+    "days": {
+      "monday": {
+        "date": "2025-03-29",
+        "am": "strength",
+        "pm": null,
+        "is_key_day": false,
+        "notes": "Fresh from Sunday rest, ideal for strength",
+        "strength_file": "W03_STR_Learn_to_Lift_A.zwo"
+      },
+      "tuesday": {
+        "date": "2025-03-30",
+        "am": null,
+        "pm": "intervals",
+        "is_key_day": true,
+        "notes": "Key session #1 - intervals or threshold work",
+        "strength_file": null
+      },
+      "wednesday": {
+        "date": "2025-03-31",
+        "am": null,
+        "pm": "easy_ride",
+        "is_key_day": false,
+        "notes": "Recovery from Tuesday, prep for Thursday strength",
+        "strength_file": null
+      },
+      "thursday": {
+        "date": "2025-04-01",
+        "am": "strength",
+        "pm": "easy_ride",
+        "is_key_day": false,
+        "notes": "Strength + optional easy spin",
+        "strength_file": "W03_STR_Learn_to_Lift_B.zwo"
+      },
+      "friday": {
+        "date": "2025-04-02",
+        "am": null,
+        "pm": "rest_or_easy",
+        "is_key_day": false,
+        "notes": "Pre-long-ride rest",
+        "strength_file": null
+      },
+      "saturday": {
+        "date": "2025-04-03",
+        "am": "long_ride",
+        "pm": null,
+        "is_key_day": true,
+        "notes": "Key session #2 - long ride or race sim",
+        "strength_file": null
+      },
+      "sunday": {
+        "date": "2025-04-04",
+        "am": "easy_ride_or_rest",
+        "pm": null,
+        "is_key_day": false,
+        "notes": "Recovery day",
+        "strength_file": null
+      }
+    }
+  },
+  {
+    "week": 4,
+    "cycling_phase": "base_2",
+    "strength_phase": "Learn to Lift",
+    "strength_sessions": 2,
+    "start_date": "2025-04-05",
+    "days": {
+      "monday": {
+        "date": "2025-04-05",
+        "am": "strength",
+        "pm": null,
+        "is_key_day": false,
+        "notes": "Fresh from Sunday rest, ideal for strength",
+        "strength_file": "W04_STR_Learn_to_Lift_A.zwo"
+      },
+      "tuesday": {
+        "date": "2025-04-06",
+        "am": null,
+        "pm": "intervals",
+        "is_key_day": true,
+        "notes": "Key session #1 - intervals or threshold work",
+        "strength_file": null
+      },
+      "wednesday": {
+        "date": "2025-04-07",
+        "am": null,
+        "pm": "easy_ride",
+        "is_key_day": false,
+        "notes": "Recovery from Tuesday, prep for Thursday strength",
+        "strength_file": null
+      },
+      "thursday": {
+        "date": "2025-04-08",
+        "am": "strength",
+        "pm": "easy_ride",
+        "is_key_day": false,
+        "notes": "Strength + optional easy spin",
+        "strength_file": "W04_STR_Learn_to_Lift_B.zwo"
+      },
+      "friday": {
+        "date": "2025-04-09",
+        "am": null,
+        "pm": "rest_or_easy",
+        "is_key_day": false,
+        "notes": "Pre-long-ride rest",
+        "strength_file": null
+      },
+      "saturday": {
+        "date": "2025-04-10",
+        "am": "long_ride",
+        "pm": null,
+        "is_key_day": true,
+        "notes": "Key session #2 - long ride or race sim",
+        "strength_file": null
+      },
+      "sunday": {
+        "date": "2025-04-11",
+        "am": "easy_ride_or_rest",
+        "pm": null,
+        "is_key_day": false,
+        "notes": "Recovery day",
+        "strength_file": null
+      }
+    }
+  },
+  {
+    "week": 5,
+    "cycling_phase": "build_1",
+    "strength_phase": "Lift Heavy Sh*t",
+    "strength_sessions": 1,
+    "start_date": "2025-04-12",
+    "days": {
+      "monday": {
+        "date": "2025-04-12",
+        "am": "strength",
+        "pm": "easy_ride",
+        "is_key_day": false,
+        "notes": "Strength AM, easy spin PM",
+        "strength_file": "W05_STR_Lift_Heavy_Sh*t_A.zwo"
+      },
+      "tuesday": {
+        "date": "2025-04-13",
+        "am": null,
+        "pm": "intervals",
+        "is_key_day": true,
+        "notes": "Key session #1",
+        "strength_file": null
+      },
+      "wednesday": {
+        "date": "2025-04-14",
+        "am": null,
+        "pm": "easy_ride",
+        "is_key_day": false,
+        "notes": "Recovery",
+        "strength_file": null
+      },
+      "thursday": {
+        "date": "2025-04-15",
+        "am": "strength",
+        "pm": "intervals",
+        "is_key_day": true,
+        "notes": "Strength AM, intervals PM (key session #2)",
+        "strength_file": null
+      },
+      "friday": {
+        "date": "2025-04-16",
+        "am": null,
+        "pm": "rest_or_easy",
+        "is_key_day": false,
+        "notes": "Rest before weekend",
+        "strength_file": null
+      },
+      "saturday": {
+        "date": "2025-04-17",
+        "am": "long_ride",
+        "pm": null,
+        "is_key_day": true,
+        "notes": "Key session #3 - long ride",
+        "strength_file": null
+      },
+      "sunday": {
+        "date": "2025-04-18",
+        "am": "easy_ride",
+        "pm": null,
+        "is_key_day": false,
+        "notes": "Recovery ride",
+        "strength_file": null
+      }
+    }
+  },
+  {
+    "week": 6,
+    "cycling_phase": "build_1",
+    "strength_phase": "Lift Heavy Sh*t",
+    "strength_sessions": 1,
+    "start_date": "2025-04-19",
+    "days": {
+      "monday": {
+        "date": "2025-04-19",
+        "am": "strength",
+        "pm": "easy_ride",
+        "is_key_day": false,
+        "notes": "Strength AM, easy spin PM",
+        "strength_file": "W06_STR_Lift_Heavy_Sh*t_A.zwo"
+      },
+      "tuesday": {
+        "date": "2025-04-20",
+        "am": null,
+        "pm": "intervals",
+        "is_key_day": true,
+        "notes": "Key session #1",
+        "strength_file": null
+      },
+      "wednesday": {
+        "date": "2025-04-21",
+        "am": null,
+        "pm": "easy_ride",
+        "is_key_day": false,
+        "notes": "Recovery",
+        "strength_file": null
+      },
+      "thursday": {
+        "date": "2025-04-22",
+        "am": "strength",
+        "pm": "intervals",
+        "is_key_day": true,
+        "notes": "Strength AM, intervals PM (key session #2)",
+        "strength_file": null
+      },
+      "friday": {
+        "date": "2025-04-23",
+        "am": null,
+        "pm": "rest_or_easy",
+        "is_key_day": false,
+        "notes": "Rest before weekend",
+        "strength_file": null
+      },
+      "saturday": {
+        "date": "2025-04-24",
+        "am": "long_ride",
+        "pm": null,
+        "is_key_day": true,
+        "notes": "Key session #3 - long ride",
+        "strength_file": null
+      },
+      "sunday": {
+        "date": "2025-04-25",
+        "am": "easy_ride",
+        "pm": null,
+        "is_key_day": false,
+        "notes": "Recovery ride",
+        "strength_file": null
+      }
+    }
+  },
+  {
+    "week": 7,
+    "cycling_phase": "build_1",
+    "strength_phase": "Lift Heavy Sh*t",
+    "strength_sessions": 1,
+    "start_date": "2025-04-26",
+    "days": {
+      "monday": {
+        "date": "2025-04-26",
+        "am": "strength",
+        "pm": "easy_ride",
+        "is_key_day": false,
+        "notes": "Strength AM, easy spin PM",
+        "strength_file": "W07_STR_Lift_Heavy_Sh*t_A.zwo"
+      },
+      "tuesday": {
+        "date": "2025-04-27",
+        "am": null,
+        "pm": "intervals",
+        "is_key_day": true,
+        "notes": "Key session #1",
+        "strength_file": null
+      },
+      "wednesday": {
+        "date": "2025-04-28",
+        "am": null,
+        "pm": "easy_ride",
+        "is_key_day": false,
+        "notes": "Recovery",
+        "strength_file": null
+      },
+      "thursday": {
+        "date": "2025-04-29",
+        "am": "strength",
+        "pm": "intervals",
+        "is_key_day": true,
+        "notes": "Strength AM, intervals PM (key session #2)",
+        "strength_file": null
+      },
+      "friday": {
+        "date": "2025-04-30",
+        "am": null,
+        "pm": "rest_or_easy",
+        "is_key_day": false,
+        "notes": "Rest before weekend",
+        "strength_file": null
+      },
+      "saturday": {
+        "date": "2025-05-01",
+        "am": "long_ride",
+        "pm": null,
+        "is_key_day": true,
+        "notes": "Key session #3 - long ride",
+        "strength_file": null
+      },
+      "sunday": {
+        "date": "2025-05-02",
+        "am": "easy_ride",
+        "pm": null,
+        "is_key_day": false,
+        "notes": "Recovery ride",
+        "strength_file": null
+      }
+    }
+  },
+  {
+    "week": 8,
+    "cycling_phase": "build_2",
+    "strength_phase": "Lift Fast",
+    "strength_sessions": 1,
+    "start_date": "2025-05-03",
+    "days": {
+      "monday": {
+        "date": "2025-05-03",
+        "am": "strength",
+        "pm": "easy_ride",
+        "is_key_day": false,
+        "notes": "Strength AM, easy spin PM",
+        "strength_file": "W08_STR_Lift_Fast_A.zwo"
+      },
+      "tuesday": {
+        "date": "2025-05-04",
+        "am": null,
+        "pm": "intervals",
+        "is_key_day": true,
+        "notes": "Key session #1",
+        "strength_file": null
+      },
+      "wednesday": {
+        "date": "2025-05-05",
+        "am": null,
+        "pm": "easy_ride",
+        "is_key_day": false,
+        "notes": "Recovery",
+        "strength_file": null
+      },
+      "thursday": {
+        "date": "2025-05-06",
+        "am": "strength",
+        "pm": "intervals",
+        "is_key_day": true,
+        "notes": "Strength AM, intervals PM (key session #2)",
+        "strength_file": null
+      },
+      "friday": {
+        "date": "2025-05-07",
+        "am": null,
+        "pm": "rest_or_easy",
+        "is_key_day": false,
+        "notes": "Rest before weekend",
+        "strength_file": null
+      },
+      "saturday": {
+        "date": "2025-05-08",
+        "am": "long_ride",
+        "pm": null,
+        "is_key_day": true,
+        "notes": "Key session #3 - long ride",
+        "strength_file": null
+      },
+      "sunday": {
+        "date": "2025-05-09",
+        "am": "easy_ride",
+        "pm": null,
+        "is_key_day": false,
+        "notes": "Recovery ride",
+        "strength_file": null
+      }
+    }
+  },
+  {
+    "week": 9,
+    "cycling_phase": "build_2",
+    "strength_phase": "Lift Fast",
+    "strength_sessions": 1,
+    "start_date": "2025-05-10",
+    "days": {
+      "monday": {
+        "date": "2025-05-10",
+        "am": "strength",
+        "pm": "easy_ride",
+        "is_key_day": false,
+        "notes": "Strength AM, easy spin PM",
+        "strength_file": "W09_STR_Lift_Fast_A.zwo"
+      },
+      "tuesday": {
+        "date": "2025-05-11",
+        "am": null,
+        "pm": "intervals",
+        "is_key_day": true,
+        "notes": "Key session #1",
+        "strength_file": null
+      },
+      "wednesday": {
+        "date": "2025-05-12",
+        "am": null,
+        "pm": "easy_ride",
+        "is_key_day": false,
+        "notes": "Recovery",
+        "strength_file": null
+      },
+      "thursday": {
+        "date": "2025-05-13",
+        "am": "strength",
+        "pm": "intervals",
+        "is_key_day": true,
+        "notes": "Strength AM, intervals PM (key session #2)",
+        "strength_file": null
+      },
+      "friday": {
+        "date": "2025-05-14",
+        "am": null,
+        "pm": "rest_or_easy",
+        "is_key_day": false,
+        "notes": "Rest before weekend",
+        "strength_file": null
+      },
+      "saturday": {
+        "date": "2025-05-15",
+        "am": "long_ride",
+        "pm": null,
+        "is_key_day": true,
+        "notes": "Key session #3 - long ride",
+        "strength_file": null
+      },
+      "sunday": {
+        "date": "2025-05-16",
+        "am": "easy_ride",
+        "pm": null,
+        "is_key_day": false,
+        "notes": "Recovery ride",
+        "strength_file": null
+      }
+    }
+  },
+  {
+    "week": 10,
+    "cycling_phase": "peak",
+    "strength_phase": "Lift Fast",
+    "strength_sessions": 1,
+    "start_date": "2025-05-17",
+    "days": {
+      "monday": {
+        "date": "2025-05-17",
+        "am": "strength",
+        "pm": null,
+        "is_key_day": false,
+        "notes": "Fresh from Sunday rest, ideal for strength",
+        "strength_file": "W10_STR_Lift_Fast_A.zwo"
+      },
+      "tuesday": {
+        "date": "2025-05-18",
+        "am": null,
+        "pm": "intervals",
+        "is_key_day": true,
+        "notes": "Key session #1 - intervals or threshold work",
+        "strength_file": null
+      },
+      "wednesday": {
+        "date": "2025-05-19",
+        "am": null,
+        "pm": "easy_ride",
+        "is_key_day": false,
+        "notes": "Recovery from Tuesday, prep for Thursday strength",
+        "strength_file": null
+      },
+      "thursday": {
+        "date": "2025-05-20",
+        "am": "strength",
+        "pm": "easy_ride",
+        "is_key_day": false,
+        "notes": "Strength + optional easy spin",
+        "strength_file": null
+      },
+      "friday": {
+        "date": "2025-05-21",
+        "am": null,
+        "pm": "rest_or_easy",
+        "is_key_day": false,
+        "notes": "Pre-long-ride rest",
+        "strength_file": null
+      },
+      "saturday": {
+        "date": "2025-05-22",
+        "am": "long_ride",
+        "pm": null,
+        "is_key_day": true,
+        "notes": "Key session #2 - long ride or race sim",
+        "strength_file": null
+      },
+      "sunday": {
+        "date": "2025-05-23",
+        "am": "easy_ride_or_rest",
+        "pm": null,
+        "is_key_day": false,
+        "notes": "Recovery day",
+        "strength_file": null
+      }
+    }
+  },
+  {
+    "week": 11,
+    "cycling_phase": "peak",
+    "strength_phase": "Lift Fast",
+    "strength_sessions": 1,
+    "start_date": "2025-05-24",
+    "days": {
+      "monday": {
+        "date": "2025-05-24",
+        "am": "strength",
+        "pm": null,
+        "is_key_day": false,
+        "notes": "Fresh from Sunday rest, ideal for strength",
+        "strength_file": "W11_STR_Lift_Fast_A.zwo"
+      },
+      "tuesday": {
+        "date": "2025-05-25",
+        "am": null,
+        "pm": "intervals",
+        "is_key_day": true,
+        "notes": "Key session #1 - intervals or threshold work",
+        "strength_file": null
+      },
+      "wednesday": {
+        "date": "2025-05-26",
+        "am": null,
+        "pm": "easy_ride",
+        "is_key_day": false,
+        "notes": "Recovery from Tuesday, prep for Thursday strength",
+        "strength_file": null
+      },
+      "thursday": {
+        "date": "2025-05-27",
+        "am": "strength",
+        "pm": "easy_ride",
+        "is_key_day": false,
+        "notes": "Strength + optional easy spin",
+        "strength_file": null
+      },
+      "friday": {
+        "date": "2025-05-28",
+        "am": null,
+        "pm": "rest_or_easy",
+        "is_key_day": false,
+        "notes": "Pre-long-ride rest",
+        "strength_file": null
+      },
+      "saturday": {
+        "date": "2025-05-29",
+        "am": "long_ride",
+        "pm": null,
+        "is_key_day": true,
+        "notes": "Key session #2 - long ride or race sim",
+        "strength_file": null
+      },
+      "sunday": {
+        "date": "2025-05-30",
+        "am": "easy_ride_or_rest",
+        "pm": null,
+        "is_key_day": false,
+        "notes": "Recovery day",
+        "strength_file": null
+      }
+    }
+  },
+  {
+    "week": 12,
+    "cycling_phase": "taper",
+    "strength_phase": "Don't Lose It",
+    "strength_sessions": 0,
+    "start_date": "2025-05-31",
+    "days": {
+      "monday": {
+        "date": "2025-05-31",
+        "am": "strength",
+        "pm": null,
+        "is_key_day": false,
+        "notes": "Light strength - Don't Lose It",
+        "strength_file": null
+      },
+      "tuesday": {
+        "date": "2025-06-01",
+        "am": null,
+        "pm": "openers",
+        "is_key_day": false,
+        "notes": "Short, sharp openers",
+        "strength_file": null
+      },
+      "wednesday": {
+        "date": "2025-06-02",
+        "am": null,
+        "pm": "easy_ride",
+        "is_key_day": false,
+        "notes": "Easy spin",
+        "strength_file": null
+      },
+      "thursday": {
+        "date": "2025-06-03",
+        "am": null,
+        "pm": "rest",
+        "is_key_day": false,
+        "notes": "Rest",
+        "strength_file": null
+      },
+      "friday": {
+        "date": "2025-06-04",
+        "am": null,
+        "pm": "openers",
+        "is_key_day": false,
+        "notes": "Final openers",
+        "strength_file": null
+      },
+      "saturday": {
+        "date": "2025-06-05",
+        "am": null,
+        "pm": "rest",
+        "is_key_day": false,
+        "notes": "Rest before race",
+        "strength_file": null
+      },
+      "sunday": {
+        "date": "2025-06-06",
+        "am": "RACE",
+        "pm": null,
+        "is_key_day": true,
+        "notes": "RACE DAY",
+        "strength_file": null
+      }
+    }
+  }
+]

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gravel God Training Guides</title>
+    
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Sometype+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    
+    <style>
+        :root {
+            --gg-bg: #ffffff;
+            --gg-fg: #111111;
+            --gg-border: #000000;
+            --gg-muted: #777777;
+            --gg-soft: #f5f5f5;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 32px auto 64px auto;
+            padding: 0 20px;
+            max-width: 1120px;
+            background: var(--gg-bg);
+            color: var(--gg-fg);
+            font-family: "Sometype Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 15px;
+            line-height: 1.7;
+            letter-spacing: 0.01em;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 {
+            font-weight: 600;
+            line-height: 1.2;
+            margin: 1.6rem 0 0.6rem 0;
+        }
+
+        h1 {
+            font-size: 26px;
+            padding-bottom: 6px;
+            border-bottom: 3px solid var(--gg-border);
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            margin-top: 0;
+        }
+
+        h2 {
+            font-size: 19px;
+            padding-bottom: 4px;
+            border-bottom: 2px solid var(--gg-border);
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+        }
+
+        h3 {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: var(--gg-muted);
+            margin-top: 2rem;
+            margin-bottom: 0.8rem;
+        }
+
+        p {
+            margin: 0 0 0.8rem 0;
+        }
+
+        .intro {
+            color: var(--gg-muted);
+            margin-bottom: 32px;
+        }
+
+        .race-section {
+            margin-bottom: 3.5rem;
+        }
+
+        .race-title {
+            font-size: 19px;
+            padding-bottom: 4px;
+            border-bottom: 2px solid var(--gg-border);
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            margin-top: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tier-section {
+            margin-bottom: 2.4rem;
+        }
+
+        .plan-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .plan-link {
+            display: block;
+            padding: 10px 12px;
+            border: 1px solid var(--gg-border);
+            text-decoration: none;
+            color: var(--gg-fg);
+            background: var(--gg-soft);
+            transition: background 0.2s;
+            font-size: 13px;
+        }
+
+        .plan-link:hover {
+            background: #e8e8e8;
+            text-decoration: underline;
+        }
+
+        .note {
+            margin-top: 2.4rem;
+            padding-top: 1.2rem;
+            border-top: 1px solid var(--gg-border);
+            font-size: 12px;
+            color: var(--gg-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+        }
+
+        @media (max-width: 600px) {
+            .plan-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Gravel God Training Guides</h1>
+    <p class="intro">Access your race-specific training plan guides below.</p>
+    
+    <div class="race-section">
+        <h2 class="race-title">Unbound Gravel 200</h2>
+        
+        <div class="tier-section">
+            <h3>Ayahuasca</h3>
+            <div class="plan-grid">
+                <a href="guides/unbound-gravel-200/ayahuasca-beginner.html" class="plan-link">Beginner</a>
+                <a href="guides/unbound-gravel-200/ayahuasca-intermediate.html" class="plan-link">Intermediate</a>
+                <a href="guides/unbound-gravel-200/ayahuasca-masters.html" class="plan-link">Masters</a>
+                <a href="guides/unbound-gravel-200/ayahuasca-save-my-race.html" class="plan-link">Save My Race</a>
+            </div>
+        </div>
+
+        <div class="tier-section">
+            <h3>Finisher</h3>
+            <div class="plan-grid">
+                <a href="guides/unbound-gravel-200/finisher-beginner.html" class="plan-link">Beginner</a>
+                <a href="guides/unbound-gravel-200/finisher-intermediate.html" class="plan-link">Intermediate</a>
+                <a href="guides/unbound-gravel-200/finisher-advanced.html" class="plan-link">Advanced</a>
+                <a href="guides/unbound-gravel-200/finisher-masters.html" class="plan-link">Masters</a>
+                <a href="guides/unbound-gravel-200/finisher-save-my-race.html" class="plan-link">Save My Race</a>
+            </div>
+        </div>
+
+        <div class="tier-section">
+            <h3>Compete</h3>
+            <div class="plan-grid">
+                <a href="guides/unbound-gravel-200/compete-intermediate.html" class="plan-link">Intermediate</a>
+                <a href="guides/unbound-gravel-200/compete-advanced.html" class="plan-link">Advanced</a>
+                <a href="guides/unbound-gravel-200/compete-masters.html" class="plan-link">Masters</a>
+                <a href="guides/unbound-gravel-200/compete-save-my-race.html" class="plan-link">Save My Race</a>
+            </div>
+        </div>
+
+        <div class="tier-section">
+            <h3>Podium</h3>
+            <div class="plan-grid">
+                <a href="guides/unbound-gravel-200/podium-advanced.html" class="plan-link">Advanced</a>
+                <a href="guides/unbound-gravel-200/podium-advanced-goat.html" class="plan-link">Advanced GOAT</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="race-section">
+        <h2 class="race-title">Mid South</h2>
+        
+        <div class="tier-section">
+            <h3>Ayahuasca</h3>
+            <div class="plan-grid">
+                <a href="guides/mid-south/ayahuasca-beginner.html" class="plan-link">Beginner</a>
+                <a href="guides/mid-south/ayahuasca-intermediate.html" class="plan-link">Intermediate</a>
+                <a href="guides/mid-south/ayahuasca-masters.html" class="plan-link">Masters</a>
+                <a href="guides/mid-south/ayahuasca-save-my-race.html" class="plan-link">Save My Race</a>
+            </div>
+        </div>
+
+        <div class="tier-section">
+            <h3>Finisher</h3>
+            <div class="plan-grid">
+                <a href="guides/mid-south/finisher-beginner.html" class="plan-link">Beginner</a>
+                <a href="guides/mid-south/finisher-intermediate.html" class="plan-link">Intermediate</a>
+                <a href="guides/mid-south/finisher-advanced.html" class="plan-link">Advanced</a>
+                <a href="guides/mid-south/finisher-masters.html" class="plan-link">Masters</a>
+                <a href="guides/mid-south/finisher-save-my-race.html" class="plan-link">Save My Race</a>
+            </div>
+        </div>
+
+        <div class="tier-section">
+            <h3>Compete</h3>
+            <div class="plan-grid">
+                <a href="guides/mid-south/compete-intermediate.html" class="plan-link">Intermediate</a>
+                <a href="guides/mid-south/compete-advanced.html" class="plan-link">Advanced</a>
+                <a href="guides/mid-south/compete-masters.html" class="plan-link">Masters</a>
+                <a href="guides/mid-south/compete-save-my-race.html" class="plan-link">Save My Race</a>
+            </div>
+        </div>
+
+        <div class="tier-section">
+            <h3>Podium</h3>
+            <div class="plan-grid">
+                <a href="guides/mid-south/podium-advanced.html" class="plan-link">Advanced</a>
+                <a href="guides/mid-south/podium-advanced-goat.html" class="plan-link">Advanced GOAT</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="race-section">
+        <h2 class="race-title">Training Plan Survey</h2>
+        <p class="intro" style="margin-bottom: 1.5rem;">Completed your training plan? Share your post-completion feedback to help us improve. Takes 3-4 minutes.</p>
+        <div style="margin-top: 1rem;">
+            <a href="survey.html" class="plan-link" style="display: inline-block; text-align: center; padding: 14px 24px; font-size: 15px; font-weight: 600;">Take Post-Completion Survey</a>
+        </div>
+    </div>
+
+    <p class="note">More races will appear here as guides are generated and deployed.</p>
+</body>
+</html>
