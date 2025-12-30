@@ -2,19 +2,24 @@
 """
 NATE WORKOUT GENERATOR - Full Integration
 ==========================================
+
 Generates complete ZWO workouts from the Nate archetype library.
 
 This generator uses ACTUAL workout structures from archetypes, not just descriptions.
 It produces complete ZWO files with proper intervals, power targets, and progressions.
 
-Features:
-- 22 archetypes × 6 levels = 132 unique workouts
-- Methodology-driven selection (POLARIZED, PYRAMIDAL, HIT)
+Features
+--------
+- 41 archetypes × 6 levels = 246 unique workout variations
+- 14 training methodologies (POLARIZED, PYRAMIDAL, G_SPOT, HIT, etc.)
+- 8 progression styles for periodization
 - Full block generation (intervals, ramps, pyramids, etc.)
+- Methodology-aware archetype selection
 - Durability workouts for ultra-distance events
 - Race simulation workouts
 
-Categories:
+Categories
+----------
 - VO2max (4 archetypes): 5x3 Classic, Descending Pyramid, Norwegian 4x8, Loaded Recovery
 - TT_Threshold (3 archetypes): Single Sustained, Threshold Ramps, Descending Threshold
 - Sprint_Neuromuscular (4 archetypes): Attack Repeats, Sprint Buildups, Peak and Fade, ILT
@@ -22,14 +27,32 @@ Categories:
 - Durability (3 archetypes): Tired VO2max, Double Day Sim, Progressive Fatigue
 - Endurance (2 archetypes): Pre-Race Openers, Terrain Simulation Z2
 - Race_Simulation (3 archetypes): Breakaway Sim, Variable Pace Chaos, Sector Sim
+- G_Spot (3 archetypes): Standard, Extended, Criss-Cross
+- LT1_MAF (3 archetypes): LT1 Capped, MAF Test, Aerobic Base
+- Critical_Power (3 archetypes): Above CP Repeats, W' Depletion, CP Test
+- Norwegian_Double (3 archetypes): 4x8 Classic, Double AM, Double PM
+- HVLI_Extended (2 archetypes): Extended Z2, Terrain Simulation
+- Testing (3 archetypes): Ramp Test, 20min FTP, CP Test Protocol
+- Recovery (3 archetypes): Active Recovery, Flush Ride, Rest Day
+- INSCYD (2 archetypes): VLamax Reduction, Carb Tolerance
 
-Version: 1.0 (Full Nate Integration)
+Notes
+-----
+G-Spot (87-92% FTP) replaces Sweet Spot throughout this generator.
+
+Version: 2.0 (Full Methodology Support)
 """
 
 import html
+import logging
 import sys
+from dataclasses import dataclass
+from enum import Enum
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple, Any
+from typing import Dict, List, Optional, Tuple, Any, Union
+
+# Configure logging
+logger = logging.getLogger(__name__)
 
 # Import Nate archetypes
 sys.path.insert(0, str(Path(__file__).parent.parent / "nate_archetypes"))
@@ -424,21 +447,49 @@ def get_all_archetypes_for_category(category: str) -> List[Dict]:
     return NEW_ARCHETYPES.get(category, [])
 
 
+class ArchetypeSelectionError(Exception):
+    """Raised when archetype selection fails for a known reason."""
+    pass
+
+
 def select_archetype_for_workout(
     workout_type: str,
     methodology: str = "POLARIZED",
     variation: int = 0
-) -> Optional[Dict]:
+) -> Optional[Dict[str, Any]]:
     """
     Select an archetype based on workout type and methodology.
 
+    This function maps workout types to archetype categories, then applies
+    methodology-specific overrides to select the most appropriate archetype.
+
     Args:
-        workout_type: The type of workout (vo2max, threshold, sprint, etc.)
-        methodology: Training methodology (POLARIZED, PYRAMIDAL, HIT)
-        variation: Which variation of the archetype to use (0-indexed)
+        workout_type: The type of workout (e.g., 'vo2max', 'threshold', 'sprint',
+            'g_spot', 'recovery'). Case-insensitive.
+        methodology: Training methodology from TRAINING_METHODOLOGIES
+            (e.g., 'POLARIZED', 'PYRAMIDAL', 'G_SPOT', 'HIT'). Defaults to 'POLARIZED'.
+        variation: Which variation of the archetype to use (0-indexed).
+            Defaults to 0 (first/primary archetype in the category).
 
     Returns:
-        The selected archetype dictionary, or None if not found
+        The selected archetype dictionary containing 'name', 'levels', and
+        workout structure data, or None if:
+        - The workout_type is not recognized
+        - The methodology explicitly avoids this workout category
+        - The category has no archetypes
+
+    Raises:
+        No exceptions are raised; None is returned for all failure cases.
+        Use logging to diagnose selection issues.
+
+    Examples:
+        >>> archetype = select_archetype_for_workout('vo2max', 'POLARIZED')
+        >>> archetype['name']
+        'VO2max 5x3 Classic'
+
+        >>> # Polarized avoids G-Spot (middle zone)
+        >>> select_archetype_for_workout('g_spot', 'POLARIZED')
+        None
     """
     # Map workout types to categories
     type_to_category = {
@@ -505,6 +556,10 @@ def select_archetype_for_workout(
 
     category = type_to_category.get(workout_type.lower())
     if not category:
+        logger.warning(
+            f"Unknown workout type '{workout_type}'. "
+            f"Valid types: {list(type_to_category.keys())[:10]}..."
+        )
         return None
 
     # ==========================================================================
@@ -513,10 +568,21 @@ def select_archetype_for_workout(
     # Different methodologies should prefer different archetypes for the same
     # workout type. This is where the magic happens.
 
-    method_config = TRAINING_METHODOLOGIES.get(methodology, TRAINING_METHODOLOGIES["POLARIZED"])
+    method_config = TRAINING_METHODOLOGIES.get(methodology)
+    if not method_config:
+        logger.warning(
+            f"Unknown methodology '{methodology}'. "
+            f"Falling back to POLARIZED. Valid: {list(TRAINING_METHODOLOGIES.keys())}"
+        )
+        method_config = TRAINING_METHODOLOGIES["POLARIZED"]
 
     # Check if this category is avoided by the methodology
-    if category in method_config.get("avoid", []):
+    avoided_categories = method_config.get("avoid", [])
+    if category in avoided_categories:
+        logger.debug(
+            f"Methodology '{methodology}' avoids category '{category}'. "
+            f"Avoided categories: {avoided_categories}"
+        )
         return None
 
     # Methodology-specific archetype selection overrides
@@ -582,8 +648,45 @@ def calculate_level_from_week(
     """
     Calculate the progression level (1-6) based on week position and methodology.
 
-    Uses progression style from methodology configuration.
-    Accounts for taper period at the end of the plan.
+    This function uses the progression style from the methodology configuration
+    to determine the appropriate workout difficulty level. Different methodologies
+    have different progression patterns:
+
+    - volume_first (PYRAMIDAL): Linear progression 1→6
+    - intensity_first (REVERSE): 6→3 (high to moderate)
+    - intensity_stable (POLARIZED): Stays at 4-5
+    - density_increase (G_SPOT): Aggressive 2→6
+    - block_staircase (BLOCK): 2-week overload, 1-week recovery pattern
+
+    Args:
+        week_num: Current week number (1-indexed).
+        total_weeks: Total weeks in the training plan.
+        taper_weeks: Number of weeks reserved for tapering at plan end.
+            Defaults to 2. During taper, returns a moderate level (typically 4).
+        methodology: Training methodology from TRAINING_METHODOLOGIES.
+            Defaults to 'POLARIZED'.
+
+    Returns:
+        Integer level from 1 to 6:
+        - 1: Introductory / recovery week
+        - 2: Base building
+        - 3: Moderate development
+        - 4: Standard training load
+        - 5: High training load
+        - 6: Peak / race preparation
+
+    Examples:
+        >>> # Early in a polarized plan
+        >>> calculate_level_from_week(2, 12, 2, 'POLARIZED')
+        4
+
+        >>> # G-Spot plan progresses more aggressively
+        >>> calculate_level_from_week(8, 12, 2, 'G_SPOT')
+        5
+
+        >>> # Taper week always returns moderate level
+        >>> calculate_level_from_week(11, 12, 2, 'POLARIZED')
+        4
     """
     # Get progression style from methodology
     method_config = TRAINING_METHODOLOGIES.get(methodology, TRAINING_METHODOLOGIES["POLARIZED"])
@@ -1333,29 +1436,91 @@ def get_category_purpose(archetype_name: str) -> str:
 # MAIN WORKOUT GENERATION
 # =============================================================================
 
+@dataclass
+class WorkoutGenerationResult:
+    """Result of workout generation with success/failure information."""
+    name: Optional[str]
+    description: Optional[str]
+    blocks: Optional[str]
+    success: bool
+    error_message: Optional[str] = None
+
+    def as_tuple(self) -> Tuple[Optional[str], Optional[str], Optional[str]]:
+        """Return legacy tuple format (name, description, blocks)."""
+        return (self.name, self.description, self.blocks)
+
+
 def generate_nate_workout(
     workout_type: str,
     level: int = 3,
     methodology: str = "POLARIZED",
     variation: int = 0,
-    workout_name: str = None
-) -> Tuple[str, str, str]:
+    workout_name: Optional[str] = None
+) -> Tuple[Optional[str], Optional[str], Optional[str]]:
     """
     Generate a complete Nate workout.
 
+    This function selects an appropriate archetype based on workout type and
+    methodology, then generates the workout name, description, and ZWO blocks.
+
     Args:
-        workout_type: Type of workout (vo2max, threshold, sprint, etc.)
-        level: Progression level (1-6)
-        methodology: Training methodology (POLARIZED, PYRAMIDAL, HIT)
-        variation: Which archetype variation to use (0-indexed)
-        workout_name: Optional custom name for the workout
+        workout_type: Type of workout. Valid types include:
+            - 'vo2max', 'vo2': VO2max intervals
+            - 'threshold', 'tt', 'ftp': Threshold/FTP work
+            - 'sprint', 'neuromuscular': Sprint efforts
+            - 'anaerobic': Anaerobic capacity
+            - 'g_spot', 'tempo': G-Spot intervals (87-92% FTP)
+            - 'recovery', 'easy': Recovery rides
+            - 'test', 'ramp_test': Testing protocols
+            - And many more (see select_archetype_for_workout)
+        level: Progression level from 1 (easiest) to 6 (hardest).
+            Defaults to 3 (moderate).
+        methodology: Training methodology. Valid options:
+            - 'POLARIZED': 80/20 hard/easy split
+            - 'PYRAMIDAL': Traditional volume-first
+            - 'G_SPOT': Threshold-focused
+            - 'HIT': High-intensity focused
+            - And more (see TRAINING_METHODOLOGIES)
+        variation: Which archetype variation to use within the category (0-indexed).
+            Defaults to 0 (primary archetype).
+        workout_name: Optional custom name for the workout. If None, generates
+            a name from the archetype name and level.
 
     Returns:
-        Tuple of (name, description, blocks)
+        Tuple of (name, description, blocks) where:
+        - name: Workout name string
+        - description: Full workout description with warmup, main set, cooldown
+        - blocks: ZWO XML block content (not complete file)
+
+        Returns (None, None, None) if:
+        - workout_type is not recognized
+        - methodology avoids this workout category
+        - archetype has no data for the requested level
+
+    Examples:
+        >>> name, desc, blocks = generate_nate_workout('vo2max', 4, 'POLARIZED')
+        >>> name
+        'VO2max 5x3 Classic L4'
+
+        >>> # G-Spot avoided by Polarized methodology
+        >>> name, desc, blocks = generate_nate_workout('g_spot', 4, 'POLARIZED')
+        >>> name is None
+        True
     """
+    # Validate level
+    if not 1 <= level <= 6:
+        logger.warning(f"Level {level} out of range [1-6], clamping to valid range")
+        level = max(1, min(6, level))
+
+    # Select archetype
     archetype = select_archetype_for_workout(workout_type, methodology, variation)
 
-    if not archetype:
+    if archetype is None:
+        logger.info(
+            f"No archetype found for workout_type='{workout_type}', "
+            f"methodology='{methodology}', variation={variation}. "
+            f"This may be intentional (e.g., Polarized avoids G-Spot)."
+        )
         return None, None, None
 
     # Generate name
@@ -1375,18 +1540,45 @@ def generate_nate_zwo(
     level: int = 3,
     methodology: str = "POLARIZED",
     variation: int = 0,
-    workout_name: str = None
-) -> str:
+    workout_name: Optional[str] = None
+) -> Optional[str]:
     """
     Generate a complete ZWO file from a Nate archetype.
 
-    Returns the complete ZWO XML content.
+    This function generates a complete, valid ZWO XML file that can be
+    imported directly into Zwift.
+
+    Args:
+        workout_type: Type of workout (see generate_nate_workout for valid types).
+        level: Progression level from 1 (easiest) to 6 (hardest). Defaults to 3.
+        methodology: Training methodology (see TRAINING_METHODOLOGIES).
+            Defaults to 'POLARIZED'.
+        variation: Which archetype variation to use (0-indexed). Defaults to 0.
+        workout_name: Optional custom name for the workout.
+
+    Returns:
+        Complete ZWO XML content as a string, ready to save to a .zwo file.
+        Returns None if workout generation fails (e.g., invalid workout type,
+        methodology avoids the workout category).
+
+    Examples:
+        >>> zwo = generate_nate_zwo('vo2max', 4, 'POLARIZED')
+        >>> zwo.startswith('<?xml')
+        True
+
+        >>> # Save to file
+        >>> with open('workout.zwo', 'w') as f:
+        ...     f.write(generate_nate_zwo('threshold', 3, 'PYRAMIDAL'))
     """
     name, description, blocks = generate_nate_workout(
         workout_type, level, methodology, variation, workout_name
     )
 
-    if not name:
+    if name is None or blocks is None:
+        logger.debug(
+            f"ZWO generation failed: workout_type='{workout_type}', "
+            f"methodology='{methodology}'"
+        )
         return None
 
     # Escape XML
