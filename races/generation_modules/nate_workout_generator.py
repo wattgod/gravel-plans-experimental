@@ -60,40 +60,346 @@ ZWO_TEMPLATE = """<?xml version='1.0' encoding='UTF-8'?>
 
 
 # =============================================================================
-# TRAINING METHODOLOGY CONFIGURATION
+# TRAINING METHODOLOGY CONFIGURATION - ALL 14 SYSTEMS
 # =============================================================================
+# Based on endurance_training_systems_master_table.xlsx
+# NO Sweet Spot - G-Spot (87-92% FTP) only
 
 TRAINING_METHODOLOGIES = {
-    "POLARIZED": {
-        "name": "Polarized (80/20)",
-        "description": "75-80% Z1-Z2, 15-20% Z4-Z5+, <5% Z3",
-        "primary_workouts": ["VO2max", "Sprint_Neuromuscular", "Anaerobic_Capacity"],
-        "secondary_workouts": ["Durability", "Race_Simulation"],
-        "avoid": [],  # No Sweet Spot
-        "weekly_quality_sessions": 2,
-        "allows_durability": True,
-        "g_spot_usage": "durability_only"
-    },
+    # =========================================================================
+    # 1. TRADITIONAL PYRAMIDAL
+    # =========================================================================
     "PYRAMIDAL": {
-        "name": "Pyramidal",
-        "description": "75-80% Z1-Z2, 10-15% Z3, 5-10% Z4-Z5+",
-        "primary_workouts": ["TT_Threshold"],
+        "name": "Traditional Pyramidal",
+        "description": "Build large aerobic base, then sharpen with intensity. 75-80% Z1-Z2, 10-15% Z3, 5-10% Z4-Z5+",
+        "philosophy": "Volume → intensity → density (then specificity)",
+        "primary_workouts": ["TT_Threshold", "G_Spot"],
         "secondary_workouts": ["VO2max", "Anaerobic_Capacity", "Race_Simulation"],
         "avoid": [],
         "weekly_quality_sessions": 2,
         "allows_durability": True,
-        "g_spot_usage": "regular"
+        "progression_style": "volume_first",  # Volume increases, then intensity
+        "load_metric": "CTL + decoupling",
+        "best_for": "≥10 h/wk + multi-hour sessions",
+        "macro_phases": ["base", "build", "peak", "taper"],
+        "meso_pattern": "3:1",  # 3 weeks load, 1 week deload
     },
-    "HIT": {
-        "name": "High Intensity Training",
-        "description": "60-70% Z1-Z2, 20-30% Z4-Z5+",
-        "primary_workouts": ["VO2max", "Anaerobic_Capacity", "Sprint_Neuromuscular"],
-        "secondary_workouts": ["TT_Threshold"],
-        "avoid": ["Durability"],  # Skip long durability for time-crunched
+
+    # =========================================================================
+    # 2. POLARIZED (80/20)
+    # =========================================================================
+    "POLARIZED": {
+        "name": "Polarized (80/20)",
+        "description": "Most training easy, small amount very hard, minimal middle zone. ~80% Z1-Z2, ~20% Z4-Z5+",
+        "philosophy": "Strict hard/easy separation - keep easy truly easy",
+        "primary_workouts": ["VO2max", "Sprint_Neuromuscular", "Anaerobic_Capacity"],
+        "secondary_workouts": ["Durability", "Race_Simulation"],
+        "avoid": ["G_Spot"],  # Minimal Z3 work
+        "weekly_quality_sessions": 2,
+        "allows_durability": True,
+        "progression_style": "intensity_stable",  # Increment intensity while keeping volume/ratio stable
+        "load_metric": "% time in Zone1 + interval power",
+        "best_for": "8-15 h/wk",
+        "macro_phases": ["year_round_80_20"],
+        "meso_pattern": "maintain_ratio",
+    },
+
+    # =========================================================================
+    # 3. G-SPOT / THRESHOLD (NOT Sweet Spot)
+    # =========================================================================
+    "G_SPOT": {
+        "name": "G-Spot / Threshold",
+        "description": "Emphasize sub-threshold intervals at 87-92% FTP (reality-adjusted zone). Time-efficient FTP gains.",
+        "philosophy": "Maximize threshold adaptation without the lies of 'Sweet Spot'",
+        "primary_workouts": ["G_Spot", "TT_Threshold"],
+        "secondary_workouts": ["VO2max", "Endurance"],
+        "avoid": [],
         "weekly_quality_sessions": 3,
         "allows_durability": False,
-        "g_spot_usage": "minimal"
-    }
+        "progression_style": "density_increase",  # More minutes at G-Spot, more sessions
+        "load_metric": "TSS/hr + FTP increases",
+        "best_for": "6-10 h/wk (moderate hours)",
+        "macro_phases": ["compressed_base", "build", "peak"],
+        "meso_pattern": "progressive_density",
+    },
+
+    # =========================================================================
+    # 4. HIIT-FOCUSED
+    # =========================================================================
+    "HIT": {
+        "name": "HIIT-Focused",
+        "description": "Frequent maximal intervals, minimal volume. 60-70% Z1-Z2, 20-30% Z4-Z5+",
+        "philosophy": "Leverage stimulus of high intensity for fast gains",
+        "primary_workouts": ["VO2max", "Anaerobic_Capacity", "Sprint_Neuromuscular"],
+        "secondary_workouts": ["TT_Threshold"],
+        "avoid": ["Durability", "HVLI"],
+        "weekly_quality_sessions": 4,
+        "allows_durability": False,
+        "progression_style": "intensity_increase",  # More intervals rather than more volume
+        "load_metric": "MAP / VO2max / W'",
+        "best_for": "<6 h/wk, short events",
+        "macro_phases": ["short_blocks"],  # 2-4 weeks intense + recovery
+        "meso_pattern": "block_recovery",
+    },
+
+    # =========================================================================
+    # 5. BLOCK PERIODIZATION
+    # =========================================================================
+    "BLOCK": {
+        "name": "Block Periodization",
+        "description": "Target one capacity intensely per block, then shift focus. Rapid limiter fixes.",
+        "philosophy": "Focused overload → consolidation → next block (stair-step)",
+        "primary_workouts": ["block_specific"],  # Varies by block type
+        "secondary_workouts": ["maintenance"],
+        "avoid": [],
+        "weekly_quality_sessions": 4,
+        "allows_durability": True,
+        "progression_style": "block_staircase",  # Overload → consolidate → next
+        "load_metric": "Block-specific KPI",
+        "best_for": "Advanced athletes with coaching/monitoring",
+        "macro_phases": ["accumulation", "transmutation", "realization"],
+        "meso_pattern": "2-6_week_blocks",
+        "block_types": ["VO2max_block", "Threshold_block", "Sprint_block", "Volume_block"],
+    },
+
+    # =========================================================================
+    # 6. REVERSE PERIODIZATION
+    # =========================================================================
+    "REVERSE": {
+        "name": "Reverse Periodization",
+        "description": "Emphasize intensity early, then shift to volume/endurance later. Winter-friendly.",
+        "philosophy": "Intensity early → volume later",
+        "primary_workouts": ["VO2max", "Anaerobic_Capacity"],  # Early season
+        "secondary_workouts": ["Endurance", "Durability"],  # Later season
+        "avoid": [],
+        "weekly_quality_sessions": 3,
+        "allows_durability": True,
+        "progression_style": "intensity_to_volume",  # Opposite of traditional
+        "load_metric": "Early MAP/FTP, later decoupling",
+        "best_for": "Athletes constrained in winter or short lead-in",
+        "macro_phases": ["intensity_block", "volume_block", "specificity", "taper"],
+        "meso_pattern": "phase_shift",
+    },
+
+    # =========================================================================
+    # 7. AUTOREGULATED (HRV-BASED)
+    # =========================================================================
+    "HRV_AUTO": {
+        "name": "Autoregulated (HRV-Based)",
+        "description": "Use daily readiness (HRV/RHR/RPE) to adjust intensity/volume. Highly individualized.",
+        "philosophy": "More load when green, less when red",
+        "primary_workouts": ["readiness_dependent"],  # Any zone based on HRV
+        "secondary_workouts": ["recovery"],
+        "avoid": [],
+        "weekly_quality_sessions": "variable",
+        "allows_durability": True,
+        "progression_style": "readiness_guided",
+        "load_metric": "HRV trend + RPE + performance",
+        "best_for": "Stress-variable athletes, masters, job/family constraints",
+        "macro_phases": ["flexible"],
+        "meso_pattern": "adaptive",
+        "readiness_rules": {
+            "green": ["VO2max", "Anaerobic_Capacity", "Sprint_Neuromuscular"],
+            "amber": ["G_Spot", "TT_Threshold", "Endurance"],
+            "red": ["Recovery", "Rest"],
+        },
+    },
+
+    # =========================================================================
+    # 8. MAF / LOW-HR (LT1)
+    # =========================================================================
+    "MAF_LT1": {
+        "name": "MAF / Low-HR (LT1)",
+        "description": "Build aerobic engine by staying under LT1. Single zone for most sessions.",
+        "philosophy": "Long base of LT1 rides; minimal higher zones until base built",
+        "primary_workouts": ["LT1_Capped", "Endurance"],
+        "secondary_workouts": [],  # Minimal intensity
+        "avoid": ["VO2max", "Anaerobic_Capacity", "Sprint_Neuromuscular"],
+        "weekly_quality_sessions": 0,  # No quality sessions in pure MAF
+        "allows_durability": True,
+        "progression_style": "duration_increase",  # Duration ↑ while HR cap constant
+        "load_metric": "Decoupling + pace at HR cap",
+        "best_for": "Long events, rebuild phases",
+        "macro_phases": ["long_base", "intensity_intro"],
+        "meso_pattern": "4-6_week_duration_blocks",
+        "hr_cap": "LT1",  # Or MAF formula
+    },
+
+    # =========================================================================
+    # 9. CRITICAL POWER / W'
+    # =========================================================================
+    "CRITICAL_POWER": {
+        "name": "Critical Power / W'",
+        "description": "Structure training around CP and anaerobic work capacity (W'). High precision for surge events.",
+        "philosophy": "Work above CP uses W', ≤CP targets endurance",
+        "primary_workouts": ["Above_CP", "W_Prime"],
+        "secondary_workouts": ["Below_CP_Endurance"],
+        "avoid": [],
+        "weekly_quality_sessions": 2,
+        "allows_durability": False,
+        "progression_style": "cp_w_prime_balance",  # >CP work ↑, W' recharge ↑, then raise CP
+        "load_metric": "W' balance + CP trend",
+        "best_for": "Events with repeated surges (crit, CX, some road)",
+        "macro_phases": ["w_prime_development", "cp_raise", "specificity"],
+        "meso_pattern": "test_adjust",
+    },
+
+    # =========================================================================
+    # 10. INSCYD / METABOLIC PROFILING
+    # =========================================================================
+    "INSCYD": {
+        "name": "INSCYD / Metabolic Profiling",
+        "description": "Sculpt VO2max/VLamax profile to match event demands. High specificity.",
+        "philosophy": "Shifts in VO2max and/or reduction in VLamax to 'fit' event",
+        "primary_workouts": ["VO2max_Targeted", "VLamax_Reduction"],
+        "secondary_workouts": ["Endurance", "FatMax"],
+        "avoid": [],
+        "weekly_quality_sessions": 2,
+        "allows_durability": True,
+        "progression_style": "metabolic_marker",  # VO2max ↑ or VLamax ↓
+        "load_metric": "VO2max, VLamax, glycolytic rate, fatmax",
+        "best_for": "Athletes needing fine metabolic tuning (triathlon, elite road)",
+        "macro_phases": ["vo2max_phase", "vlamax_phase", "integration"],
+        "meso_pattern": "marker_driven",
+    },
+
+    # =========================================================================
+    # 11. DOUBLE-THRESHOLD (NORWEGIAN MODEL)
+    # =========================================================================
+    "NORWEGIAN": {
+        "name": "Norwegian Double-Threshold",
+        "description": "Two threshold sessions per day aimed at raising LT1/LT2 power while controlling lactate.",
+        "philosophy": "Lactate-capped threshold dominates; high volume threshold blocks",
+        "primary_workouts": ["Norwegian_Double", "TT_Threshold"],
+        "secondary_workouts": ["Endurance"],
+        "avoid": ["Sprint_Neuromuscular"],  # Minimal sprint work
+        "weekly_quality_sessions": 4,  # 2 sessions/day on threshold days
+        "allows_durability": True,
+        "progression_style": "lactate_threshold_drift",  # Threshold power ↑ incrementally
+        "load_metric": "Lactate test + threshold power trend",
+        "best_for": "Elite athletes with full support team",
+        "macro_phases": ["high_volume_threshold", "taper"],
+        "meso_pattern": "daily_doubles",
+        "lactate_cap": 4.0,  # mmol/L cap during sessions
+    },
+
+    # =========================================================================
+    # 12. HVLI / LSD-CENTRIC
+    # =========================================================================
+    "HVLI": {
+        "name": "HVLI / LSD-Centric",
+        "description": "Very large volume of low intensity (Z1-Z2) to build durability and fat-oxidation. 3-5+ hour rides.",
+        "philosophy": "Extreme durability, fuel efficiency, resilience through volume",
+        "primary_workouts": ["HVLI_Extended", "Endurance"],
+        "secondary_workouts": [],  # Minimal intensity
+        "avoid": ["VO2max", "Anaerobic_Capacity", "Sprint_Neuromuscular"],
+        "weekly_quality_sessions": 0,
+        "allows_durability": True,
+        "progression_style": "volume_accumulation",  # Volume ↑ over weeks
+        "load_metric": "Weekly volume + decoupling",
+        "best_for": "Athletes with ≥15 h/wk, multiday/endurance events",
+        "macro_phases": ["very_long_base", "minimal_intensity", "taper"],
+        "meso_pattern": "volume_blocks",
+    },
+
+    # =========================================================================
+    # 13. GOAT (Gravel Optimized Adaptive Training)
+    # =========================================================================
+    "GOAT": {
+        "name": "GOAT (Gravel Optimized Adaptive)",
+        "description": "Integrates pyramidal base, polarized weeks, limiter-blocks, G-Spot when needed, autoregulation & signal-triggered testing.",
+        "philosophy": "Block + polarized progression + volume/intensity modulation",
+        "primary_workouts": ["block_rotation"],  # Rotates based on phase/signals
+        "secondary_workouts": ["all"],
+        "avoid": [],
+        "weekly_quality_sessions": 2,
+        "allows_durability": True,
+        "progression_style": "adaptive_composite",  # Multi-signal driven
+        "load_metric": "CTL + HRV + HR drift + power durability + block KPIs",
+        "best_for": "Most athletes who can monitor & adjust",
+        "macro_phases": ["pyramidal_base", "polarized_build", "limiter_blocks", "race_specific"],
+        "meso_pattern": "signal_triggered",
+        "block_triggers": {
+            "vo2max_plateau": "VO2max_block",
+            "threshold_limiter": "Threshold_block",
+            "durability_weak": "Durability_block",
+            "sprint_limiter": "Sprint_block",
+        },
+    },
+
+    # =========================================================================
+    # 14. TIME-CRUNCHED (Alias for backwards compatibility)
+    # =========================================================================
+    "TIME_CRUNCHED": {
+        "name": "Time-Crunched",
+        "description": "Alias for HIT - maximum adaptation from minimal time.",
+        "philosophy": "Same as HIT",
+        "primary_workouts": ["VO2max", "Anaerobic_Capacity", "Sprint_Neuromuscular"],
+        "secondary_workouts": ["G_Spot"],
+        "avoid": ["Durability", "HVLI"],
+        "weekly_quality_sessions": 4,
+        "allows_durability": False,
+        "progression_style": "intensity_increase",
+        "load_metric": "MAP / VO2max / W'",
+        "best_for": "<6 h/wk",
+        "macro_phases": ["short_blocks"],
+        "meso_pattern": "block_recovery",
+    },
+}
+
+# =============================================================================
+# PROGRESSION STYLES - How intensity/volume progress through the plan
+# =============================================================================
+
+PROGRESSION_STYLES = {
+    "volume_first": {
+        "description": "Traditional: Volume increases, then intensity sharpens",
+        "phase_1": {"volume": "high", "intensity": "low"},
+        "phase_2": {"volume": "moderate", "intensity": "moderate"},
+        "phase_3": {"volume": "low", "intensity": "high"},
+        "phase_4": {"volume": "very_low", "intensity": "moderate"},  # Taper
+    },
+    "intensity_first": {
+        "description": "Reverse: Intensity early, volume later",
+        "phase_1": {"volume": "low", "intensity": "high"},
+        "phase_2": {"volume": "moderate", "intensity": "moderate"},
+        "phase_3": {"volume": "high", "intensity": "low"},
+        "phase_4": {"volume": "moderate", "intensity": "moderate"},  # Taper
+    },
+    "intensity_stable": {
+        "description": "Polarized: Maintain 80/20 ratio throughout",
+        "phase_1": {"volume": "moderate", "intensity": "20%_high"},
+        "phase_2": {"volume": "high", "intensity": "20%_high"},
+        "phase_3": {"volume": "high", "intensity": "20%_high"},
+        "phase_4": {"volume": "low", "intensity": "20%_high"},  # Taper
+    },
+    "density_increase": {
+        "description": "G-Spot: Increase time-in-zone, then sessions per week",
+        "phase_1": {"tiz_minutes": 20, "sessions": 2},
+        "phase_2": {"tiz_minutes": 30, "sessions": 2},
+        "phase_3": {"tiz_minutes": 40, "sessions": 3},
+        "phase_4": {"tiz_minutes": 20, "sessions": 2},  # Taper
+    },
+    "block_staircase": {
+        "description": "Block: Focused overload → consolidation → next block",
+        "pattern": ["overload", "overload", "consolidation", "transition"],
+    },
+    "readiness_guided": {
+        "description": "HRV: Load based on daily readiness signals",
+        "green_day": "high_intensity",
+        "amber_day": "moderate_intensity",
+        "red_day": "recovery_or_rest",
+    },
+    "duration_increase": {
+        "description": "MAF: Duration increases while intensity stays capped",
+        "week_1_4": {"duration_multiplier": 1.0},
+        "week_5_8": {"duration_multiplier": 1.15},
+        "week_9_12": {"duration_multiplier": 1.30},
+    },
+    "volume_accumulation": {
+        "description": "HVLI: Massive volume accumulation over weeks",
+        "weekly_hours_target": [12, 14, 16, 12, 18, 20, 15, 22, 24, 18, 12, 8],
+    },
 }
 
 
@@ -136,6 +442,7 @@ def select_archetype_for_workout(
     """
     # Map workout types to categories
     type_to_category = {
+        # Original categories
         "vo2max": "VO2max",
         "vo2": "VO2max",
         "threshold": "TT_Threshold",
@@ -151,7 +458,35 @@ def select_archetype_for_workout(
         "race_sim": "Race_Simulation",
         "race_simulation": "Race_Simulation",
         "breakaway": "Race_Simulation",
-        "sector": "Race_Simulation"
+        "sector": "Race_Simulation",
+        # NEW: G-Spot (87-92% FTP)
+        "g_spot": "G_Spot",
+        "gspot": "G_Spot",
+        "g-spot": "G_Spot",
+        "tempo": "G_Spot",  # Map tempo to G-Spot instead of SS
+        # NEW: LT1/MAF
+        "lt1": "LT1_MAF",
+        "maf": "LT1_MAF",
+        "lt1_capped": "LT1_MAF",
+        "aerobic_base": "LT1_MAF",
+        # NEW: Critical Power
+        "cp": "Critical_Power",
+        "critical_power": "Critical_Power",
+        "w_prime": "Critical_Power",
+        "above_cp": "Critical_Power",
+        # NEW: Norwegian Double-Threshold
+        "norwegian": "Norwegian_Double",
+        "double_threshold": "Norwegian_Double",
+        "seiler": "Norwegian_Double",
+        # NEW: HVLI/LSD
+        "hvli": "HVLI_Extended",
+        "lsd": "HVLI_Extended",
+        "long_slow": "HVLI_Extended",
+        "extended_z2": "HVLI_Extended",
+        # NEW: Block Periodization
+        "block": "Block_Periodization",
+        "vo2_block": "Block_Periodization",
+        "threshold_block": "Block_Periodization",
     }
 
     category = type_to_category.get(workout_type.lower())
@@ -501,6 +836,140 @@ def generate_blocks_from_archetype(archetype: Dict, level: int) -> str:
             blocks.append(generate_steady_state_block(effort_duration, on_power))
             if i < len(recovery_sequence):
                 blocks.append(generate_steady_state_block(recovery_sequence[i], 0.55))
+
+    # =====================================================================
+    # G-SPOT CRISS-CROSS
+    # =====================================================================
+    elif "criss_cross" in level_data:
+        total_duration = level_data.get("total_duration", 1200)
+        high_power = level_data.get("high_power", 0.92)
+        low_power = level_data.get("low_power", 0.85)
+        interval_duration = level_data.get("interval_duration", 120)
+        sets = level_data.get("sets", 1)
+        set_recovery = level_data.get("set_recovery", 300)
+
+        blocks.append(generate_warmup_block())
+
+        for set_num in range(sets):
+            num_intervals = total_duration // (interval_duration * 2)
+            for i in range(int(num_intervals)):
+                blocks.append(generate_steady_state_block(interval_duration, high_power))
+                blocks.append(generate_steady_state_block(interval_duration, low_power))
+            if sets > 1 and set_num < sets - 1:
+                blocks.append(generate_steady_state_block(set_recovery, 0.55))
+
+    # =====================================================================
+    # LT1/MAF CAPPED ENDURANCE
+    # =====================================================================
+    elif "lt1_capped" in level_data or "maf_test" in level_data:
+        duration = level_data.get("duration", 3600)
+        power = level_data.get("power", 0.70)
+        test_duration = level_data.get("test_duration", 0)
+        warmup_dur = level_data.get("warmup_duration", 600)
+
+        if test_duration > 0:  # MAF test protocol
+            blocks.append(generate_steady_state_block(warmup_dur, 0.60))
+            blocks.append(generate_steady_state_block(test_duration, power))
+            blocks.append(generate_cooldown_block(300))
+            return "".join(blocks)
+        else:
+            blocks.append(generate_warmup_block(600))
+            blocks.append(generate_steady_state_block(duration, power))
+
+    # =====================================================================
+    # HVLI EXTENDED Z2
+    # =====================================================================
+    elif "hvli" in level_data:
+        duration = level_data.get("duration", 10800)
+        power = level_data.get("power", 0.68)
+
+        blocks.append(generate_warmup_block(900))
+        blocks.append(generate_steady_state_block(duration - 1500, power))  # Duration minus warmup/cooldown
+
+    # =====================================================================
+    # HVLI TERRAIN SIMULATION
+    # =====================================================================
+    elif "hvli_terrain" in level_data:
+        duration = level_data.get("duration", 10800)
+        high_power = level_data.get("high_power", 0.72)
+        low_power = level_data.get("low_power", 0.65)
+        interval_duration = level_data.get("interval_duration", 600)
+
+        blocks.append(generate_warmup_block(900))
+
+        # Alternating terrain blocks
+        remaining = duration - 1500
+        while remaining > 0:
+            high_dur = min(interval_duration, remaining)
+            blocks.append(generate_steady_state_block(high_dur, high_power))
+            remaining -= high_dur
+            if remaining > 0:
+                low_dur = min(interval_duration, remaining)
+                blocks.append(generate_steady_state_block(low_dur, low_power))
+                remaining -= low_dur
+
+    # =====================================================================
+    # NORWEGIAN DOUBLE-THRESHOLD
+    # =====================================================================
+    elif "norwegian" in level_data:
+        intervals_data = level_data.get("intervals", (4, 480))
+        if isinstance(intervals_data, tuple):
+            repeats, duration = intervals_data
+        else:
+            repeats = 4
+            duration = 480
+
+        on_power = level_data.get("on_power", 0.90)
+        off_duration = level_data.get("off_duration", 120)
+        off_power = level_data.get("off_power", 0.55)
+
+        blocks.append(generate_warmup_block(1200))  # Longer warmup for Norwegian
+
+        for rep in range(repeats):
+            blocks.append(generate_steady_state_block(duration, on_power, cadence=88))
+            if rep < repeats - 1:
+                blocks.append(generate_steady_state_block(off_duration, off_power))
+
+    # =====================================================================
+    # ABOVE CP / CRITICAL POWER REPEATS
+    # =====================================================================
+    elif "above_cp" in level_data:
+        intervals_data = level_data.get("intervals", (4, 120))
+        if isinstance(intervals_data, tuple):
+            repeats, duration = intervals_data
+        else:
+            repeats = 4
+            duration = 120
+
+        on_power = level_data.get("on_power", 1.10)
+        off_duration = level_data.get("off_duration", 240)
+        off_power = level_data.get("off_power", 0.55)
+
+        blocks.append(generate_warmup_block())
+
+        for rep in range(repeats):
+            blocks.append(generate_steady_state_block(duration, on_power, cadence=95))
+            if rep < repeats - 1:
+                blocks.append(generate_steady_state_block(off_duration, off_power))
+
+    # =====================================================================
+    # W-PRIME DEPLETION
+    # =====================================================================
+    elif "w_prime" in level_data:
+        sets = level_data.get("sets", 3)
+        surge_duration = level_data.get("surge_duration", 180)
+        surge_power = level_data.get("surge_power", 1.15)
+        hold_duration = level_data.get("hold_duration", 120)
+        hold_power = level_data.get("hold_power", 1.05)
+        set_recovery = level_data.get("set_recovery", 300)
+
+        blocks.append(generate_warmup_block())
+
+        for set_num in range(sets):
+            blocks.append(generate_steady_state_block(surge_duration, surge_power))
+            blocks.append(generate_steady_state_block(hold_duration, hold_power))
+            if set_num < sets - 1:
+                blocks.append(generate_steady_state_block(set_recovery, 0.55))
 
     # =====================================================================
     # DEFAULT FALLBACK

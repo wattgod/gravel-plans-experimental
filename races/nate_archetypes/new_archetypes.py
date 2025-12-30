@@ -1579,6 +1579,831 @@ RACE_SIMULATION = [
 
 
 # =============================================================================
+# G-SPOT ARCHETYPES (87-92% FTP - Reality-Adjusted Zone)
+# =============================================================================
+# NOT Sweet Spot. G-Spot is the honest zone where adaptation happens.
+
+G_SPOT_NEW = [
+    {
+        'name': 'G-Spot Intervals',
+        'levels': {
+            '1': {
+                'structure': '15min warmup Z2, 2x10min @ 87-89% FTP, 5min recovery between',
+                'execution': 'Learning the zone - sustainable but challenging. Not Sweet Spot lies.',
+                'cadence_prescription': '85-95rpm',
+                'position_prescription': 'Alternate: 5min seated, 5min hands in drops',
+                'timing_prescription': 'Mid-week quality session',
+                'fueling': '50-60g CHO/hr',
+                'intervals': (2, 600),
+                'on_power': 0.88,
+                'off_power': 0.55,
+                'duration': 600
+            },
+            '2': {
+                'structure': '15min warmup Z2, 2x15min @ 88-90% FTP, 5min recovery between',
+                'execution': 'Extended duration - building time-in-zone',
+                'intervals': (2, 900),
+                'on_power': 0.89,
+                'off_power': 0.55,
+                'duration': 900
+            },
+            '3': {
+                'structure': '15min warmup Z2, 3x12min @ 89-91% FTP, 4min recovery between',
+                'execution': 'Three intervals - building mental fortitude',
+                'intervals': (3, 720),
+                'on_power': 0.90,
+                'off_power': 0.55,
+                'duration': 720
+            },
+            '4': {
+                'structure': '15min warmup Z2, 3x15min @ 89-91% FTP, 4min recovery between',
+                'execution': 'Extended time-in-zone - threshold durability',
+                'intervals': (3, 900),
+                'on_power': 0.90,
+                'off_power': 0.55,
+                'duration': 900
+            },
+            '5': {
+                'structure': '15min warmup Z2, 2x20min @ 90-92% FTP, 5min recovery between',
+                'execution': '40 minutes total time-in-zone - race simulation',
+                'intervals': (2, 1200),
+                'on_power': 0.91,
+                'off_power': 0.55,
+                'duration': 1200
+            },
+            '6': {
+                'structure': '15min warmup Z2, 2x25min @ 90-92% FTP, 5min recovery between',
+                'execution': 'Maximum G-Spot development - 50 minutes TIZ',
+                'intervals': (2, 1500),
+                'on_power': 0.91,
+                'off_power': 0.55,
+                'duration': 1500
+            }
+        }
+    },
+    {
+        'name': 'G-Spot Criss-Cross',
+        'levels': {
+            '1': {
+                'structure': '15min warmup Z2, 20min alternating: 2min @ 92% FTP, 2min @ 85% FTP',
+                'execution': 'Criss-cross pattern - surge and settle within the zone',
+                'cadence_prescription': '90-95rpm on surges, 85rpm on settle',
+                'position_prescription': 'Drops on surge, hoods on settle',
+                'criss_cross': True,
+                'total_duration': 1200,
+                'high_power': 0.92,
+                'low_power': 0.85,
+                'interval_duration': 120
+            },
+            '2': {
+                'structure': '15min warmup Z2, 25min alternating: 2min @ 92% FTP, 2min @ 85% FTP',
+                'execution': 'Extended criss-cross - building surge repeatability',
+                'criss_cross': True,
+                'total_duration': 1500,
+                'high_power': 0.92,
+                'low_power': 0.85,
+                'interval_duration': 120
+            },
+            '3': {
+                'structure': '15min warmup Z2, 30min alternating: 2min @ 93% FTP, 2min @ 86% FTP',
+                'execution': 'Full 30min criss-cross - race simulation',
+                'criss_cross': True,
+                'total_duration': 1800,
+                'high_power': 0.93,
+                'low_power': 0.86,
+                'interval_duration': 120
+            },
+            '4': {
+                'structure': '15min warmup Z2, 2x18min alternating: 2min @ 93% FTP, 2min @ 87% FTP, 5min recovery',
+                'execution': 'Two blocks - sustained power variation',
+                'criss_cross': True,
+                'sets': 2,
+                'total_duration': 1080,
+                'high_power': 0.93,
+                'low_power': 0.87,
+                'interval_duration': 120,
+                'set_recovery': 300
+            },
+            '5': {
+                'structure': '15min warmup Z2, 2x22min alternating: 2min @ 94% FTP, 2min @ 87% FTP, 4min recovery',
+                'execution': 'Extended blocks - threshold boundary work',
+                'criss_cross': True,
+                'sets': 2,
+                'total_duration': 1320,
+                'high_power': 0.94,
+                'low_power': 0.87,
+                'interval_duration': 120,
+                'set_recovery': 240
+            },
+            '6': {
+                'structure': '15min warmup Z2, 2x25min alternating: 90sec @ 95% FTP, 90sec @ 88% FTP, 4min recovery',
+                'execution': 'Maximum criss-cross development - 50 minutes TIZ',
+                'criss_cross': True,
+                'sets': 2,
+                'total_duration': 1500,
+                'high_power': 0.95,
+                'low_power': 0.88,
+                'interval_duration': 90,
+                'set_recovery': 240
+            }
+        }
+    },
+    {
+        'name': 'G-Spot Progressive',
+        'levels': {
+            '1': {
+                'structure': '15min warmup Z2, 20min building from 85% to 92% FTP',
+                'execution': 'Progressive build - learn pacing through the zone',
+                'ramp': True,
+                'intervals': (1, 1200),
+                'start_power': 0.85,
+                'end_power': 0.92,
+                'off_duration': 0
+            },
+            '2': {
+                'structure': '15min warmup Z2, 25min building from 85% to 92% FTP',
+                'execution': 'Extended progressive - patience in pacing',
+                'ramp': True,
+                'intervals': (1, 1500),
+                'start_power': 0.85,
+                'end_power': 0.92
+            },
+            '3': {
+                'structure': '15min warmup Z2, 2x15min building from 86% to 93% FTP, 5min recovery',
+                'execution': 'Two progressive builds - reset and repeat',
+                'ramp': True,
+                'intervals': (2, 900),
+                'start_power': 0.86,
+                'end_power': 0.93,
+                'off_duration': 300
+            },
+            '4': {
+                'structure': '15min warmup Z2, 2x18min building from 86% to 94% FTP, 4min recovery',
+                'execution': 'Extended builds with higher ceiling',
+                'ramp': True,
+                'intervals': (2, 1080),
+                'start_power': 0.86,
+                'end_power': 0.94,
+                'off_duration': 240
+            },
+            '5': {
+                'structure': '15min warmup Z2, 2x20min building from 87% to 95% FTP, 4min recovery',
+                'execution': 'Maximum progressive builds - threshold boundary',
+                'ramp': True,
+                'intervals': (2, 1200),
+                'start_power': 0.87,
+                'end_power': 0.95,
+                'off_duration': 240
+            },
+            '6': {
+                'structure': '15min warmup Z2, 30min building from 87% to 95% FTP + 10min @ 95% FTP hold',
+                'execution': 'Progressive to threshold hold - ultimate pacing test',
+                'ramp': True,
+                'intervals': (1, 1800),
+                'start_power': 0.87,
+                'end_power': 0.95,
+                'hold_duration': 600,
+                'hold_power': 0.95
+            }
+        }
+    }
+]
+
+
+# =============================================================================
+# LT1/MAF ARCHETYPES (Low-HR, Aerobic Base Building)
+# =============================================================================
+
+LT1_MAF_NEW = [
+    {
+        'name': 'LT1 Capped Endurance',
+        'levels': {
+            '1': {
+                'structure': '60min @ LT1 cap (Zone 2 ceiling). HR must not exceed LT1.',
+                'execution': 'Patience is key - if HR drifts, reduce power. Build aerobic engine.',
+                'cadence_prescription': '80-90rpm natural cadence',
+                'position_prescription': 'Comfortable, sustainable position',
+                'timing_prescription': 'Any time - low stress',
+                'fueling': '40-50g CHO/hr',
+                'lt1_capped': True,
+                'duration': 3600,
+                'power': 0.70,
+                'hr_cap': 'LT1'
+            },
+            '2': {
+                'structure': '75min @ LT1 cap. Monitor HR drift - power may need to drop.',
+                'execution': 'Extended duration - aerobic system development',
+                'lt1_capped': True,
+                'duration': 4500,
+                'power': 0.70,
+                'hr_cap': 'LT1'
+            },
+            '3': {
+                'structure': '90min @ LT1 cap. This is MAF training - no cheating.',
+                'execution': 'Build fat oxidation and aerobic efficiency',
+                'lt1_capped': True,
+                'duration': 5400,
+                'power': 0.70,
+                'hr_cap': 'LT1'
+            },
+            '4': {
+                'structure': '2hr @ LT1 cap. Long aerobic development ride.',
+                'execution': 'Durability through low intensity - patience builds champions',
+                'lt1_capped': True,
+                'duration': 7200,
+                'power': 0.70,
+                'hr_cap': 'LT1'
+            },
+            '5': {
+                'structure': '2.5hr @ LT1 cap. Extended aerobic base.',
+                'execution': 'Maximum aerobic development - fuel and hydrate properly',
+                'lt1_capped': True,
+                'duration': 9000,
+                'power': 0.70,
+                'hr_cap': 'LT1'
+            },
+            '6': {
+                'structure': '3hr @ LT1 cap. Full aerobic base ride.',
+                'execution': 'Peak aerobic development - monitor decoupling',
+                'lt1_capped': True,
+                'duration': 10800,
+                'power': 0.70,
+                'hr_cap': 'LT1'
+            }
+        }
+    },
+    {
+        'name': 'MAF Test Protocol',
+        'levels': {
+            '1': {
+                'structure': '10min warmup, 30min @ MAF HR (180-age), record average power',
+                'execution': 'Monthly test to track aerobic progress. Power at MAF HR should increase.',
+                'maf_test': True,
+                'warmup_duration': 600,
+                'test_duration': 1800,
+                'hr_target': 'MAF'
+            },
+            '2': {
+                'structure': '10min warmup, 30min @ MAF HR, compare to previous test',
+                'execution': 'Track progress - power should increase at same HR over weeks',
+                'maf_test': True,
+                'warmup_duration': 600,
+                'test_duration': 1800,
+                'hr_target': 'MAF'
+            },
+            '3': {
+                'structure': '10min warmup, 30min @ MAF HR, analyze decoupling',
+                'execution': 'Decoupling <5% indicates good aerobic fitness',
+                'maf_test': True,
+                'warmup_duration': 600,
+                'test_duration': 1800,
+                'hr_target': 'MAF'
+            },
+            '4': {
+                'structure': '10min warmup, 45min @ MAF HR, extended test',
+                'execution': 'Extended test - more data for decoupling analysis',
+                'maf_test': True,
+                'warmup_duration': 600,
+                'test_duration': 2700,
+                'hr_target': 'MAF'
+            },
+            '5': {
+                'structure': '10min warmup, 60min @ MAF HR, full test',
+                'execution': 'Full hour test - definitive aerobic progress marker',
+                'maf_test': True,
+                'warmup_duration': 600,
+                'test_duration': 3600,
+                'hr_target': 'MAF'
+            },
+            '6': {
+                'structure': '10min warmup, 60min @ MAF HR, analyze pace/power at fixed HR',
+                'execution': 'Peak aerobic test - compare to baseline',
+                'maf_test': True,
+                'warmup_duration': 600,
+                'test_duration': 3600,
+                'hr_target': 'MAF'
+            }
+        }
+    }
+]
+
+
+# =============================================================================
+# CRITICAL POWER / W' ARCHETYPES
+# =============================================================================
+
+CRITICAL_POWER_NEW = [
+    {
+        'name': 'Above CP Repeats',
+        'levels': {
+            '1': {
+                'structure': '15min warmup Z2, 4x2min @ 110% CP, 4min recovery between',
+                'execution': 'Work above CP depletes W\' - learning the sensation',
+                'cadence_prescription': '95-100rpm',
+                'position_prescription': 'Drops for power',
+                'timing_prescription': 'Fresh - these are demanding',
+                'fueling': '60-70g CHO/hr',
+                'above_cp': True,
+                'intervals': (4, 120),
+                'on_power': 1.10,  # 110% CP
+                'off_power': 0.55,
+                'off_duration': 240
+            },
+            '2': {
+                'structure': '15min warmup Z2, 5x2min @ 112% CP, 4min recovery between',
+                'execution': 'Building W\' tolerance - control the effort',
+                'above_cp': True,
+                'intervals': (5, 120),
+                'on_power': 1.12,
+                'off_power': 0.55,
+                'off_duration': 240
+            },
+            '3': {
+                'structure': '15min warmup Z2, 5x2.5min @ 112% CP, 3.5min recovery between',
+                'execution': 'Extended above-CP work with reduced recovery',
+                'above_cp': True,
+                'intervals': (5, 150),
+                'on_power': 1.12,
+                'off_power': 0.55,
+                'off_duration': 210
+            },
+            '4': {
+                'structure': '15min warmup Z2, 6x2.5min @ 115% CP, 3min recovery between',
+                'execution': 'High W\' depletion - race-realistic surges',
+                'above_cp': True,
+                'intervals': (6, 150),
+                'on_power': 1.15,
+                'off_power': 0.55,
+                'off_duration': 180
+            },
+            '5': {
+                'structure': '15min warmup Z2, 6x3min @ 115% CP, 3min recovery between',
+                'execution': 'Extended above-CP intervals - W\' development',
+                'above_cp': True,
+                'intervals': (6, 180),
+                'on_power': 1.15,
+                'off_power': 0.55,
+                'off_duration': 180
+            },
+            '6': {
+                'structure': '15min warmup Z2, 7x3min @ 118% CP, 2.5min recovery between',
+                'execution': 'Maximum above-CP development - empty the tank',
+                'above_cp': True,
+                'intervals': (7, 180),
+                'on_power': 1.18,
+                'off_power': 0.55,
+                'off_duration': 150
+            }
+        }
+    },
+    {
+        'name': 'W-Prime Depletion',
+        'levels': {
+            '1': {
+                'structure': '15min warmup Z2, 3x (3min @ 115% CP + 2min @ 105% CP), 5min recovery between sets',
+                'execution': 'Deplete W\' then hold above CP - race simulation',
+                'w_prime': True,
+                'sets': 3,
+                'surge_duration': 180,
+                'surge_power': 1.15,
+                'hold_duration': 120,
+                'hold_power': 1.05,
+                'set_recovery': 300
+            },
+            '2': {
+                'structure': '15min warmup Z2, 4x (3min @ 115% CP + 2min @ 105% CP), 4min recovery between sets',
+                'execution': 'More sets - building W\' recharge capacity',
+                'w_prime': True,
+                'sets': 4,
+                'surge_duration': 180,
+                'surge_power': 1.15,
+                'hold_duration': 120,
+                'hold_power': 1.05,
+                'set_recovery': 240
+            },
+            '3': {
+                'structure': '15min warmup Z2, 4x (3min @ 118% CP + 3min @ 105% CP), 4min recovery between sets',
+                'execution': 'Higher surge power, extended hold',
+                'w_prime': True,
+                'sets': 4,
+                'surge_duration': 180,
+                'surge_power': 1.18,
+                'hold_duration': 180,
+                'hold_power': 1.05,
+                'set_recovery': 240
+            },
+            '4': {
+                'structure': '15min warmup Z2, 5x (3min @ 118% CP + 3min @ 107% CP), 3min recovery between sets',
+                'execution': 'Reduced recovery - race-realistic W\' management',
+                'w_prime': True,
+                'sets': 5,
+                'surge_duration': 180,
+                'surge_power': 1.18,
+                'hold_duration': 180,
+                'hold_power': 1.07,
+                'set_recovery': 180
+            },
+            '5': {
+                'structure': '15min warmup Z2, 5x (4min @ 120% CP + 3min @ 108% CP), 3min recovery between sets',
+                'execution': 'Extended surge duration - deep W\' depletion',
+                'w_prime': True,
+                'sets': 5,
+                'surge_duration': 240,
+                'surge_power': 1.20,
+                'hold_duration': 180,
+                'hold_power': 1.08,
+                'set_recovery': 180
+            },
+            '6': {
+                'structure': '15min warmup Z2, 6x (4min @ 120% CP + 3min @ 110% CP), 2.5min recovery between sets',
+                'execution': 'Maximum W\' development - crit/CX race simulation',
+                'w_prime': True,
+                'sets': 6,
+                'surge_duration': 240,
+                'surge_power': 1.20,
+                'hold_duration': 180,
+                'hold_power': 1.10,
+                'set_recovery': 150
+            }
+        }
+    }
+]
+
+
+# =============================================================================
+# NORWEGIAN DOUBLE-THRESHOLD ARCHETYPES
+# =============================================================================
+
+NORWEGIAN_DOUBLE = [
+    {
+        'name': 'Norwegian 4x8 Classic',
+        'levels': {
+            '1': {
+                'structure': '20min warmup Z2, 4x8min @ 88-90% FTP (lactate capped at 3-4mmol), 2min recovery',
+                'execution': 'Seiler format - control lactate, don\'t go anaerobic. Steady, controlled power.',
+                'cadence_prescription': '85-90rpm steady',
+                'position_prescription': 'TT position if possible',
+                'timing_prescription': 'Can do AM and PM sessions',
+                'fueling': '60-70g CHO/hr',
+                'norwegian': True,
+                'intervals': (4, 480),
+                'on_power': 0.89,
+                'off_power': 0.55,
+                'off_duration': 120,
+                'lactate_cap': 4.0
+            },
+            '2': {
+                'structure': '20min warmup Z2, 4x8min @ 89-91% FTP (lactate capped at 3.5-4mmol), 2min recovery',
+                'execution': 'Slight power increase - maintain lactate control',
+                'norwegian': True,
+                'intervals': (4, 480),
+                'on_power': 0.90,
+                'off_power': 0.55,
+                'off_duration': 120,
+                'lactate_cap': 4.0
+            },
+            '3': {
+                'structure': '20min warmup Z2, 5x8min @ 90-92% FTP (lactate capped), 2min recovery',
+                'execution': 'Added interval - building threshold volume',
+                'norwegian': True,
+                'intervals': (5, 480),
+                'on_power': 0.91,
+                'off_power': 0.55,
+                'off_duration': 120,
+                'lactate_cap': 4.0
+            },
+            '4': {
+                'structure': '20min warmup Z2, 5x8min @ 91-93% FTP (lactate capped), 90sec recovery',
+                'execution': 'Reduced recovery - threshold durability',
+                'norwegian': True,
+                'intervals': (5, 480),
+                'on_power': 0.92,
+                'off_power': 0.55,
+                'off_duration': 90,
+                'lactate_cap': 4.0
+            },
+            '5': {
+                'structure': '20min warmup Z2, 6x8min @ 92-94% FTP (lactate capped), 90sec recovery',
+                'execution': 'Maximum Norwegian format - 48 minutes TIZ',
+                'norwegian': True,
+                'intervals': (6, 480),
+                'on_power': 0.93,
+                'off_power': 0.55,
+                'off_duration': 90,
+                'lactate_cap': 4.0
+            },
+            '6': {
+                'structure': '20min warmup Z2, 6x10min @ 92-94% FTP (lactate capped), 2min recovery',
+                'execution': 'Extended intervals - 60 minutes threshold volume',
+                'norwegian': True,
+                'intervals': (6, 600),
+                'on_power': 0.93,
+                'off_power': 0.55,
+                'off_duration': 120,
+                'lactate_cap': 4.0
+            }
+        }
+    },
+    {
+        'name': 'Norwegian Double Session',
+        'levels': {
+            '1': {
+                'structure': 'AM: 3x8min @ 88% FTP. PM: 3x8min @ 88% FTP. 6+ hours between.',
+                'execution': 'Two sessions per day - threshold volume accumulation',
+                'double_session': True,
+                'am_intervals': (3, 480),
+                'pm_intervals': (3, 480),
+                'on_power': 0.88,
+                'off_power': 0.55,
+                'off_duration': 120,
+                'session_gap_hours': 6
+            },
+            '2': {
+                'structure': 'AM: 3x8min @ 89% FTP. PM: 3x8min @ 89% FTP.',
+                'execution': 'Building double-session capacity',
+                'double_session': True,
+                'am_intervals': (3, 480),
+                'pm_intervals': (3, 480),
+                'on_power': 0.89,
+                'off_power': 0.55,
+                'off_duration': 120
+            },
+            '3': {
+                'structure': 'AM: 4x8min @ 89% FTP. PM: 3x8min @ 89% FTP.',
+                'execution': 'Asymmetric doubles - harder AM, maintenance PM',
+                'double_session': True,
+                'am_intervals': (4, 480),
+                'pm_intervals': (3, 480),
+                'on_power': 0.89,
+                'off_power': 0.55,
+                'off_duration': 120
+            },
+            '4': {
+                'structure': 'AM: 4x8min @ 90% FTP. PM: 4x8min @ 88% FTP.',
+                'execution': 'Full doubles - significant threshold volume',
+                'double_session': True,
+                'am_intervals': (4, 480),
+                'pm_intervals': (4, 480),
+                'am_power': 0.90,
+                'pm_power': 0.88,
+                'off_power': 0.55,
+                'off_duration': 120
+            },
+            '5': {
+                'structure': 'AM: 5x8min @ 90% FTP. PM: 4x8min @ 88% FTP.',
+                'execution': 'Extended AM session - building threshold dominance',
+                'double_session': True,
+                'am_intervals': (5, 480),
+                'pm_intervals': (4, 480),
+                'am_power': 0.90,
+                'pm_power': 0.88,
+                'off_power': 0.55,
+                'off_duration': 120
+            },
+            '6': {
+                'structure': 'AM: 5x8min @ 91% FTP. PM: 5x8min @ 88% FTP.',
+                'execution': 'Maximum doubles - elite threshold volume',
+                'double_session': True,
+                'am_intervals': (5, 480),
+                'pm_intervals': (5, 480),
+                'am_power': 0.91,
+                'pm_power': 0.88,
+                'off_power': 0.55,
+                'off_duration': 120
+            }
+        }
+    }
+]
+
+
+# =============================================================================
+# HVLI / LSD EXTENDED ARCHETYPES (High Volume Low Intensity)
+# =============================================================================
+
+HVLI_EXTENDED = [
+    {
+        'name': 'HVLI Extended Z2',
+        'levels': {
+            '1': {
+                'structure': '3hr @ 65-70% FTP. Pure Zone 2 endurance.',
+                'execution': 'Long slow distance - build durability and fat oxidation. No surges.',
+                'cadence_prescription': '80-90rpm natural',
+                'position_prescription': 'Comfortable, alternate every 30min',
+                'timing_prescription': 'Weekend long ride',
+                'fueling': '50-60g CHO/hr',
+                'hvli': True,
+                'duration': 10800,
+                'power': 0.68
+            },
+            '2': {
+                'structure': '3.5hr @ 65-70% FTP. Extended Zone 2.',
+                'execution': 'Building volume - stay aerobic, no intensity',
+                'hvli': True,
+                'duration': 12600,
+                'power': 0.68
+            },
+            '3': {
+                'structure': '4hr @ 65-70% FTP. Long Zone 2 development.',
+                'execution': 'Significant aerobic development ride',
+                'hvli': True,
+                'duration': 14400,
+                'power': 0.68
+            },
+            '4': {
+                'structure': '4.5hr @ 65-70% FTP. Extended durability.',
+                'execution': 'Building toward race-day durations',
+                'hvli': True,
+                'duration': 16200,
+                'power': 0.68
+            },
+            '5': {
+                'structure': '5hr @ 65-70% FTP. Major volume day.',
+                'execution': 'Race-simulation duration - fuel and hydrate aggressively',
+                'hvli': True,
+                'duration': 18000,
+                'power': 0.68
+            },
+            '6': {
+                'structure': '6hr @ 65-70% FTP. Maximum volume ride.',
+                'execution': 'Ultra-distance preparation - mental and physical durability',
+                'hvli': True,
+                'duration': 21600,
+                'power': 0.68
+            }
+        }
+    },
+    {
+        'name': 'HVLI Terrain Simulation',
+        'levels': {
+            '1': {
+                'structure': '3hr variable Z2: alternating 10min @ 70% FTP (flats) with 10min @ 65% FTP (recovery)',
+                'execution': 'Simulating rolling terrain within Zone 2',
+                'hvli_terrain': True,
+                'duration': 10800,
+                'high_power': 0.70,
+                'low_power': 0.65,
+                'interval_duration': 600
+            },
+            '2': {
+                'structure': '3.5hr variable Z2: alternating 10min @ 72% FTP with 10min @ 65% FTP',
+                'execution': 'Extended terrain simulation',
+                'hvli_terrain': True,
+                'duration': 12600,
+                'high_power': 0.72,
+                'low_power': 0.65,
+                'interval_duration': 600
+            },
+            '3': {
+                'structure': '4hr variable Z2: alternating 15min @ 72% FTP with 10min @ 65% FTP',
+                'execution': 'Longer "climbs" within Zone 2',
+                'hvli_terrain': True,
+                'duration': 14400,
+                'high_power': 0.72,
+                'low_power': 0.65,
+                'high_interval': 900,
+                'low_interval': 600
+            },
+            '4': {
+                'structure': '4.5hr variable Z2 with occasional 5min surges to 75% FTP',
+                'execution': 'Adding small surges - still aerobic',
+                'hvli_terrain': True,
+                'duration': 16200,
+                'high_power': 0.75,
+                'low_power': 0.65,
+                'surge_duration': 300
+            },
+            '5': {
+                'structure': '5hr variable Z2 with course-specific power variations',
+                'execution': 'Race-course simulation at aerobic intensity',
+                'hvli_terrain': True,
+                'duration': 18000,
+                'high_power': 0.75,
+                'low_power': 0.65
+            },
+            '6': {
+                'structure': '6hr variable Z2 matching race-day power profile',
+                'execution': 'Full race-day terrain simulation - dress rehearsal',
+                'hvli_terrain': True,
+                'duration': 21600,
+                'high_power': 0.75,
+                'low_power': 0.65
+            }
+        }
+    }
+]
+
+
+# =============================================================================
+# BLOCK PERIODIZATION ARCHETYPES
+# =============================================================================
+
+BLOCK_PERIODIZATION = [
+    {
+        'name': 'VO2max Block Focus',
+        'levels': {
+            '1': {
+                'structure': 'Block Week 1: 3x VO2 sessions + maintenance threshold + easy volume',
+                'execution': 'VO2max focused block - 3 quality sessions targeting VO2',
+                'block_focus': 'VO2max',
+                'quality_sessions': 3,
+                'maintenance': ['threshold'],
+                'block_week': 1
+            },
+            '2': {
+                'structure': 'Block Week 2: 4x VO2 sessions + maintenance threshold',
+                'execution': 'Overload week - maximum VO2 stimulus',
+                'block_focus': 'VO2max',
+                'quality_sessions': 4,
+                'maintenance': ['threshold'],
+                'block_week': 2
+            },
+            '3': {
+                'structure': 'Block Week 3: 2x VO2 sessions + consolidation',
+                'execution': 'Consolidation week - absorb adaptations',
+                'block_focus': 'VO2max',
+                'quality_sessions': 2,
+                'block_week': 3,
+                'consolidation': True
+            },
+            '4': {
+                'structure': 'Block Week 4: Transition - 1x VO2, 1x next focus',
+                'execution': 'Transition to next block focus',
+                'block_focus': 'VO2max',
+                'quality_sessions': 1,
+                'block_week': 4,
+                'transition': True
+            },
+            '5': {
+                'structure': 'Block extension: 5x VO2 sessions if responding well',
+                'execution': 'Extended overload for strong responders',
+                'block_focus': 'VO2max',
+                'quality_sessions': 5,
+                'block_week': 'extended'
+            },
+            '6': {
+                'structure': 'Block peak: Test VO2max, record KPIs',
+                'execution': 'Block completion - measure improvements',
+                'block_focus': 'VO2max',
+                'testing': True,
+                'block_week': 'peak'
+            }
+        }
+    },
+    {
+        'name': 'Threshold Block Focus',
+        'levels': {
+            '1': {
+                'structure': 'Block Week 1: 3x Threshold sessions + maintenance VO2 + easy volume',
+                'execution': 'Threshold focused block - building FTP',
+                'block_focus': 'Threshold',
+                'quality_sessions': 3,
+                'maintenance': ['VO2max'],
+                'block_week': 1
+            },
+            '2': {
+                'structure': 'Block Week 2: 4x Threshold sessions (including G-Spot)',
+                'execution': 'Overload week - maximum threshold stimulus',
+                'block_focus': 'Threshold',
+                'quality_sessions': 4,
+                'block_week': 2
+            },
+            '3': {
+                'structure': 'Block Week 3: 2x Threshold + consolidation',
+                'execution': 'Consolidation - let FTP rise',
+                'block_focus': 'Threshold',
+                'quality_sessions': 2,
+                'block_week': 3,
+                'consolidation': True
+            },
+            '4': {
+                'structure': 'Block Week 4: Transition to next focus',
+                'execution': 'FTP test, then transition',
+                'block_focus': 'Threshold',
+                'quality_sessions': 1,
+                'block_week': 4,
+                'transition': True,
+                'testing': True
+            },
+            '5': {
+                'structure': 'Extended: Norwegian doubles if tolerating well',
+                'execution': 'High threshold volume for strong responders',
+                'block_focus': 'Threshold',
+                'quality_sessions': 6,
+                'norwegian_style': True
+            },
+            '6': {
+                'structure': 'Block peak: 20min FTP test or CP test',
+                'execution': 'Measure threshold improvements',
+                'block_focus': 'Threshold',
+                'testing': True,
+                'block_week': 'peak'
+            }
+        }
+    }
+]
+
+
+# =============================================================================
 # COMBINED DICTIONARY FOR INTEGRATION
 # =============================================================================
 
@@ -1586,10 +2411,17 @@ NEW_ARCHETYPES = {
     'VO2max': VO2MAX_NEW,
     'TT_Threshold': THRESHOLD_NEW,
     'Sprint_Neuromuscular': SPRINT_NEW,
-    'Anaerobic_Capacity': ANAEROBIC_CAPACITY,  # NEW CATEGORY
+    'Anaerobic_Capacity': ANAEROBIC_CAPACITY,
     'Durability': DURABILITY_NEW,
     'Endurance': ENDURANCE_NEW,
-    'Race_Simulation': RACE_SIMULATION  # NEW CATEGORY
+    'Race_Simulation': RACE_SIMULATION,
+    # NEW CATEGORIES
+    'G_Spot': G_SPOT_NEW,
+    'LT1_MAF': LT1_MAF_NEW,
+    'Critical_Power': CRITICAL_POWER_NEW,
+    'Norwegian_Double': NORWEGIAN_DOUBLE,
+    'HVLI_Extended': HVLI_EXTENDED,
+    'Block_Periodization': BLOCK_PERIODIZATION,
 }
 
 
