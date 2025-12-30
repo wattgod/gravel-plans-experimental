@@ -459,44 +459,116 @@ def select_archetype_for_workout(
         "race_simulation": "Race_Simulation",
         "breakaway": "Race_Simulation",
         "sector": "Race_Simulation",
-        # NEW: G-Spot (87-92% FTP)
+        # G-Spot (87-92% FTP) - NOT Sweet Spot
         "g_spot": "G_Spot",
         "gspot": "G_Spot",
         "g-spot": "G_Spot",
         "tempo": "G_Spot",  # Map tempo to G-Spot instead of SS
-        # NEW: LT1/MAF
+        # LT1/MAF
         "lt1": "LT1_MAF",
         "maf": "LT1_MAF",
         "lt1_capped": "LT1_MAF",
         "aerobic_base": "LT1_MAF",
-        # NEW: Critical Power
+        # Critical Power
         "cp": "Critical_Power",
         "critical_power": "Critical_Power",
         "w_prime": "Critical_Power",
         "above_cp": "Critical_Power",
-        # NEW: Norwegian Double-Threshold
+        # Norwegian Double-Threshold
         "norwegian": "Norwegian_Double",
+        "norwegian_am": "Norwegian_Double",
+        "norwegian_pm": "Norwegian_Double",
         "double_threshold": "Norwegian_Double",
         "seiler": "Norwegian_Double",
-        # NEW: HVLI/LSD
+        # HVLI/LSD
         "hvli": "HVLI_Extended",
         "lsd": "HVLI_Extended",
         "long_slow": "HVLI_Extended",
         "extended_z2": "HVLI_Extended",
-        # NEW: Block Periodization
-        "block": "Block_Periodization",
-        "vo2_block": "Block_Periodization",
-        "threshold_block": "Block_Periodization",
+        # Testing
+        "test": "Testing",
+        "ftp_test": "Testing",
+        "ramp_test": "Testing",
+        "cp_test": "Testing",
+        "testing": "Testing",
+        # Recovery
+        "recovery": "Recovery",
+        "rest": "Recovery",
+        "active_recovery": "Recovery",
+        "easy": "Recovery",
+        # INSCYD/Metabolic
+        "inscyd": "INSCYD",
+        "vlamax": "INSCYD",
+        "fatmax": "INSCYD",
+        "metabolic": "INSCYD",
     }
 
     category = type_to_category.get(workout_type.lower())
     if not category:
         return None
 
-    # Check if this category is avoided by the methodology
+    # ==========================================================================
+    # METHODOLOGY-AWARE ARCHETYPE SELECTION
+    # ==========================================================================
+    # Different methodologies should prefer different archetypes for the same
+    # workout type. This is where the magic happens.
+
     method_config = TRAINING_METHODOLOGIES.get(methodology, TRAINING_METHODOLOGIES["POLARIZED"])
+
+    # Check if this category is avoided by the methodology
     if category in method_config.get("avoid", []):
         return None
+
+    # Methodology-specific archetype selection overrides
+    methodology_overrides = {
+        "POLARIZED": {
+            # Polarized prefers hard VO2max, avoids middle zone
+            "default_variation": 0,  # Classic formats
+        },
+        "PYRAMIDAL": {
+            # Pyramidal prefers threshold work
+            "TT_Threshold": 0,  # Single sustained threshold
+            "G_Spot": 0,  # G-Spot intervals
+        },
+        "G_SPOT": {
+            # G-Spot methodology - prioritize G-Spot archetypes
+            "G_Spot": 0,  # Standard G-Spot intervals
+            "TT_Threshold": 2,  # Descending threshold (more variety)
+        },
+        "NORWEGIAN": {
+            # Norwegian - prioritize 4x8 format
+            "Norwegian_Double": 0,  # Classic 4x8
+            "TT_Threshold": 0,  # Sustained threshold
+        },
+        "HIT": {
+            # HIT - prioritize shorter, more intense
+            "VO2max": 0,  # Classic 5x3
+            "Anaerobic_Capacity": 0,  # 2min killers
+        },
+        "MAF_LT1": {
+            # MAF - prioritize LT1 capped work
+            "LT1_MAF": 0,  # LT1 capped endurance
+            "Endurance": 1,  # Terrain simulation Z2
+        },
+        "CRITICAL_POWER": {
+            # CP model - prioritize above-CP work
+            "Critical_Power": 0,  # Above CP repeats
+        },
+        "HVLI": {
+            # HVLI - prioritize extended Z2
+            "HVLI_Extended": 0,  # Extended Z2
+            "Endurance": 1,  # Terrain simulation
+        },
+        "INSCYD": {
+            # INSCYD - prioritize metabolic work
+            "INSCYD": 0,  # VLamax reduction
+        },
+    }
+
+    # Get methodology-specific variation if available
+    method_overrides = methodology_overrides.get(methodology, {})
+    if category in method_overrides:
+        variation = method_overrides[category]
 
     return get_archetype_by_category_and_index(category, variation)
 
@@ -504,35 +576,117 @@ def select_archetype_for_workout(
 def calculate_level_from_week(
     week_num: int,
     total_weeks: int,
-    taper_weeks: int = 2
+    taper_weeks: int = 2,
+    methodology: str = "POLARIZED"
 ) -> int:
     """
-    Calculate the progression level (1-6) based on week position.
+    Calculate the progression level (1-6) based on week position and methodology.
 
+    Uses progression style from methodology configuration.
     Accounts for taper period at the end of the plan.
     """
+    # Get progression style from methodology
+    method_config = TRAINING_METHODOLOGIES.get(methodology, TRAINING_METHODOLOGIES["POLARIZED"])
+    progression_style = method_config.get("progression_style", "volume_first")
+
     # Exclude taper weeks from progression
     build_weeks = total_weeks - taper_weeks
 
     if week_num >= build_weeks:
-        # In taper - use level 3-4 (maintain without max stress)
-        return 4
+        # In taper - use appropriate level based on progression style
+        if progression_style == "intensity_first":
+            return 3  # Reverse - volume phase at end, use moderate level
+        else:
+            return 4  # Standard - maintain fitness without max stress
 
-    # Linear progression through build phase
+    # Calculate base progress through build phase
     progress = week_num / build_weeks
 
-    if progress < 0.17:
-        return 1
-    elif progress < 0.33:
-        return 2
-    elif progress < 0.50:
-        return 3
-    elif progress < 0.67:
-        return 4
-    elif progress < 0.83:
-        return 5
+    # Apply progression style
+    if progression_style == "intensity_first":
+        # Reverse periodization: Start hard, end easier
+        # Early weeks = high level, late weeks = lower level
+        if progress < 0.25:
+            return 6  # Peak intensity early
+        elif progress < 0.50:
+            return 5
+        elif progress < 0.75:
+            return 4
+        else:
+            return 3  # Back off before taper
+
+    elif progression_style == "intensity_stable":
+        # Polarized: Maintain consistent intensity level, vary volume
+        # Level stays relatively stable, around 4-5
+        if progress < 0.33:
+            return 4
+        elif progress < 0.67:
+            return 5
+        else:
+            return 5
+
+    elif progression_style == "density_increase":
+        # G-Spot: Increase time-in-zone and sessions
+        # More aggressive progression for threshold work
+        if progress < 0.20:
+            return 2
+        elif progress < 0.40:
+            return 3
+        elif progress < 0.60:
+            return 4
+        elif progress < 0.80:
+            return 5
+        else:
+            return 6
+
+    elif progression_style == "block_staircase":
+        # Block: 2-week overload, 1-week consolidation pattern
+        block_position = week_num % 3  # 0, 1, 2 pattern
+        base_level = min(6, 2 + (week_num // 3))  # Base level increases each block
+        if block_position < 2:  # Overload weeks
+            return min(6, base_level + 1)
+        else:  # Consolidation week
+            return max(1, base_level - 1)
+
+    elif progression_style == "duration_increase":
+        # MAF/LT1: Level represents duration, not intensity
+        # Slow progression, lots of time at each level
+        if progress < 0.25:
+            return 2
+        elif progress < 0.50:
+            return 3
+        elif progress < 0.75:
+            return 4
+        else:
+            return 5
+
+    elif progression_style == "volume_accumulation":
+        # HVLI: Volume builds progressively
+        if progress < 0.20:
+            return 1
+        elif progress < 0.40:
+            return 2
+        elif progress < 0.60:
+            return 3
+        elif progress < 0.80:
+            return 4
+        else:
+            return 5
+
     else:
-        return 6
+        # Default: Traditional linear progression (volume_first)
+        if progress < 0.17:
+            return 1
+        elif progress < 0.33:
+            return 2
+        elif progress < 0.50:
+            return 3
+        elif progress < 0.67:
+            return 4
+        elif progress < 0.83:
+            return 5
+        else:
+            return 6
 
 
 def get_level_data(archetype: Dict, level: int) -> Optional[Dict]:
@@ -970,6 +1124,96 @@ def generate_blocks_from_archetype(archetype: Dict, level: int) -> str:
             blocks.append(generate_steady_state_block(hold_duration, hold_power))
             if set_num < sets - 1:
                 blocks.append(generate_steady_state_block(set_recovery, 0.55))
+
+    # =====================================================================
+    # RECOVERY WORKOUTS
+    # =====================================================================
+    elif "recovery" in level_data:
+        duration = level_data.get("duration", 2700)
+        power = level_data.get("power", 0.52)
+
+        blocks.append(generate_warmup_block(300))  # Short warmup
+        blocks.append(generate_steady_state_block(duration - 600, power, cadence=90))
+        blocks.append(generate_cooldown_block(300))
+        return "".join(blocks)
+
+    # =====================================================================
+    # REST DAY (No blocks - just placeholder)
+    # =====================================================================
+    elif "rest_day" in level_data:
+        # Rest day generates minimal file - just a marker
+        blocks.append('    <FreeRide Duration="0" FlatRoad="1"/>\n')
+        return "".join(blocks)
+
+    # =====================================================================
+    # TESTING PROTOCOLS
+    # =====================================================================
+    elif "testing" in level_data:
+        test_type = level_data.get("test_type", "ramp")
+        warmup_duration = level_data.get("warmup_duration", 600)
+        warmup_power = level_data.get("warmup_power", 0.50)
+
+        if test_type == "ramp":
+            # Ramp test: warmup then progressive ramp to failure
+            blocks.append(generate_steady_state_block(warmup_duration, warmup_power))
+            # Ramp from ~50% to max (simulated as 18 steps of 1min each)
+            for i in range(18):
+                power = 0.50 + (i * 0.03)  # Increment ~3% each minute
+                blocks.append(generate_steady_state_block(60, min(power, 1.50)))
+            blocks.append(generate_cooldown_block(300))
+            return "".join(blocks)
+
+        elif test_type == "20min_ftp":
+            # 20min FTP test with blowout warmup
+            blowout_intervals = level_data.get("blowout_intervals", (3, 60))
+            blowout_power = level_data.get("blowout_power", 1.20)
+            test_duration = level_data.get("test_duration", 1200)
+
+            blocks.append(generate_warmup_block(warmup_duration))
+            # Blowout efforts
+            for i in range(blowout_intervals[0]):
+                blocks.append(generate_steady_state_block(blowout_intervals[1], blowout_power))
+                blocks.append(generate_steady_state_block(120, 0.50))
+            # 5min recovery before test
+            blocks.append(generate_steady_state_block(300, 0.55))
+            # 20min all-out (represented as FreeRide for max effort)
+            blocks.append(f'    <FreeRide Duration="{test_duration}" FlatRoad="1"/>\n')
+            blocks.append(generate_cooldown_block(600))
+            return "".join(blocks)
+
+        elif test_type in ("cp_3min", "cp_12min"):
+            # CP test: warmup then all-out effort
+            test_duration = level_data.get("test_duration", 180)
+            blocks.append(generate_warmup_block(warmup_duration))
+            blocks.append(generate_steady_state_block(300, 0.55))  # Pre-test settle
+            blocks.append(f'    <FreeRide Duration="{test_duration}" FlatRoad="1"/>\n')
+            blocks.append(generate_cooldown_block(600))
+            return "".join(blocks)
+
+    # =====================================================================
+    # INSCYD / METABOLIC WORKOUTS
+    # =====================================================================
+    elif "inscyd" in level_data or "vlamax_reduction" in level_data or "fatmax" in level_data:
+        duration = level_data.get("duration", 5400)
+        power = level_data.get("power", 0.70)
+        sprint_intervals = level_data.get("sprint_intervals", (0, 0))
+        sprint_power = level_data.get("sprint_power", 2.0)
+
+        blocks.append(generate_warmup_block(900))
+
+        if sprint_intervals[0] > 0:
+            # VLamax reduction: Long Z2 with distributed sprints
+            main_duration = duration - 1500
+            sprint_spacing = main_duration // (sprint_intervals[0] + 1)
+
+            for i in range(sprint_intervals[0]):
+                blocks.append(generate_steady_state_block(sprint_spacing, power))
+                blocks.append(generate_steady_state_block(sprint_intervals[1], sprint_power))
+            # Final Z2 segment
+            blocks.append(generate_steady_state_block(sprint_spacing, power))
+        else:
+            # FatMax: Pure steady-state Z2
+            blocks.append(generate_steady_state_block(duration - 1500, power))
 
     # =====================================================================
     # DEFAULT FALLBACK

@@ -1773,6 +1773,7 @@ G_SPOT_NEW = [
 # =============================================================================
 # LT1/MAF ARCHETYPES (Low-HR, Aerobic Base Building)
 # =============================================================================
+# Full dimensions on all levels
 
 LT1_MAF_NEW = [
     {
@@ -1781,10 +1782,10 @@ LT1_MAF_NEW = [
             '1': {
                 'structure': '60min @ LT1 cap (Zone 2 ceiling). HR must not exceed LT1.',
                 'execution': 'Patience is key - if HR drifts, reduce power. Build aerobic engine.',
-                'cadence_prescription': '80-90rpm natural cadence',
-                'position_prescription': 'Comfortable, sustainable position',
-                'timing_prescription': 'Any time - low stress',
-                'fueling': '40-50g CHO/hr',
+                'cadence_prescription': '80-90rpm natural cadence - find your groove',
+                'position_prescription': 'Comfortable position, alternate every 20min',
+                'timing_prescription': 'Any time - low physiological stress',
+                'fueling': '40-50g CHO/hr - practice race nutrition',
                 'lt1_capped': True,
                 'duration': 3600,
                 'power': 0.70,
@@ -1793,6 +1794,10 @@ LT1_MAF_NEW = [
             '2': {
                 'structure': '75min @ LT1 cap. Monitor HR drift - power may need to drop.',
                 'execution': 'Extended duration - aerobic system development',
+                'cadence_prescription': '80-90rpm - consistent, sustainable',
+                'position_prescription': 'Comfortable, alternate hands every 15min',
+                'timing_prescription': 'Morning preferred for fat oxidation',
+                'fueling': '40-50g CHO/hr',
                 'lt1_capped': True,
                 'duration': 4500,
                 'power': 0.70,
@@ -1801,6 +1806,10 @@ LT1_MAF_NEW = [
             '3': {
                 'structure': '90min @ LT1 cap. This is MAF training - no cheating.',
                 'execution': 'Build fat oxidation and aerobic efficiency',
+                'cadence_prescription': '80-90rpm - self-selected comfort',
+                'position_prescription': 'Alternate drops/hoods every 20min',
+                'timing_prescription': 'Fasted or light breakfast for fat adaptation',
+                'fueling': '50g CHO/hr - begin fueling practice',
                 'lt1_capped': True,
                 'duration': 5400,
                 'power': 0.70,
@@ -1809,6 +1818,10 @@ LT1_MAF_NEW = [
             '4': {
                 'structure': '2hr @ LT1 cap. Long aerobic development ride.',
                 'execution': 'Durability through low intensity - patience builds champions',
+                'cadence_prescription': '80-90rpm - maintain form throughout',
+                'position_prescription': 'Position changes every 20min - build tolerance',
+                'timing_prescription': 'Weekend long ride slot',
+                'fueling': '50-60g CHO/hr - gut training',
                 'lt1_capped': True,
                 'duration': 7200,
                 'power': 0.70,
@@ -1817,6 +1830,10 @@ LT1_MAF_NEW = [
             '5': {
                 'structure': '2.5hr @ LT1 cap. Extended aerobic base.',
                 'execution': 'Maximum aerobic development - fuel and hydrate properly',
+                'cadence_prescription': '80-90rpm - efficiency over power',
+                'position_prescription': 'Race position practice in final hour',
+                'timing_prescription': 'Primary weekend long ride',
+                'fueling': '60g CHO/hr - race simulation fueling',
                 'lt1_capped': True,
                 'duration': 9000,
                 'power': 0.70,
@@ -1825,6 +1842,10 @@ LT1_MAF_NEW = [
             '6': {
                 'structure': '3hr @ LT1 cap. Full aerobic base ride.',
                 'execution': 'Peak aerobic development - monitor decoupling',
+                'cadence_prescription': '80-90rpm - maintain even with fatigue',
+                'position_prescription': 'Full position rotation - aero practice',
+                'timing_prescription': 'Primary training block cornerstone',
+                'fueling': '60-70g CHO/hr - aggressive fueling practice',
                 'lt1_capped': True,
                 'duration': 10800,
                 'power': 0.70,
@@ -1838,6 +1859,10 @@ LT1_MAF_NEW = [
             '1': {
                 'structure': '10min warmup, 30min @ MAF HR (180-age), record average power',
                 'execution': 'Monthly test to track aerobic progress. Power at MAF HR should increase.',
+                'cadence_prescription': '85-90rpm - consistent for repeatability',
+                'position_prescription': 'Same position every test - standardize',
+                'timing_prescription': 'Same time of day, same conditions each test',
+                'fueling': 'Fasted or standardized pre-test meal',
                 'maf_test': True,
                 'warmup_duration': 600,
                 'test_duration': 1800,
@@ -1846,6 +1871,10 @@ LT1_MAF_NEW = [
             '2': {
                 'structure': '10min warmup, 30min @ MAF HR, compare to previous test',
                 'execution': 'Track progress - power should increase at same HR over weeks',
+                'cadence_prescription': '85-90rpm - match previous tests',
+                'position_prescription': 'Identical to previous test',
+                'timing_prescription': 'Consistent timing for valid comparison',
+                'fueling': 'Standardized',
                 'maf_test': True,
                 'warmup_duration': 600,
                 'test_duration': 1800,
@@ -1854,6 +1883,10 @@ LT1_MAF_NEW = [
             '3': {
                 'structure': '10min warmup, 30min @ MAF HR, analyze decoupling',
                 'execution': 'Decoupling <5% indicates good aerobic fitness',
+                'cadence_prescription': '85-90rpm',
+                'position_prescription': 'Consistent test position',
+                'timing_prescription': 'Well-rested day',
+                'fueling': 'Standardized pre-test protocol',
                 'maf_test': True,
                 'warmup_duration': 600,
                 'test_duration': 1800,
@@ -1862,6 +1895,10 @@ LT1_MAF_NEW = [
             '4': {
                 'structure': '10min warmup, 45min @ MAF HR, extended test',
                 'execution': 'Extended test - more data for decoupling analysis',
+                'cadence_prescription': '85-90rpm',
+                'position_prescription': 'Consistent position',
+                'timing_prescription': 'After recovery day',
+                'fueling': 'Light fueling during test if needed',
                 'maf_test': True,
                 'warmup_duration': 600,
                 'test_duration': 2700,
@@ -1870,6 +1907,10 @@ LT1_MAF_NEW = [
             '5': {
                 'structure': '10min warmup, 60min @ MAF HR, full test',
                 'execution': 'Full hour test - definitive aerobic progress marker',
+                'cadence_prescription': '85-90rpm - maintain consistency',
+                'position_prescription': 'Standard test position throughout',
+                'timing_prescription': 'Fresh legs - after rest day',
+                'fueling': '30-40g CHO during test',
                 'maf_test': True,
                 'warmup_duration': 600,
                 'test_duration': 3600,
@@ -1878,6 +1919,10 @@ LT1_MAF_NEW = [
             '6': {
                 'structure': '10min warmup, 60min @ MAF HR, analyze pace/power at fixed HR',
                 'execution': 'Peak aerobic test - compare to baseline',
+                'cadence_prescription': '85-90rpm',
+                'position_prescription': 'Standardized for comparison',
+                'timing_prescription': 'End of base phase - peak aerobic fitness',
+                'fueling': '30-40g CHO during test',
                 'maf_test': True,
                 'warmup_duration': 600,
                 'test_duration': 3600,
@@ -1891,66 +1936,89 @@ LT1_MAF_NEW = [
 # =============================================================================
 # CRITICAL POWER / W' ARCHETYPES
 # =============================================================================
+# NOTE: CP ≈ 95-98% of FTP. Power targets here are % of CP, not FTP.
+# For ZWO generation, we convert: target_ftp = target_cp * 0.96
+# e.g., 110% CP = 110% * 0.96 = 105.6% FTP
 
 CRITICAL_POWER_NEW = [
     {
         'name': 'Above CP Repeats',
         'levels': {
             '1': {
-                'structure': '15min warmup Z2, 4x2min @ 110% CP, 4min recovery between',
-                'execution': 'Work above CP depletes W\' - learning the sensation',
-                'cadence_prescription': '95-100rpm',
-                'position_prescription': 'Drops for power',
-                'timing_prescription': 'Fresh - these are demanding',
-                'fueling': '60-70g CHO/hr',
+                'structure': '15min warmup Z2, 4x2min @ 110% CP (~106% FTP), 4min recovery between',
+                'execution': 'Work above CP depletes W\' - learning the sensation of W\' depletion',
+                'cadence_prescription': '95-100rpm - high turnover for power',
+                'position_prescription': 'Drops for power output',
+                'timing_prescription': 'Fresh legs required - demanding session',
+                'fueling': '60-70g CHO/hr - high glycolytic demand',
                 'above_cp': True,
                 'intervals': (4, 120),
-                'on_power': 1.10,  # 110% CP
+                'on_power': 1.06,  # 110% CP ≈ 106% FTP
                 'off_power': 0.55,
                 'off_duration': 240
             },
             '2': {
-                'structure': '15min warmup Z2, 5x2min @ 112% CP, 4min recovery between',
-                'execution': 'Building W\' tolerance - control the effort',
+                'structure': '15min warmup Z2, 5x2min @ 112% CP (~108% FTP), 4min recovery between',
+                'execution': 'Building W\' tolerance - control the effort, feel the fade',
+                'cadence_prescription': '95-100rpm',
+                'position_prescription': 'Drops, aggressive',
+                'timing_prescription': 'After rest day',
+                'fueling': '60-70g CHO/hr',
                 'above_cp': True,
                 'intervals': (5, 120),
-                'on_power': 1.12,
+                'on_power': 1.08,  # 112% CP ≈ 108% FTP
                 'off_power': 0.55,
                 'off_duration': 240
             },
             '3': {
-                'structure': '15min warmup Z2, 5x2.5min @ 112% CP, 3.5min recovery between',
+                'structure': '15min warmup Z2, 5x2.5min @ 112% CP (~108% FTP), 3.5min recovery',
                 'execution': 'Extended above-CP work with reduced recovery',
+                'cadence_prescription': '95-100rpm',
+                'position_prescription': 'Drops throughout',
+                'timing_prescription': 'Key session - protect with easy days',
+                'fueling': '60-70g CHO/hr',
                 'above_cp': True,
                 'intervals': (5, 150),
-                'on_power': 1.12,
+                'on_power': 1.08,
                 'off_power': 0.55,
                 'off_duration': 210
             },
             '4': {
-                'structure': '15min warmup Z2, 6x2.5min @ 115% CP, 3min recovery between',
+                'structure': '15min warmup Z2, 6x2.5min @ 115% CP (~110% FTP), 3min recovery',
                 'execution': 'High W\' depletion - race-realistic surges',
+                'cadence_prescription': '95-100rpm - maintain through fatigue',
+                'position_prescription': 'Aggressive race position',
+                'timing_prescription': 'Primary quality session of week',
+                'fueling': '70g CHO/hr',
                 'above_cp': True,
                 'intervals': (6, 150),
-                'on_power': 1.15,
+                'on_power': 1.10,  # 115% CP ≈ 110% FTP
                 'off_power': 0.55,
                 'off_duration': 180
             },
             '5': {
-                'structure': '15min warmup Z2, 6x3min @ 115% CP, 3min recovery between',
+                'structure': '15min warmup Z2, 6x3min @ 115% CP (~110% FTP), 3min recovery',
                 'execution': 'Extended above-CP intervals - W\' development',
+                'cadence_prescription': '95-100rpm',
+                'position_prescription': 'Race position - drops',
+                'timing_prescription': 'Peak training block',
+                'fueling': '70g CHO/hr',
                 'above_cp': True,
                 'intervals': (6, 180),
-                'on_power': 1.15,
+                'on_power': 1.10,
                 'off_power': 0.55,
                 'off_duration': 180
             },
             '6': {
-                'structure': '15min warmup Z2, 7x3min @ 118% CP, 2.5min recovery between',
-                'execution': 'Maximum above-CP development - empty the tank',
+                'structure': '15min warmup Z2, 7x3min @ 118% CP (~113% FTP), 2.5min recovery',
+                'execution': 'Maximum above-CP development - empty the tank on final reps',
+                'cadence_prescription': '95-105rpm - whatever gets power',
+                'position_prescription': 'Full race aggression',
+                'timing_prescription': 'Peak fitness - before taper',
+                'fueling': '70-80g CHO/hr',
                 'above_cp': True,
                 'intervals': (7, 180),
-                'on_power': 1.18,
+                'on_power': 1.13,  # 118% CP ≈ 113% FTP
                 'off_power': 0.55,
                 'off_duration': 150
             }
@@ -1960,69 +2028,93 @@ CRITICAL_POWER_NEW = [
         'name': 'W-Prime Depletion',
         'levels': {
             '1': {
-                'structure': '15min warmup Z2, 3x (3min @ 115% CP + 2min @ 105% CP), 5min recovery between sets',
-                'execution': 'Deplete W\' then hold above CP - race simulation',
+                'structure': '15min warmup Z2, 3x (3min @ 115% CP + 2min @ 105% CP), 5min recovery',
+                'execution': 'Deplete W\' then hold above CP - race simulation pattern',
+                'cadence_prescription': '95-100rpm surge, 90rpm hold',
+                'position_prescription': 'Drops for surge, hoods for hold',
+                'timing_prescription': 'Fresh - demanding pattern',
+                'fueling': '60-70g CHO/hr',
                 'w_prime': True,
                 'sets': 3,
                 'surge_duration': 180,
-                'surge_power': 1.15,
+                'surge_power': 1.10,  # 115% CP ≈ 110% FTP
                 'hold_duration': 120,
-                'hold_power': 1.05,
+                'hold_power': 1.01,   # 105% CP ≈ 101% FTP
                 'set_recovery': 300
             },
             '2': {
-                'structure': '15min warmup Z2, 4x (3min @ 115% CP + 2min @ 105% CP), 4min recovery between sets',
+                'structure': '15min warmup Z2, 4x (3min @ 115% CP + 2min @ 105% CP), 4min recovery',
                 'execution': 'More sets - building W\' recharge capacity',
+                'cadence_prescription': '95-100rpm surge, 90rpm hold',
+                'position_prescription': 'Aggressive positioning',
+                'timing_prescription': 'Key training day',
+                'fueling': '60-70g CHO/hr',
                 'w_prime': True,
                 'sets': 4,
                 'surge_duration': 180,
-                'surge_power': 1.15,
+                'surge_power': 1.10,
                 'hold_duration': 120,
-                'hold_power': 1.05,
+                'hold_power': 1.01,
                 'set_recovery': 240
             },
             '3': {
-                'structure': '15min warmup Z2, 4x (3min @ 118% CP + 3min @ 105% CP), 4min recovery between sets',
-                'execution': 'Higher surge power, extended hold',
+                'structure': '15min warmup Z2, 4x (3min @ 118% CP + 3min @ 105% CP), 4min recovery',
+                'execution': 'Higher surge power, extended hold - deeper depletion',
+                'cadence_prescription': '95-105rpm surge, 90rpm hold',
+                'position_prescription': 'Full race position',
+                'timing_prescription': 'Quality session',
+                'fueling': '70g CHO/hr',
                 'w_prime': True,
                 'sets': 4,
                 'surge_duration': 180,
-                'surge_power': 1.18,
+                'surge_power': 1.13,  # 118% CP ≈ 113% FTP
                 'hold_duration': 180,
-                'hold_power': 1.05,
+                'hold_power': 1.01,
                 'set_recovery': 240
             },
             '4': {
-                'structure': '15min warmup Z2, 5x (3min @ 118% CP + 3min @ 107% CP), 3min recovery between sets',
+                'structure': '15min warmup Z2, 5x (3min @ 118% CP + 3min @ 107% CP), 3min recovery',
                 'execution': 'Reduced recovery - race-realistic W\' management',
+                'cadence_prescription': '95-105rpm surge, 90rpm hold',
+                'position_prescription': 'Race simulation position',
+                'timing_prescription': 'Peak training',
+                'fueling': '70g CHO/hr',
                 'w_prime': True,
                 'sets': 5,
                 'surge_duration': 180,
-                'surge_power': 1.18,
+                'surge_power': 1.13,
                 'hold_duration': 180,
-                'hold_power': 1.07,
+                'hold_power': 1.03,  # 107% CP ≈ 103% FTP
                 'set_recovery': 180
             },
             '5': {
-                'structure': '15min warmup Z2, 5x (4min @ 120% CP + 3min @ 108% CP), 3min recovery between sets',
-                'execution': 'Extended surge duration - deep W\' depletion',
+                'structure': '15min warmup Z2, 5x (4min @ 120% CP + 3min @ 108% CP), 3min recovery',
+                'execution': 'Extended surge duration - deep W\' depletion, test mental limits',
+                'cadence_prescription': '95-105rpm',
+                'position_prescription': 'Maximum aggression',
+                'timing_prescription': 'Race-specific preparation',
+                'fueling': '70-80g CHO/hr',
                 'w_prime': True,
                 'sets': 5,
                 'surge_duration': 240,
-                'surge_power': 1.20,
+                'surge_power': 1.15,  # 120% CP ≈ 115% FTP
                 'hold_duration': 180,
-                'hold_power': 1.08,
+                'hold_power': 1.04,   # 108% CP ≈ 104% FTP
                 'set_recovery': 180
             },
             '6': {
-                'structure': '15min warmup Z2, 6x (4min @ 120% CP + 3min @ 110% CP), 2.5min recovery between sets',
-                'execution': 'Maximum W\' development - crit/CX race simulation',
+                'structure': '15min warmup Z2, 6x (4min @ 120% CP + 3min @ 110% CP), 2.5min recovery',
+                'execution': 'Maximum W\' development - crit/CX race simulation, all-out',
+                'cadence_prescription': '95-105rpm - whatever produces power',
+                'position_prescription': 'Full race mode',
+                'timing_prescription': 'Peak fitness window',
+                'fueling': '80g CHO/hr',
                 'w_prime': True,
                 'sets': 6,
                 'surge_duration': 240,
-                'surge_power': 1.20,
+                'surge_power': 1.15,
                 'hold_duration': 180,
-                'hold_power': 1.10,
+                'hold_power': 1.06,  # 110% CP ≈ 106% FTP
                 'set_recovery': 150
             }
         }
@@ -2033,6 +2125,8 @@ CRITICAL_POWER_NEW = [
 # =============================================================================
 # NORWEGIAN DOUBLE-THRESHOLD ARCHETYPES
 # =============================================================================
+# Note: "Double Session" archetype generates AM session only.
+# PM session should be generated as a separate workout with "_PM" suffix.
 
 NORWEGIAN_DOUBLE = [
     {
@@ -2041,10 +2135,10 @@ NORWEGIAN_DOUBLE = [
             '1': {
                 'structure': '20min warmup Z2, 4x8min @ 88-90% FTP (lactate capped at 3-4mmol), 2min recovery',
                 'execution': 'Seiler format - control lactate, don\'t go anaerobic. Steady, controlled power.',
-                'cadence_prescription': '85-90rpm steady',
-                'position_prescription': 'TT position if possible',
-                'timing_prescription': 'Can do AM and PM sessions',
-                'fueling': '60-70g CHO/hr',
+                'cadence_prescription': '85-90rpm steady - efficiency over force',
+                'position_prescription': 'TT position if comfortable, otherwise drops',
+                'timing_prescription': 'Morning session preferred, can repeat PM',
+                'fueling': '60-70g CHO/hr - threshold work is glycolytic',
                 'norwegian': True,
                 'intervals': (4, 480),
                 'on_power': 0.89,
@@ -2054,7 +2148,11 @@ NORWEGIAN_DOUBLE = [
             },
             '2': {
                 'structure': '20min warmup Z2, 4x8min @ 89-91% FTP (lactate capped at 3.5-4mmol), 2min recovery',
-                'execution': 'Slight power increase - maintain lactate control',
+                'execution': 'Slight power increase - maintain lactate control, feel the sustainable burn',
+                'cadence_prescription': '85-90rpm - smooth pedaling',
+                'position_prescription': 'Aero when possible',
+                'timing_prescription': 'Consistent time of day',
+                'fueling': '60-70g CHO/hr',
                 'norwegian': True,
                 'intervals': (4, 480),
                 'on_power': 0.90,
@@ -2064,7 +2162,11 @@ NORWEGIAN_DOUBLE = [
             },
             '3': {
                 'structure': '20min warmup Z2, 5x8min @ 90-92% FTP (lactate capped), 2min recovery',
-                'execution': 'Added interval - building threshold volume',
+                'execution': 'Added interval - building threshold volume, maintain control',
+                'cadence_prescription': '85-90rpm',
+                'position_prescription': 'Race position practice',
+                'timing_prescription': 'Morning primary, PM optional',
+                'fueling': '60-70g CHO/hr',
                 'norwegian': True,
                 'intervals': (5, 480),
                 'on_power': 0.91,
@@ -2074,7 +2176,11 @@ NORWEGIAN_DOUBLE = [
             },
             '4': {
                 'structure': '20min warmup Z2, 5x8min @ 91-93% FTP (lactate capped), 90sec recovery',
-                'execution': 'Reduced recovery - threshold durability',
+                'execution': 'Reduced recovery - threshold durability, lactate clearance',
+                'cadence_prescription': '85-90rpm - maintain even as recovery shortens',
+                'position_prescription': 'Sustainable race position',
+                'timing_prescription': 'Key quality day',
+                'fueling': '70g CHO/hr',
                 'norwegian': True,
                 'intervals': (5, 480),
                 'on_power': 0.92,
@@ -2084,7 +2190,11 @@ NORWEGIAN_DOUBLE = [
             },
             '5': {
                 'structure': '20min warmup Z2, 6x8min @ 92-94% FTP (lactate capped), 90sec recovery',
-                'execution': 'Maximum Norwegian format - 48 minutes TIZ',
+                'execution': 'Maximum Norwegian format - 48 minutes TIZ, elite-level threshold volume',
+                'cadence_prescription': '85-90rpm',
+                'position_prescription': 'TT/aero position',
+                'timing_prescription': 'Primary training block cornerstone',
+                'fueling': '70g CHO/hr',
                 'norwegian': True,
                 'intervals': (6, 480),
                 'on_power': 0.93,
@@ -2094,7 +2204,11 @@ NORWEGIAN_DOUBLE = [
             },
             '6': {
                 'structure': '20min warmup Z2, 6x10min @ 92-94% FTP (lactate capped), 2min recovery',
-                'execution': 'Extended intervals - 60 minutes threshold volume',
+                'execution': 'Extended intervals - 60 minutes threshold volume, Ingebrigtsen-level',
+                'cadence_prescription': '85-90rpm - smooth throughout 10min blocks',
+                'position_prescription': 'Full race position',
+                'timing_prescription': 'Peak threshold development',
+                'fueling': '70-80g CHO/hr',
                 'norwegian': True,
                 'intervals': (6, 600),
                 'on_power': 0.93,
@@ -2105,69 +2219,181 @@ NORWEGIAN_DOUBLE = [
         }
     },
     {
-        'name': 'Norwegian Double Session',
+        'name': 'Norwegian Double AM',
+        # NOTE: This generates the AM session. Generator should create separate PM file.
         'levels': {
             '1': {
-                'structure': 'AM: 3x8min @ 88% FTP. PM: 3x8min @ 88% FTP. 6+ hours between.',
-                'execution': 'Two sessions per day - threshold volume accumulation',
-                'double_session': True,
-                'am_intervals': (3, 480),
-                'pm_intervals': (3, 480),
+                'structure': 'AM Session: 15min warmup, 3x8min @ 88% FTP, 2min recovery. PM session separate.',
+                'execution': 'AM threshold session - PM session 6+ hours later is separate workout file',
+                'cadence_prescription': '85-90rpm',
+                'position_prescription': 'Sustainable position',
+                'timing_prescription': 'Morning - allow 6+ hours before PM session',
+                'fueling': '50-60g CHO/hr - save glycogen for PM',
+                'norwegian': True,
+                'is_am_session': True,
+                'intervals': (3, 480),
                 'on_power': 0.88,
                 'off_power': 0.55,
                 'off_duration': 120,
                 'session_gap_hours': 6
             },
             '2': {
-                'structure': 'AM: 3x8min @ 89% FTP. PM: 3x8min @ 89% FTP.',
-                'execution': 'Building double-session capacity',
-                'double_session': True,
-                'am_intervals': (3, 480),
-                'pm_intervals': (3, 480),
+                'structure': 'AM Session: 15min warmup, 3x8min @ 89% FTP, 2min recovery',
+                'execution': 'Building double-session capacity - respect the PM session',
+                'cadence_prescription': '85-90rpm',
+                'position_prescription': 'Comfortable, sustainable',
+                'timing_prescription': 'Early morning for maximum recovery before PM',
+                'fueling': '50-60g CHO/hr',
+                'norwegian': True,
+                'is_am_session': True,
+                'intervals': (3, 480),
                 'on_power': 0.89,
                 'off_power': 0.55,
                 'off_duration': 120
             },
             '3': {
-                'structure': 'AM: 4x8min @ 89% FTP. PM: 3x8min @ 89% FTP.',
-                'execution': 'Asymmetric doubles - harder AM, maintenance PM',
-                'double_session': True,
-                'am_intervals': (4, 480),
-                'pm_intervals': (3, 480),
+                'structure': 'AM Session: 15min warmup, 4x8min @ 89% FTP, 2min recovery',
+                'execution': 'Asymmetric day - harder AM, easier PM',
+                'cadence_prescription': '85-90rpm',
+                'position_prescription': 'Race position practice',
+                'timing_prescription': 'AM slot',
+                'fueling': '60g CHO/hr',
+                'norwegian': True,
+                'is_am_session': True,
+                'intervals': (4, 480),
                 'on_power': 0.89,
                 'off_power': 0.55,
                 'off_duration': 120
             },
             '4': {
-                'structure': 'AM: 4x8min @ 90% FTP. PM: 4x8min @ 88% FTP.',
-                'execution': 'Full doubles - significant threshold volume',
-                'double_session': True,
-                'am_intervals': (4, 480),
-                'pm_intervals': (4, 480),
-                'am_power': 0.90,
-                'pm_power': 0.88,
+                'structure': 'AM Session: 15min warmup, 4x8min @ 90% FTP, 2min recovery',
+                'execution': 'Full doubles day - significant threshold volume across both sessions',
+                'cadence_prescription': '85-90rpm',
+                'position_prescription': 'Aero/race position',
+                'timing_prescription': 'Primary AM threshold',
+                'fueling': '60g CHO/hr',
+                'norwegian': True,
+                'is_am_session': True,
+                'intervals': (4, 480),
+                'on_power': 0.90,
                 'off_power': 0.55,
                 'off_duration': 120
             },
             '5': {
-                'structure': 'AM: 5x8min @ 90% FTP. PM: 4x8min @ 88% FTP.',
+                'structure': 'AM Session: 15min warmup, 5x8min @ 90% FTP, 2min recovery',
                 'execution': 'Extended AM session - building threshold dominance',
-                'double_session': True,
-                'am_intervals': (5, 480),
-                'pm_intervals': (4, 480),
-                'am_power': 0.90,
-                'pm_power': 0.88,
+                'cadence_prescription': '85-90rpm',
+                'position_prescription': 'Full race position',
+                'timing_prescription': 'Key AM quality session',
+                'fueling': '60-70g CHO/hr',
+                'norwegian': True,
+                'is_am_session': True,
+                'intervals': (5, 480),
+                'on_power': 0.90,
                 'off_power': 0.55,
                 'off_duration': 120
             },
             '6': {
-                'structure': 'AM: 5x8min @ 91% FTP. PM: 5x8min @ 88% FTP.',
-                'execution': 'Maximum doubles - elite threshold volume',
-                'double_session': True,
-                'am_intervals': (5, 480),
-                'pm_intervals': (5, 480),
-                'am_power': 0.91,
-                'pm_power': 0.88,
+                'structure': 'AM Session: 15min warmup, 5x8min @ 91% FTP, 2min recovery',
+                'execution': 'Maximum AM doubles - elite threshold volume, PM session completes the day',
+                'cadence_prescription': '85-90rpm',
+                'position_prescription': 'Full race aero',
+                'timing_prescription': 'Peak double-day capacity',
+                'fueling': '70g CHO/hr',
+                'norwegian': True,
+                'is_am_session': True,
+                'intervals': (5, 480),
+                'on_power': 0.91,
+                'off_power': 0.55,
+                'off_duration': 120
+            }
+        }
+    },
+    {
+        'name': 'Norwegian Double PM',
+        # NOTE: This is the PM complement to Norwegian Double AM
+        'levels': {
+            '1': {
+                'structure': 'PM Session: 15min warmup, 3x8min @ 88% FTP, 2min recovery',
+                'execution': 'PM threshold session - 6+ hours after AM session',
+                'cadence_prescription': '85-90rpm',
+                'position_prescription': 'Sustainable position',
+                'timing_prescription': 'Evening - 6+ hours after AM',
+                'fueling': '50-60g CHO/hr',
+                'norwegian': True,
+                'is_pm_session': True,
+                'intervals': (3, 480),
+                'on_power': 0.88,
+                'off_power': 0.55,
+                'off_duration': 120
+            },
+            '2': {
+                'structure': 'PM Session: 15min warmup, 3x8min @ 89% FTP, 2min recovery',
+                'execution': 'PM complement - match AM intensity',
+                'cadence_prescription': '85-90rpm',
+                'position_prescription': 'Comfortable',
+                'timing_prescription': 'Late afternoon/evening',
+                'fueling': '50-60g CHO/hr',
+                'norwegian': True,
+                'is_pm_session': True,
+                'intervals': (3, 480),
+                'on_power': 0.89,
+                'off_power': 0.55,
+                'off_duration': 120
+            },
+            '3': {
+                'structure': 'PM Session: 15min warmup, 3x8min @ 89% FTP, 2min recovery',
+                'execution': 'Easier PM after harder AM - asymmetric loading',
+                'cadence_prescription': '85-90rpm',
+                'position_prescription': 'Comfortable',
+                'timing_prescription': 'Evening session',
+                'fueling': '50-60g CHO/hr',
+                'norwegian': True,
+                'is_pm_session': True,
+                'intervals': (3, 480),
+                'on_power': 0.89,
+                'off_power': 0.55,
+                'off_duration': 120
+            },
+            '4': {
+                'structure': 'PM Session: 15min warmup, 4x8min @ 88% FTP, 2min recovery',
+                'execution': 'Full PM session - slightly lower power than AM',
+                'cadence_prescription': '85-90rpm',
+                'position_prescription': 'Sustainable',
+                'timing_prescription': 'Evening completion',
+                'fueling': '60g CHO/hr',
+                'norwegian': True,
+                'is_pm_session': True,
+                'intervals': (4, 480),
+                'on_power': 0.88,
+                'off_power': 0.55,
+                'off_duration': 120
+            },
+            '5': {
+                'structure': 'PM Session: 15min warmup, 4x8min @ 88% FTP, 2min recovery',
+                'execution': 'PM complement to extended AM',
+                'cadence_prescription': '85-90rpm',
+                'position_prescription': 'Sustainable',
+                'timing_prescription': 'Evening',
+                'fueling': '60g CHO/hr',
+                'norwegian': True,
+                'is_pm_session': True,
+                'intervals': (4, 480),
+                'on_power': 0.88,
+                'off_power': 0.55,
+                'off_duration': 120
+            },
+            '6': {
+                'structure': 'PM Session: 15min warmup, 5x8min @ 88% FTP, 2min recovery',
+                'execution': 'Maximum PM doubles - complete the elite threshold day',
+                'cadence_prescription': '85-90rpm',
+                'position_prescription': 'Sustainable race position',
+                'timing_prescription': 'Evening completion of double day',
+                'fueling': '60-70g CHO/hr',
+                'norwegian': True,
+                'is_pm_session': True,
+                'intervals': (5, 480),
+                'on_power': 0.88,
                 'off_power': 0.55,
                 'off_duration': 120
             }
@@ -2179,6 +2405,7 @@ NORWEGIAN_DOUBLE = [
 # =============================================================================
 # HVLI / LSD EXTENDED ARCHETYPES (High Volume Low Intensity)
 # =============================================================================
+# Full dimensions on all levels
 
 HVLI_EXTENDED = [
     {
@@ -2187,31 +2414,43 @@ HVLI_EXTENDED = [
             '1': {
                 'structure': '3hr @ 65-70% FTP. Pure Zone 2 endurance.',
                 'execution': 'Long slow distance - build durability and fat oxidation. No surges.',
-                'cadence_prescription': '80-90rpm natural',
-                'position_prescription': 'Comfortable, alternate every 30min',
-                'timing_prescription': 'Weekend long ride',
-                'fueling': '50-60g CHO/hr',
+                'cadence_prescription': '80-90rpm natural - find sustainable rhythm',
+                'position_prescription': 'Comfortable, alternate every 30min between hoods/drops',
+                'timing_prescription': 'Weekend long ride - primary volume day',
+                'fueling': '50-60g CHO/hr - practice race fueling',
                 'hvli': True,
                 'duration': 10800,
                 'power': 0.68
             },
             '2': {
                 'structure': '3.5hr @ 65-70% FTP. Extended Zone 2.',
-                'execution': 'Building volume - stay aerobic, no intensity',
+                'execution': 'Building volume - stay aerobic, no intensity spikes',
+                'cadence_prescription': '80-90rpm - maintain through fatigue',
+                'position_prescription': 'Rotate positions every 20-30min',
+                'timing_prescription': 'Weekend primary ride',
+                'fueling': '50-60g CHO/hr',
                 'hvli': True,
                 'duration': 12600,
                 'power': 0.68
             },
             '3': {
                 'structure': '4hr @ 65-70% FTP. Long Zone 2 development.',
-                'execution': 'Significant aerobic development ride',
+                'execution': 'Significant aerobic development ride - mental game begins',
+                'cadence_prescription': '80-90rpm - efficiency focus',
+                'position_prescription': 'Practice race position in hour 3',
+                'timing_prescription': 'Major training day',
+                'fueling': '60g CHO/hr - gut training',
                 'hvli': True,
                 'duration': 14400,
                 'power': 0.68
             },
             '4': {
                 'structure': '4.5hr @ 65-70% FTP. Extended durability.',
-                'execution': 'Building toward race-day durations',
+                'execution': 'Building toward race-day durations - fuel aggressively',
+                'cadence_prescription': '80-90rpm - maintain even as tired',
+                'position_prescription': 'Full position rotation',
+                'timing_prescription': 'Big volume day',
+                'fueling': '60-70g CHO/hr',
                 'hvli': True,
                 'duration': 16200,
                 'power': 0.68
@@ -2219,13 +2458,21 @@ HVLI_EXTENDED = [
             '5': {
                 'structure': '5hr @ 65-70% FTP. Major volume day.',
                 'execution': 'Race-simulation duration - fuel and hydrate aggressively',
+                'cadence_prescription': '80-90rpm - consistency is key',
+                'position_prescription': 'Race position practice throughout',
+                'timing_prescription': 'Key long ride - protect surrounding days',
+                'fueling': '70-80g CHO/hr - race-day fueling',
                 'hvli': True,
                 'duration': 18000,
                 'power': 0.68
             },
             '6': {
                 'structure': '6hr @ 65-70% FTP. Maximum volume ride.',
-                'execution': 'Ultra-distance preparation - mental and physical durability',
+                'execution': 'Ultra-distance preparation - mental and physical durability test',
+                'cadence_prescription': '80-90rpm - whatever is sustainable',
+                'position_prescription': 'Full race position rotation',
+                'timing_prescription': 'Peak volume - biggest ride of block',
+                'fueling': '80-90g CHO/hr - maximum gut training',
                 'hvli': True,
                 'duration': 21600,
                 'power': 0.68
@@ -2237,7 +2484,11 @@ HVLI_EXTENDED = [
         'levels': {
             '1': {
                 'structure': '3hr variable Z2: alternating 10min @ 70% FTP (flats) with 10min @ 65% FTP (recovery)',
-                'execution': 'Simulating rolling terrain within Zone 2',
+                'execution': 'Simulating rolling terrain within Zone 2 - no hard efforts',
+                'cadence_prescription': '85rpm on "climbs", 80rpm on "descents"',
+                'position_prescription': 'Drops on high power, hoods on low',
+                'timing_prescription': 'Weekend terrain simulation',
+                'fueling': '50-60g CHO/hr',
                 'hvli_terrain': True,
                 'duration': 10800,
                 'high_power': 0.70,
@@ -2246,7 +2497,11 @@ HVLI_EXTENDED = [
             },
             '2': {
                 'structure': '3.5hr variable Z2: alternating 10min @ 72% FTP with 10min @ 65% FTP',
-                'execution': 'Extended terrain simulation',
+                'execution': 'Extended terrain simulation - building variability tolerance',
+                'cadence_prescription': '85-90rpm variation',
+                'position_prescription': 'Race position practice',
+                'timing_prescription': 'Primary terrain day',
+                'fueling': '50-60g CHO/hr',
                 'hvli_terrain': True,
                 'duration': 12600,
                 'high_power': 0.72,
@@ -2255,7 +2510,11 @@ HVLI_EXTENDED = [
             },
             '3': {
                 'structure': '4hr variable Z2: alternating 15min @ 72% FTP with 10min @ 65% FTP',
-                'execution': 'Longer "climbs" within Zone 2',
+                'execution': 'Longer "climbs" within Zone 2 - sustained effort practice',
+                'cadence_prescription': '80-85rpm on climbs, 90rpm on recovery',
+                'position_prescription': 'Climbing position practice',
+                'timing_prescription': 'Course-specific preparation',
+                'fueling': '60g CHO/hr',
                 'hvli_terrain': True,
                 'duration': 14400,
                 'high_power': 0.72,
@@ -2265,7 +2524,11 @@ HVLI_EXTENDED = [
             },
             '4': {
                 'structure': '4.5hr variable Z2 with occasional 5min surges to 75% FTP',
-                'execution': 'Adding small surges - still aerobic',
+                'execution': 'Adding small surges - still aerobic, mimics race demands',
+                'cadence_prescription': '85-90rpm on surges',
+                'position_prescription': 'Race position on surges',
+                'timing_prescription': 'Race-specific preparation',
+                'fueling': '60-70g CHO/hr',
                 'hvli_terrain': True,
                 'duration': 16200,
                 'high_power': 0.75,
@@ -2275,6 +2538,10 @@ HVLI_EXTENDED = [
             '5': {
                 'structure': '5hr variable Z2 with course-specific power variations',
                 'execution': 'Race-course simulation at aerobic intensity',
+                'cadence_prescription': 'Match expected race cadence',
+                'position_prescription': 'Full race position practice',
+                'timing_prescription': 'Course simulation day',
+                'fueling': '70-80g CHO/hr',
                 'hvli_terrain': True,
                 'duration': 18000,
                 'high_power': 0.75,
@@ -2282,7 +2549,11 @@ HVLI_EXTENDED = [
             },
             '6': {
                 'structure': '6hr variable Z2 matching race-day power profile',
-                'execution': 'Full race-day terrain simulation - dress rehearsal',
+                'execution': 'Full race-day terrain simulation - dress rehearsal at Z2',
+                'cadence_prescription': 'Race-day cadence targets',
+                'position_prescription': 'Full race position',
+                'timing_prescription': 'Final long ride before taper',
+                'fueling': '80-90g CHO/hr - full race fueling',
                 'hvli_terrain': True,
                 'duration': 21600,
                 'high_power': 0.75,
@@ -2294,109 +2565,608 @@ HVLI_EXTENDED = [
 
 
 # =============================================================================
-# BLOCK PERIODIZATION ARCHETYPES
+# TESTING PROTOCOL ARCHETYPES
 # =============================================================================
+# Proper testing workouts that generate actual ZWO files
 
-BLOCK_PERIODIZATION = [
+TESTING_PROTOCOLS = [
     {
-        'name': 'VO2max Block Focus',
+        'name': 'FTP Ramp Test',
         'levels': {
             '1': {
-                'structure': 'Block Week 1: 3x VO2 sessions + maintenance threshold + easy volume',
-                'execution': 'VO2max focused block - 3 quality sessions targeting VO2',
-                'block_focus': 'VO2max',
-                'quality_sessions': 3,
-                'maintenance': ['threshold'],
-                'block_week': 1
+                'structure': '10min warmup @ 50%, then ramp from 100W increasing 20W every minute until failure',
+                'execution': 'Ramp test protocol - FTP = 75% of max 1-minute power',
+                'cadence_prescription': '85-95rpm - maintain as long as possible',
+                'position_prescription': 'Hoods, seated - consistent position',
+                'timing_prescription': 'Fresh legs - after rest day, morning preferred',
+                'fueling': 'Fasted or light meal 2-3hr before',
+                'testing': True,
+                'test_type': 'ramp',
+                'warmup_duration': 600,
+                'warmup_power': 0.50,
+                'ramp_start_watts': 100,
+                'ramp_increment': 20,
+                'ramp_step_duration': 60
             },
             '2': {
-                'structure': 'Block Week 2: 4x VO2 sessions + maintenance threshold',
-                'execution': 'Overload week - maximum VO2 stimulus',
-                'block_focus': 'VO2max',
-                'quality_sessions': 4,
-                'maintenance': ['threshold'],
-                'block_week': 2
+                'structure': 'Ramp test with 5min Z2 warmup extension',
+                'execution': 'Extended warmup for those needing more preparation',
+                'cadence_prescription': '85-95rpm',
+                'position_prescription': 'Consistent test position',
+                'timing_prescription': 'Fresh, rested',
+                'fueling': 'Standardized',
+                'testing': True,
+                'test_type': 'ramp',
+                'warmup_duration': 900,
+                'warmup_power': 0.55,
+                'ramp_start_watts': 100,
+                'ramp_increment': 20,
+                'ramp_step_duration': 60
             },
             '3': {
-                'structure': 'Block Week 3: 2x VO2 sessions + consolidation',
-                'execution': 'Consolidation week - absorb adaptations',
-                'block_focus': 'VO2max',
-                'quality_sessions': 2,
-                'block_week': 3,
-                'consolidation': True
+                'structure': 'Ramp test - baseline establishment',
+                'execution': 'First test of training block - establish baseline FTP',
+                'cadence_prescription': '85-95rpm',
+                'position_prescription': 'Standard test position',
+                'timing_prescription': 'Start of training block',
+                'fueling': 'Standardized pre-test meal',
+                'testing': True,
+                'test_type': 'ramp',
+                'warmup_duration': 600,
+                'warmup_power': 0.50,
+                'ramp_start_watts': 100,
+                'ramp_increment': 20,
+                'ramp_step_duration': 60
             },
             '4': {
-                'structure': 'Block Week 4: Transition - 1x VO2, 1x next focus',
-                'execution': 'Transition to next block focus',
-                'block_focus': 'VO2max',
-                'quality_sessions': 1,
-                'block_week': 4,
-                'transition': True
+                'structure': 'Ramp test - mid-block check',
+                'execution': 'Mid-block progress check - compare to baseline',
+                'cadence_prescription': '85-95rpm - match baseline test',
+                'position_prescription': 'Identical to baseline',
+                'timing_prescription': 'Mid-block, after recovery week',
+                'fueling': 'Match baseline test',
+                'testing': True,
+                'test_type': 'ramp',
+                'warmup_duration': 600,
+                'warmup_power': 0.50,
+                'ramp_start_watts': 100,
+                'ramp_increment': 20,
+                'ramp_step_duration': 60
             },
             '5': {
-                'structure': 'Block extension: 5x VO2 sessions if responding well',
-                'execution': 'Extended overload for strong responders',
-                'block_focus': 'VO2max',
-                'quality_sessions': 5,
-                'block_week': 'extended'
+                'structure': 'Ramp test - peak fitness',
+                'execution': 'Peak fitness assessment before taper',
+                'cadence_prescription': '85-95rpm',
+                'position_prescription': 'Standard test position',
+                'timing_prescription': 'End of build phase',
+                'fueling': 'Standardized',
+                'testing': True,
+                'test_type': 'ramp',
+                'warmup_duration': 600,
+                'warmup_power': 0.50,
+                'ramp_start_watts': 100,
+                'ramp_increment': 20,
+                'ramp_step_duration': 60
             },
             '6': {
-                'structure': 'Block peak: Test VO2max, record KPIs',
-                'execution': 'Block completion - measure improvements',
-                'block_focus': 'VO2max',
+                'structure': 'Ramp test - race readiness',
+                'execution': 'Final FTP confirmation before race',
+                'cadence_prescription': '85-95rpm',
+                'position_prescription': 'Race position',
+                'timing_prescription': '7-10 days before race',
+                'fueling': 'Race-day nutrition practice',
                 'testing': True,
-                'block_week': 'peak'
+                'test_type': 'ramp',
+                'warmup_duration': 600,
+                'warmup_power': 0.50,
+                'ramp_start_watts': 100,
+                'ramp_increment': 20,
+                'ramp_step_duration': 60
             }
         }
     },
     {
-        'name': 'Threshold Block Focus',
+        'name': '20min FTP Test',
         'levels': {
             '1': {
-                'structure': 'Block Week 1: 3x Threshold sessions + maintenance VO2 + easy volume',
-                'execution': 'Threshold focused block - building FTP',
-                'block_focus': 'Threshold',
-                'quality_sessions': 3,
-                'maintenance': ['VO2max'],
-                'block_week': 1
+                'structure': '20min warmup with 3x1min blowouts, then 20min all-out. FTP = 95% of 20min power.',
+                'execution': 'Classic 20-minute test - pace conservatively first 5 minutes',
+                'cadence_prescription': '90-95rpm - sustainable turnover',
+                'position_prescription': 'TT position if comfortable, otherwise drops',
+                'timing_prescription': 'Fresh legs, morning or early afternoon',
+                'fueling': 'Light meal 2-3hr before, caffeine optional',
+                'testing': True,
+                'test_type': '20min_ftp',
+                'warmup_duration': 1200,
+                'blowout_intervals': (3, 60),
+                'blowout_power': 1.20,
+                'test_duration': 1200,
+                'ftp_multiplier': 0.95
             },
             '2': {
-                'structure': 'Block Week 2: 4x Threshold sessions (including G-Spot)',
-                'execution': 'Overload week - maximum threshold stimulus',
-                'block_focus': 'Threshold',
-                'quality_sessions': 4,
-                'block_week': 2
+                'structure': '20min FTP test with extended warmup',
+                'execution': 'For those needing longer preparation',
+                'cadence_prescription': '90-95rpm',
+                'position_prescription': 'TT/drops',
+                'timing_prescription': 'Fresh',
+                'fueling': 'Standardized',
+                'testing': True,
+                'test_type': '20min_ftp',
+                'warmup_duration': 1500,
+                'blowout_intervals': (3, 60),
+                'blowout_power': 1.20,
+                'test_duration': 1200,
+                'ftp_multiplier': 0.95
             },
             '3': {
-                'structure': 'Block Week 3: 2x Threshold + consolidation',
-                'execution': 'Consolidation - let FTP rise',
-                'block_focus': 'Threshold',
-                'quality_sessions': 2,
-                'block_week': 3,
-                'consolidation': True
+                'structure': '20min FTP test - baseline',
+                'execution': 'Baseline establishment',
+                'cadence_prescription': '90-95rpm',
+                'position_prescription': 'Standard',
+                'timing_prescription': 'Block start',
+                'fueling': 'Standardized',
+                'testing': True,
+                'test_type': '20min_ftp',
+                'warmup_duration': 1200,
+                'blowout_intervals': (3, 60),
+                'blowout_power': 1.20,
+                'test_duration': 1200,
+                'ftp_multiplier': 0.95
             },
             '4': {
-                'structure': 'Block Week 4: Transition to next focus',
-                'execution': 'FTP test, then transition',
-                'block_focus': 'Threshold',
-                'quality_sessions': 1,
-                'block_week': 4,
-                'transition': True,
-                'testing': True
+                'structure': '20min FTP test - progress check',
+                'execution': 'Mid-block assessment',
+                'cadence_prescription': '90-95rpm',
+                'position_prescription': 'Match baseline',
+                'timing_prescription': 'Mid-block',
+                'fueling': 'Match baseline',
+                'testing': True,
+                'test_type': '20min_ftp',
+                'warmup_duration': 1200,
+                'blowout_intervals': (3, 60),
+                'blowout_power': 1.20,
+                'test_duration': 1200,
+                'ftp_multiplier': 0.95
             },
             '5': {
-                'structure': 'Extended: Norwegian doubles if tolerating well',
-                'execution': 'High threshold volume for strong responders',
-                'block_focus': 'Threshold',
-                'quality_sessions': 6,
-                'norwegian_style': True
+                'structure': '20min FTP test - peak',
+                'execution': 'Peak fitness assessment',
+                'cadence_prescription': '90-95rpm',
+                'position_prescription': 'Race position',
+                'timing_prescription': 'End of build',
+                'fueling': 'Optimized',
+                'testing': True,
+                'test_type': '20min_ftp',
+                'warmup_duration': 1200,
+                'blowout_intervals': (3, 60),
+                'blowout_power': 1.20,
+                'test_duration': 1200,
+                'ftp_multiplier': 0.95
             },
             '6': {
-                'structure': 'Block peak: 20min FTP test or CP test',
-                'execution': 'Measure threshold improvements',
-                'block_focus': 'Threshold',
+                'structure': '20min FTP test - race prep',
+                'execution': 'Final confirmation',
+                'cadence_prescription': '90-95rpm',
+                'position_prescription': 'Race position',
+                'timing_prescription': 'Pre-race',
+                'fueling': 'Race nutrition',
                 'testing': True,
-                'block_week': 'peak'
+                'test_type': '20min_ftp',
+                'warmup_duration': 1200,
+                'blowout_intervals': (3, 60),
+                'blowout_power': 1.20,
+                'test_duration': 1200,
+                'ftp_multiplier': 0.95
+            }
+        }
+    },
+    {
+        'name': 'CP Test Protocol',
+        'levels': {
+            '1': {
+                'structure': '3-minute all-out test after warmup. Establishes CP and W\'.',
+                'execution': '3-minute all-out test - go hard from the start, hold on',
+                'cadence_prescription': '100-110rpm - high turnover',
+                'position_prescription': 'Drops, aggressive',
+                'timing_prescription': 'Fresh legs required',
+                'fueling': 'Light or fasted',
+                'testing': True,
+                'test_type': 'cp_3min',
+                'warmup_duration': 1200,
+                'test_duration': 180
+            },
+            '2': {
+                'structure': '12-minute all-out test. Alternative CP determination.',
+                'execution': '12-minute maximal effort - pace more conservatively',
+                'cadence_prescription': '90-95rpm',
+                'position_prescription': 'TT position',
+                'timing_prescription': 'Fresh',
+                'fueling': 'Light meal before',
+                'testing': True,
+                'test_type': 'cp_12min',
+                'warmup_duration': 1200,
+                'test_duration': 720
+            },
+            '3': {
+                'structure': '3-12 combo: 3min all-out, rest 30min, 12min all-out',
+                'execution': 'Full CP/W\' determination - two efforts same day',
+                'cadence_prescription': 'Match effort duration',
+                'position_prescription': 'Consistent between tests',
+                'timing_prescription': 'Dedicated test day',
+                'fueling': 'Refuel between efforts',
+                'testing': True,
+                'test_type': 'cp_combo',
+                'warmup_duration': 1200,
+                'test_1_duration': 180,
+                'rest_duration': 1800,
+                'test_2_duration': 720
+            },
+            '4': {
+                'structure': 'CP test - baseline establishment',
+                'execution': 'Baseline CP/W\' for training block',
+                'cadence_prescription': 'Consistent',
+                'position_prescription': 'Standard',
+                'timing_prescription': 'Block start',
+                'fueling': 'Standardized',
+                'testing': True,
+                'test_type': 'cp_3min',
+                'warmup_duration': 1200,
+                'test_duration': 180
+            },
+            '5': {
+                'structure': 'CP test - progress check',
+                'execution': 'Mid-block CP assessment',
+                'cadence_prescription': 'Match baseline',
+                'position_prescription': 'Match baseline',
+                'timing_prescription': 'Mid-block',
+                'fueling': 'Match baseline',
+                'testing': True,
+                'test_type': 'cp_3min',
+                'warmup_duration': 1200,
+                'test_duration': 180
+            },
+            '6': {
+                'structure': 'CP test - race readiness',
+                'execution': 'Final CP confirmation',
+                'cadence_prescription': 'Race cadence',
+                'position_prescription': 'Race position',
+                'timing_prescription': 'Pre-race',
+                'fueling': 'Race prep',
+                'testing': True,
+                'test_type': 'cp_3min',
+                'warmup_duration': 1200,
+                'test_duration': 180
+            }
+        }
+    }
+]
+
+
+# =============================================================================
+# RECOVERY ARCHETYPES
+# =============================================================================
+
+RECOVERY_NEW = [
+    {
+        'name': 'Active Recovery Spin',
+        'levels': {
+            '1': {
+                'structure': '30min @ 50-55% FTP. True recovery - minimal load.',
+                'execution': 'Flush ride - promote blood flow without adding stress',
+                'cadence_prescription': '85-95rpm - light, easy spinning',
+                'position_prescription': 'Comfortable, relaxed grip',
+                'timing_prescription': 'Day after hard session or race',
+                'fueling': 'Optional - water is fine',
+                'recovery': True,
+                'duration': 1800,
+                'power': 0.52
+            },
+            '2': {
+                'structure': '40min @ 50-55% FTP. Extended recovery spin.',
+                'execution': 'Slightly longer flush - still minimal stress',
+                'cadence_prescription': '85-95rpm',
+                'position_prescription': 'Relaxed',
+                'timing_prescription': 'Recovery day',
+                'fueling': 'Light if any',
+                'recovery': True,
+                'duration': 2400,
+                'power': 0.52
+            },
+            '3': {
+                'structure': '45min @ 50-55% FTP. Standard recovery ride.',
+                'execution': 'Full recovery ride - no surges, no efforts',
+                'cadence_prescription': '85-95rpm',
+                'position_prescription': 'Comfortable',
+                'timing_prescription': 'Day between quality sessions',
+                'fueling': 'Light',
+                'recovery': True,
+                'duration': 2700,
+                'power': 0.53
+            },
+            '4': {
+                'structure': '50min @ 50-55% FTP. Extended recovery.',
+                'execution': 'Longer recovery for high-volume athletes',
+                'cadence_prescription': '85-95rpm',
+                'position_prescription': 'Relaxed',
+                'timing_prescription': 'Recovery day',
+                'fueling': 'Light',
+                'recovery': True,
+                'duration': 3000,
+                'power': 0.53
+            },
+            '5': {
+                'structure': '60min @ 50-55% FTP. Full hour recovery.',
+                'execution': 'Maximum recovery duration - still no intensity',
+                'cadence_prescription': '85-95rpm',
+                'position_prescription': 'Comfortable',
+                'timing_prescription': 'Extended recovery need',
+                'fueling': 'Light',
+                'recovery': True,
+                'duration': 3600,
+                'power': 0.53
+            },
+            '6': {
+                'structure': '60min @ 50-55% FTP with optional mobility.',
+                'execution': 'Full recovery with mobility focus',
+                'cadence_prescription': '85-95rpm',
+                'position_prescription': 'Position mobility work',
+                'timing_prescription': 'Recovery priority day',
+                'fueling': 'Light',
+                'recovery': True,
+                'duration': 3600,
+                'power': 0.52
+            }
+        }
+    },
+    {
+        'name': 'Rest Day',
+        'levels': {
+            '1': {
+                'structure': 'Complete rest - no cycling. Optional stretching/mobility.',
+                'execution': 'Full rest day - recovery is training',
+                'cadence_prescription': 'N/A',
+                'position_prescription': 'N/A',
+                'timing_prescription': 'Scheduled rest or when HRV indicates',
+                'fueling': 'Normal eating, focus on protein and sleep',
+                'rest_day': True,
+                'duration': 0,
+                'power': 0
+            },
+            '2': {
+                'structure': 'Complete rest with mobility work.',
+                'execution': 'Rest + 20min stretching/foam rolling',
+                'cadence_prescription': 'N/A',
+                'position_prescription': 'N/A',
+                'timing_prescription': 'Scheduled rest',
+                'fueling': 'Recovery nutrition focus',
+                'rest_day': True,
+                'duration': 0,
+                'power': 0
+            },
+            '3': {
+                'structure': 'Complete rest.',
+                'execution': 'Full rest - no exercise',
+                'cadence_prescription': 'N/A',
+                'position_prescription': 'N/A',
+                'timing_prescription': 'Rest day',
+                'fueling': 'Normal',
+                'rest_day': True,
+                'duration': 0,
+                'power': 0
+            },
+            '4': {
+                'structure': 'Complete rest.',
+                'execution': 'Full rest',
+                'cadence_prescription': 'N/A',
+                'position_prescription': 'N/A',
+                'timing_prescription': 'Rest day',
+                'fueling': 'Normal',
+                'rest_day': True,
+                'duration': 0,
+                'power': 0
+            },
+            '5': {
+                'structure': 'Complete rest.',
+                'execution': 'Full rest',
+                'cadence_prescription': 'N/A',
+                'position_prescription': 'N/A',
+                'timing_prescription': 'Rest day',
+                'fueling': 'Normal',
+                'rest_day': True,
+                'duration': 0,
+                'power': 0
+            },
+            '6': {
+                'structure': 'Complete rest - race week rest day.',
+                'execution': 'Pre-race rest day',
+                'cadence_prescription': 'N/A',
+                'position_prescription': 'N/A',
+                'timing_prescription': '2-3 days before race',
+                'fueling': 'Carb loading if appropriate',
+                'rest_day': True,
+                'duration': 0,
+                'power': 0
+            }
+        }
+    }
+]
+
+
+# =============================================================================
+# INSCYD / METABOLIC ARCHETYPES
+# =============================================================================
+# For VLamax reduction and metabolic profiling targets
+
+INSCYD_NEW = [
+    {
+        'name': 'VLamax Reduction',
+        'levels': {
+            '1': {
+                'structure': '90min @ 70-75% FTP with 4x20sec sprints. Long Z2 with glycolytic depletion.',
+                'execution': 'Reduce VLamax through long aerobic work with strategic sprints to deplete glycolytic capacity',
+                'cadence_prescription': '80-90rpm base, 110+ rpm sprints',
+                'position_prescription': 'Comfortable, sprints in drops',
+                'timing_prescription': 'Fasted morning for maximum effect',
+                'fueling': 'Fasted or minimal - this is the point',
+                'inscyd': True,
+                'vlamax_reduction': True,
+                'duration': 5400,
+                'power': 0.72,
+                'sprint_intervals': (4, 20),
+                'sprint_power': 2.0
+            },
+            '2': {
+                'structure': '2hr @ 70-75% FTP with 5x20sec sprints distributed throughout.',
+                'execution': 'Extended VLamax reduction - long duration, minimal glycolytic work',
+                'cadence_prescription': '80-90rpm, high cadence sprints',
+                'position_prescription': 'Endurance position',
+                'timing_prescription': 'Fasted or low-carb',
+                'fueling': 'Minimal - water and electrolytes',
+                'inscyd': True,
+                'vlamax_reduction': True,
+                'duration': 7200,
+                'power': 0.72,
+                'sprint_intervals': (5, 20),
+                'sprint_power': 2.0
+            },
+            '3': {
+                'structure': '2.5hr @ 70-75% FTP with 6x20sec sprints.',
+                'execution': 'Extended aerobic with glycolytic depletion sprints',
+                'cadence_prescription': '80-90rpm',
+                'position_prescription': 'Sustainable',
+                'timing_prescription': 'Fasted',
+                'fueling': 'Minimal',
+                'inscyd': True,
+                'vlamax_reduction': True,
+                'duration': 9000,
+                'power': 0.72,
+                'sprint_intervals': (6, 20),
+                'sprint_power': 2.0
+            },
+            '4': {
+                'structure': '3hr @ 68-72% FTP with 6x20sec sprints.',
+                'execution': 'Maximum VLamax reduction ride',
+                'cadence_prescription': '80-90rpm',
+                'position_prescription': 'Comfortable',
+                'timing_prescription': 'Fasted, morning',
+                'fueling': 'Water only',
+                'inscyd': True,
+                'vlamax_reduction': True,
+                'duration': 10800,
+                'power': 0.70,
+                'sprint_intervals': (6, 20),
+                'sprint_power': 2.0
+            },
+            '5': {
+                'structure': '3.5hr @ 68-72% FTP with 8x20sec sprints.',
+                'execution': 'Extended VLamax reduction',
+                'cadence_prescription': '80-90rpm',
+                'position_prescription': 'Endurance',
+                'timing_prescription': 'Fasted',
+                'fueling': 'Minimal',
+                'inscyd': True,
+                'vlamax_reduction': True,
+                'duration': 12600,
+                'power': 0.70,
+                'sprint_intervals': (8, 20),
+                'sprint_power': 2.0
+            },
+            '6': {
+                'structure': '4hr @ 68-72% FTP with 10x20sec sprints.',
+                'execution': 'Maximum VLamax reduction protocol',
+                'cadence_prescription': '80-90rpm',
+                'position_prescription': 'Sustainable',
+                'timing_prescription': 'Fasted, dedicated day',
+                'fueling': 'Minimal',
+                'inscyd': True,
+                'vlamax_reduction': True,
+                'duration': 14400,
+                'power': 0.70,
+                'sprint_intervals': (10, 20),
+                'sprint_power': 2.0
+            }
+        }
+    },
+    {
+        'name': 'FatMax Development',
+        'levels': {
+            '1': {
+                'structure': '90min fasted @ 65-70% FTP. Maximum fat oxidation zone.',
+                'execution': 'Fasted ride at FatMax intensity - build fat oxidation capacity',
+                'cadence_prescription': '80-85rpm - efficiency focus',
+                'position_prescription': 'Comfortable',
+                'timing_prescription': 'Morning, fasted (8+ hours since last meal)',
+                'fueling': 'None - water only',
+                'inscyd': True,
+                'fatmax': True,
+                'duration': 5400,
+                'power': 0.67,
+                'fasted': True
+            },
+            '2': {
+                'structure': '2hr fasted @ 65-70% FTP.',
+                'execution': 'Extended fasted FatMax ride',
+                'cadence_prescription': '80-85rpm',
+                'position_prescription': 'Comfortable',
+                'timing_prescription': 'Morning fasted',
+                'fueling': 'Water only',
+                'inscyd': True,
+                'fatmax': True,
+                'duration': 7200,
+                'power': 0.67,
+                'fasted': True
+            },
+            '3': {
+                'structure': '2.5hr fasted @ 65-68% FTP.',
+                'execution': 'Extended FatMax development',
+                'cadence_prescription': '80-85rpm',
+                'position_prescription': 'Comfortable',
+                'timing_prescription': 'Fasted',
+                'fueling': 'Water/electrolytes only',
+                'inscyd': True,
+                'fatmax': True,
+                'duration': 9000,
+                'power': 0.66,
+                'fasted': True
+            },
+            '4': {
+                'structure': '3hr fasted @ 65-68% FTP.',
+                'execution': 'Maximum fasted FatMax ride',
+                'cadence_prescription': '80-85rpm',
+                'position_prescription': 'Sustainable',
+                'timing_prescription': 'Morning fasted',
+                'fueling': 'Water/electrolytes',
+                'inscyd': True,
+                'fatmax': True,
+                'duration': 10800,
+                'power': 0.66,
+                'fasted': True
+            },
+            '5': {
+                'structure': '3hr @ 65-68% FTP, first 2hr fasted then begin fueling.',
+                'execution': 'Train fat oxidation then practice fueling',
+                'cadence_prescription': '80-85rpm',
+                'position_prescription': 'Comfortable',
+                'timing_prescription': 'Morning',
+                'fueling': 'Begin fueling at 2hr mark',
+                'inscyd': True,
+                'fatmax': True,
+                'duration': 10800,
+                'power': 0.66,
+                'partial_fasted': True
+            },
+            '6': {
+                'structure': '4hr @ 65-68% FTP, first 2.5hr fasted.',
+                'execution': 'Extended FatMax with transition to fueling',
+                'cadence_prescription': '80-85rpm',
+                'position_prescription': 'Sustainable',
+                'timing_prescription': 'Major training day',
+                'fueling': 'Begin fueling at 2.5hr',
+                'inscyd': True,
+                'fatmax': True,
+                'duration': 14400,
+                'power': 0.66,
+                'partial_fasted': True
             }
         }
     }
@@ -2408,6 +3178,7 @@ BLOCK_PERIODIZATION = [
 # =============================================================================
 
 NEW_ARCHETYPES = {
+    # Original Nate categories
     'VO2max': VO2MAX_NEW,
     'TT_Threshold': THRESHOLD_NEW,
     'Sprint_Neuromuscular': SPRINT_NEW,
@@ -2415,13 +3186,16 @@ NEW_ARCHETYPES = {
     'Durability': DURABILITY_NEW,
     'Endurance': ENDURANCE_NEW,
     'Race_Simulation': RACE_SIMULATION,
-    # NEW CATEGORIES
+    # Methodology-specific categories
     'G_Spot': G_SPOT_NEW,
     'LT1_MAF': LT1_MAF_NEW,
     'Critical_Power': CRITICAL_POWER_NEW,
     'Norwegian_Double': NORWEGIAN_DOUBLE,
     'HVLI_Extended': HVLI_EXTENDED,
-    'Block_Periodization': BLOCK_PERIODIZATION,
+    # Testing, Recovery, Metabolic
+    'Testing': TESTING_PROTOCOLS,
+    'Recovery': RECOVERY_NEW,
+    'INSCYD': INSCYD_NEW,
 }
 
 
