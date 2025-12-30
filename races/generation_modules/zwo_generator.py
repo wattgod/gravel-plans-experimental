@@ -11,7 +11,23 @@ import html
 import re
 from pathlib import Path
 
-# Import the workout description generator - prefer V2 Nate integration
+# Import the FULL Nate workout generator (generates blocks + descriptions)
+try:
+    from nate_workout_generator import (
+        generate_nate_workout,
+        generate_nate_zwo,
+        select_archetype_for_workout,
+        calculate_level_from_week,
+        TRAINING_METHODOLOGIES,
+        NEW_ARCHETYPES
+    )
+    NATE_GENERATOR_AVAILABLE = True
+    print("✅ Full Nate workout generator loaded")
+except ImportError as e:
+    NATE_GENERATOR_AVAILABLE = False
+    print(f"⚠️  Nate workout generator not available: {e}")
+
+# Import V2 description generator as fallback
 try:
     from workout_description_generator_v2_nate import (
         generate_nate_workout_description,
@@ -19,7 +35,7 @@ try:
         select_archetype_for_methodology,
         generate_zwo_blocks_from_archetype,
         NATE_ARCHETYPES_AVAILABLE,
-        TRAINING_METHODOLOGIES
+        TRAINING_METHODOLOGIES as V2_METHODOLOGIES
     )
     DESCRIPTION_GENERATOR_V2 = True
     DESCRIPTION_GENERATOR_AVAILABLE = True
@@ -32,6 +48,60 @@ except ImportError:
     except ImportError:
         DESCRIPTION_GENERATOR_AVAILABLE = False
         print("⚠️  No workout description generator available - using legacy descriptions")
+
+# =============================================================================
+# WORKOUT TYPE DETECTION FOR NATE GENERATOR
+# =============================================================================
+
+def detect_workout_type_for_nate(workout_name: str) -> str:
+    """
+    Detect the Nate workout type from a workout name.
+
+    Returns the workout type string that maps to Nate archetypes:
+    - vo2max, threshold, sprint, anaerobic, durability, endurance, race_sim
+    - Returns None for rest days or unmapped workout types
+    """
+    name_upper = workout_name.upper()
+
+    # Skip rest days and recovery (handled separately)
+    if any(kw in name_upper for kw in ["REST", "OFF DAY"]):
+        return None
+
+    # VO2max workouts
+    if any(kw in name_upper for kw in ["VO2", "VO2MAX", "HARD SESSION", "TUESDAY HARD", "INTERVALS"]):
+        return "vo2max"
+
+    # Threshold workouts
+    if any(kw in name_upper for kw in ["THRESHOLD", "FTP", "TEMPO", "G-SPOT", "GSPOT", "SWEET SPOT"]):
+        return "threshold"
+
+    # Sprint / Neuromuscular
+    if any(kw in name_upper for kw in ["SPRINT", "STOMP", "ATTACK", "NEUROMUSCULAR", "EXPLOSIVE"]):
+        return "sprint"
+
+    # Anaerobic workouts
+    if any(kw in name_upper for kw in ["ANAEROBIC", "2MIN", "90SEC", "1MIN", "SHORT POWER"]):
+        return "anaerobic"
+
+    # Durability workouts
+    if any(kw in name_upper for kw in ["DURABILITY", "TIRED", "FATIGUE", "LONG HARD"]):
+        return "durability"
+
+    # Race simulation
+    if any(kw in name_upper for kw in ["RACE SIM", "BREAKAWAY", "SECTOR", "RACE DAY", "SIMULATION"]):
+        return "race_sim"
+
+    # Endurance (openers, easy rides, long rides with no intensity)
+    if any(kw in name_upper for kw in ["OPENER", "EASY", "ENDURANCE", "Z2", "RECOVERY", "SPIN"]):
+        return "endurance"
+
+    # Mixed workouts - default to threshold (most common)
+    if any(kw in name_upper for kw in ["MIXED", "CLIMBING"]):
+        return "threshold"
+
+    # Unknown type - return None to use original blocks
+    return None
+
 
 # Methodology mapping from plan philosophy to v2 generator
 PHILOSOPHY_TO_METHODOLOGY = {
@@ -460,13 +530,15 @@ def create_zwo_file(workout, output_path, race_data, plan_info):
     blocks = workout.get("blocks", "    <FreeRide Duration=\"60\"/>\n")
     original_description = workout.get("description", "")
 
-    # Generate proper description using generator
-    if DESCRIPTION_GENERATOR_AVAILABLE:
-        # Get methodology from plan
-        methodology = get_methodology_from_plan(plan_info)
-        total_weeks = plan_info.get("weeks", 12)
+    # Get methodology and level
+    methodology = get_methodology_from_plan(plan_info)
+    total_weeks = plan_info.get("weeks", 12)
 
-        # Calculate progression level (1-6) based on week position
+    # Calculate progression level using Nate's method (accounts for taper)
+    if NATE_GENERATOR_AVAILABLE:
+        level = calculate_level_from_week(week_num, total_weeks, taper_weeks=2)
+    else:
+        # Fallback level calculation
         progress = week_num / total_weeks
         if progress < 0.17:
             level = 1
@@ -481,47 +553,79 @@ def create_zwo_file(workout, output_path, race_data, plan_info):
         else:
             level = 6
 
-        # Use V2 Nate generator if available
-        if DESCRIPTION_GENERATOR_V2 and NATE_ARCHETYPES_AVAILABLE:
-            # Detect workout type and get matching archetype
-            workout_type = detect_archetype(name)
-            archetype, rec_level = select_archetype_for_methodology(
-                workout_type,
+    # ===========================================================================
+    # FULL NATE INTEGRATION: Generate BOTH blocks AND descriptions from archetypes
+    # ===========================================================================
+    if NATE_GENERATOR_AVAILABLE:
+        # Detect workout type from name
+        workout_type = detect_workout_type_for_nate(name)
+
+        if workout_type:
+            # Generate full workout from Nate archetype
+            nate_name, nate_desc, nate_blocks = generate_nate_workout(
+                workout_type=workout_type,
+                level=level,
                 methodology=methodology,
-                week_num=week_num,
-                total_weeks=total_weeks
+                variation=0  # Can rotate variations in future
             )
 
-            if archetype:
-                # Generate description from Nate archetype
-                description = generate_nate_workout_description(
-                    archetype,
-                    level,
-                    methodology=methodology,
-                    include_dimensions=True
-                )
+            if nate_name and nate_blocks:
+                # Use Nate-generated blocks and description
+                blocks = nate_blocks
+                description = nate_desc
             else:
-                # Fall back to V1 generator for non-Nate archetypes
-                try:
-                    from workout_description_generator import generate_workout_description as v1_generate
-                    description = v1_generate(
-                        workout_name=name,
-                        blocks=blocks,
-                        week_num=week_num,
-                        level=level,
-                        existing_description=original_description
-                    )
-                except:
-                    description = original_description
+                # Fallback: use original blocks, generate description
+                description = original_description
         else:
-            # Use V1 legacy generator
-            description = generate_workout_description(
-                workout_name=name,
-                blocks=blocks,
-                week_num=week_num,
-                level=level,
-                existing_description=original_description
+            # Non-Nate workout type (rest, easy, etc.) - use original
+            description = original_description
+
+    # ===========================================================================
+    # FALLBACK: V2 Description generator (descriptions only, not blocks)
+    # ===========================================================================
+    elif DESCRIPTION_GENERATOR_V2 and NATE_ARCHETYPES_AVAILABLE:
+        # Detect workout type and get matching archetype
+        workout_type = detect_archetype(name)
+        archetype, rec_level = select_archetype_for_methodology(
+            workout_type,
+            methodology=methodology,
+            week_num=week_num,
+            total_weeks=total_weeks
+        )
+
+        if archetype:
+            # Generate description from Nate archetype
+            description = generate_nate_workout_description(
+                archetype,
+                level,
+                methodology=methodology,
+                include_dimensions=True
             )
+        else:
+            # Fall back to V1 generator for non-Nate archetypes
+            try:
+                from workout_description_generator import generate_workout_description as v1_generate
+                description = v1_generate(
+                    workout_name=name,
+                    blocks=blocks,
+                    week_num=week_num,
+                    level=level,
+                    existing_description=original_description
+                )
+            except:
+                description = original_description
+
+    # ===========================================================================
+    # FALLBACK: V1 Legacy generator
+    # ===========================================================================
+    elif DESCRIPTION_GENERATOR_AVAILABLE:
+        description = generate_workout_description(
+            workout_name=name,
+            blocks=blocks,
+            week_num=week_num,
+            level=level,
+            existing_description=original_description
+        )
     else:
         # Fall back to original description
         description = original_description
