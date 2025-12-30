@@ -46,11 +46,23 @@ Version: 2.0 (Full Methodology Support)
 import html
 import logging
 import sys
-from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple, Any, Union
+from typing import Dict, List, Optional, Tuple, Any
 
-# Import constants
+# =============================================================================
+# PATH SETUP - Must be before local imports
+# =============================================================================
+
+# Add paths for local imports (constants and archetypes)
+_module_dir = Path(__file__).parent
+_archetypes_dir = _module_dir.parent / "nate_archetypes"
+
+if str(_module_dir) not in sys.path:
+    sys.path.insert(0, str(_module_dir))
+if str(_archetypes_dir) not in sys.path:
+    sys.path.insert(0, str(_archetypes_dir))
+
+# Import constants (now that path is set up)
 from constants import (
     PowerZones,
     CriticalPower,
@@ -66,31 +78,45 @@ from constants import (
 # LOGGING CONFIGURATION
 # =============================================================================
 
-def configure_logging(level: int = logging.INFO) -> logging.Logger:
-    """
-    Configure logging for the workout generator.
+# Module-level logger (lazy initialization)
+_logger: Optional[logging.Logger] = None
 
-    Args:
-        level: Logging level (default: INFO)
+
+def get_logger() -> logging.Logger:
+    """
+    Get the module logger, initializing if needed.
 
     Returns:
         Configured logger instance
     """
-    logger = logging.getLogger(__name__)
-    if not logger.handlers:
-        handler = logging.StreamHandler()
-        formatter = logging.Formatter(
-            '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-        )
-        handler.setFormatter(formatter)
-        logger.addHandler(handler)
-    logger.setLevel(level)
-    return logger
+    global _logger
+    if _logger is None:
+        _logger = logging.getLogger(__name__)
+        if not _logger.handlers:
+            handler = logging.StreamHandler()
+            formatter = logging.Formatter(
+                '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+            )
+            handler.setFormatter(formatter)
+            _logger.addHandler(handler)
+        _logger.setLevel(logging.WARNING)  # Default to WARNING
+    return _logger
 
-logger = configure_logging(logging.WARNING)  # Default to WARNING to reduce noise
 
-# Import Nate archetypes
-sys.path.insert(0, str(Path(__file__).parent.parent / "nate_archetypes"))
+def set_log_level(level: int) -> None:
+    """
+    Set the logging level for this module.
+
+    Args:
+        level: Logging level (e.g., logging.DEBUG, logging.INFO)
+    """
+    get_logger().setLevel(level)
+
+
+# =============================================================================
+# ARCHETYPE IMPORTS
+# =============================================================================
+
 from new_archetypes import (
     NEW_ARCHETYPES,
     VO2MAX_NEW,
@@ -586,7 +612,7 @@ def select_archetype_for_workout(
 
     category = type_to_category.get(workout_type.lower())
     if not category:
-        logger.warning(
+        get_logger().warning(
             f"Unknown workout type '{workout_type}'. "
             f"Valid types: {list(type_to_category.keys())[:10]}..."
         )
@@ -600,7 +626,7 @@ def select_archetype_for_workout(
 
     method_config = TRAINING_METHODOLOGIES.get(methodology)
     if not method_config:
-        logger.warning(
+        get_logger().warning(
             f"Unknown methodology '{methodology}'. "
             f"Falling back to POLARIZED. Valid: {list(TRAINING_METHODOLOGIES.keys())}"
         )
@@ -609,7 +635,7 @@ def select_archetype_for_workout(
     # Check if this category is avoided by the methodology
     avoided_categories = method_config.get("avoid", [])
     if category in avoided_categories:
-        logger.debug(
+        get_logger().debug(
             f"Methodology '{methodology}' avoids category '{category}'. "
             f"Avoided categories: {avoided_categories}"
         )
@@ -966,6 +992,43 @@ def generate_cooldown_block(
     return block
 
 
+def parse_cadence_prescription(prescription: str) -> Optional[int]:
+    """
+    Parse a cadence prescription string into a numeric value.
+
+    Args:
+        prescription: String like "90-95rpm", "90rpm", or "high cadence"
+
+    Returns:
+        Cadence value in RPM, or None if not parseable
+    """
+    if not prescription:
+        return None
+
+    # Handle range like "90-95rpm" - take the middle
+    import re
+    range_match = re.search(r'(\d+)-(\d+)', prescription)
+    if range_match:
+        low, high = int(range_match.group(1)), int(range_match.group(2))
+        return (low + high) // 2
+
+    # Handle single value like "90rpm" or "90"
+    single_match = re.search(r'(\d+)', prescription)
+    if single_match:
+        return int(single_match.group(1))
+
+    # Handle descriptive terms
+    prescription_lower = prescription.lower()
+    if 'high' in prescription_lower:
+        return Cadence.HIGH
+    elif 'low' in prescription_lower:
+        return Cadence.LOW
+    elif 'self' in prescription_lower or 'natural' in prescription_lower:
+        return None  # Let rider choose
+
+    return None
+
+
 def generate_steady_state_block(
     duration: int,
     power: float,
@@ -979,7 +1042,7 @@ def generate_steady_state_block(
         duration: Duration in seconds
         power: Power target as FTP fraction
         cadence: Optional cadence target in RPM
-        text: Optional coaching text to display at start
+        text: Optional coaching text to display at start (will be XML-escaped)
 
     Returns:
         XML steady state block
@@ -987,11 +1050,11 @@ def generate_steady_state_block(
     cadence_attr = f' Cadence="{cadence}"' if cadence else ""
 
     if text:
-        escaped_text = html.escape(text, quote=True)
+        # Use generate_text_event for consistent escaping
         return (
             f'    <SteadyState Duration="{duration}" Power="{power:.2f}"{cadence_attr}>\n'
-            f'      <textevent timeoffset="0" message="{escaped_text}"/>\n'
-            f'    </SteadyState>\n'
+            + generate_text_event(0, text)
+            + '    </SteadyState>\n'
         )
     else:
         return f'    <SteadyState Duration="{duration}" Power="{power:.2f}"{cadence_attr}/>\n'
@@ -1008,6 +1071,10 @@ def generate_intervals_block(
 ) -> str:
     """
     Generate an IntervalsT block with optional coaching text.
+
+    Note: Zwift IntervalsT blocks only support text events at the start of the
+    entire interval set, not per-repeat. Text events fire once when the block
+    begins, so we show the total count and a general instruction.
 
     Args:
         repeats: Number of interval repeats
@@ -1030,8 +1097,11 @@ def generate_intervals_block(
 
     if include_text:
         block += '>\n'
-        block += generate_text_event(0, f"Interval 1 of {repeats} - GO!")
-        block += generate_text_event(on_duration, "Recovery - breathe deep")
+        # Text fires once at block start - describe the full set
+        mins = on_duration // 60
+        secs = on_duration % 60
+        duration_str = f"{mins}:{secs:02d}" if secs else f"{mins} min"
+        block += generate_text_event(0, f"{repeats}x{duration_str} intervals starting now!")
         block += '    </IntervalsT>\n'
     else:
         block += '/>\n'
@@ -1072,11 +1142,151 @@ def generate_ramp_block(
         )
 
 
+def get_workout_warmup_duration(archetype: Dict, level_data: Dict) -> int:
+    """
+    Determine appropriate warmup duration based on workout type.
+
+    Args:
+        archetype: The archetype dictionary
+        level_data: The level-specific data
+
+    Returns:
+        Warmup duration in seconds
+    """
+    # Check for explicit warmup duration
+    if "warmup_duration" in level_data:
+        return level_data["warmup_duration"]
+
+    # Determine by workout characteristics
+    archetype_name = archetype.get("name", "").lower()
+
+    # Short/no warmup for recovery rides
+    if "recovery" in archetype_name or "flush" in archetype_name:
+        return Durations.WARMUP_SHORT  # 5 min
+
+    # Longer warmup for threshold/TT work
+    if any(x in archetype_name for x in ["threshold", "tt", "sustained", "single"]):
+        return Durations.WARMUP_LONG  # 20 min
+
+    # Standard warmup for most workouts
+    return Durations.WARMUP_EXTENDED  # 15 min
+
+
+def get_workout_cooldown_duration(archetype: Dict, level_data: Dict) -> int:
+    """
+    Determine appropriate cooldown duration based on workout type.
+
+    Args:
+        archetype: The archetype dictionary
+        level_data: The level-specific data
+
+    Returns:
+        Cooldown duration in seconds
+    """
+    # Check for explicit cooldown duration
+    if "cooldown_duration" in level_data:
+        return level_data["cooldown_duration"]
+
+    archetype_name = archetype.get("name", "").lower()
+
+    # Minimal cooldown for recovery rides
+    if "recovery" in archetype_name or "flush" in archetype_name:
+        return Durations.COOLDOWN_SHORT  # 5 min
+
+    # Standard cooldown
+    return Durations.COOLDOWN_STANDARD  # 10 min
+
+
+def extract_cadence_from_archetype(archetype: Dict, level_data: Dict) -> Optional[int]:
+    """
+    Extract cadence target from archetype or level data.
+
+    Priority:
+    1. Numeric cadence in level_data
+    2. cadence_prescription string in level_data
+    3. cadence_prescription in archetype top level
+    4. Default based on workout type
+
+    Args:
+        archetype: The archetype dictionary
+        level_data: The level-specific data
+
+    Returns:
+        Cadence in RPM, or None to let rider choose
+    """
+    # Check level_data for numeric cadence
+    if "cadence" in level_data and isinstance(level_data["cadence"], (int, float)):
+        return int(level_data["cadence"])
+
+    # Check level_data for prescription string
+    if "cadence_prescription" in level_data:
+        parsed = parse_cadence_prescription(level_data["cadence_prescription"])
+        if parsed:
+            return parsed
+
+    # Check archetype-level prescription
+    if "cadence_prescription" in archetype:
+        parsed = parse_cadence_prescription(archetype["cadence_prescription"])
+        if parsed:
+            return parsed
+
+    # Default based on workout type
+    archetype_name = archetype.get("name", "").lower()
+    if "sprint" in archetype_name:
+        return Cadence.SPRINT
+    elif "vo2" in archetype_name:
+        return Cadence.HIGH
+    elif "ilt" in archetype_name or "strength" in archetype_name:
+        return Cadence.LOW
+
+    return Cadence.STANDARD
+
+
+def validate_workout_duration(blocks: List[str], archetype: Dict) -> bool:
+    """
+    Validate that generated workout duration is reasonable.
+
+    Args:
+        blocks: List of XML block strings
+        archetype: The archetype dictionary
+
+    Returns:
+        True if valid, False if duration is unreasonable
+    """
+    # Simple validation - check we have content
+    total_content = "".join(blocks)
+    if not total_content.strip():
+        get_logger().warning("Generated workout has no blocks")
+        return False
+
+    # Check for Duration attributes and sum them (rough estimate)
+    import re
+    durations = re.findall(r'Duration="(\d+)"', total_content)
+    total_seconds = sum(int(d) for d in durations)
+
+    if total_seconds < ValidationLimits.MIN_WORKOUT_DURATION:
+        get_logger().warning(
+            f"Workout duration {total_seconds}s is below minimum "
+            f"{ValidationLimits.MIN_WORKOUT_DURATION}s"
+        )
+        return False
+
+    if total_seconds > ValidationLimits.MAX_WORKOUT_DURATION:
+        get_logger().warning(
+            f"Workout duration {total_seconds}s exceeds maximum "
+            f"{ValidationLimits.MAX_WORKOUT_DURATION}s"
+        )
+        return False
+
+    return True
+
+
 def generate_blocks_from_archetype(archetype: Dict, level: int) -> str:
     """
     Generate ZWO XML blocks from a Nate archetype level.
 
     This is the main block generation function that handles all archetype types.
+    It extracts cadence from the archetype and uses smart warmup/cooldown durations.
     """
     level_data = get_level_data(archetype, level)
     if not level_data:
@@ -1084,8 +1294,10 @@ def generate_blocks_from_archetype(archetype: Dict, level: int) -> str:
 
     blocks = []
 
-    # Default warmup
-    warmup_duration = level_data.get("warmup_duration", 900)
+    # Extract cadence and durations from archetype
+    cadence = extract_cadence_from_archetype(archetype, level_data)
+    warmup_duration = get_workout_warmup_duration(archetype, level_data)
+    cooldown_duration = get_workout_cooldown_duration(archetype, level_data)
 
     # =====================================================================
     # DURABILITY WORKOUTS (Tired VO2, etc.)
@@ -1094,17 +1306,21 @@ def generate_blocks_from_archetype(archetype: Dict, level: int) -> str:
         base_duration = level_data.get("base_duration", 7200)
         base_power = level_data.get("base_power", 0.70)
 
-        blocks.append(generate_warmup_block())
-        blocks.append(generate_steady_state_block(base_duration, base_power))
+        blocks.append(generate_warmup_block(warmup_duration))
+        blocks.append(generate_steady_state_block(
+            base_duration, base_power, cadence=cadence, text="Long base ride - stay aerobic"
+        ))
 
         if "intervals" in level_data and isinstance(level_data["intervals"], tuple):
             repeats, duration = level_data["intervals"]
             on_power = level_data.get("on_power", 1.10)
-            off_duration = level_data.get("off_duration", 240)
+            off_dur = level_data.get("off_duration", 240)
             off_power = level_data.get("off_power", 0.55)
             blocks.append(generate_intervals_block(
-                repeats, duration, on_power, off_duration, off_power
+                repeats, duration, on_power, off_dur, off_power, cadence
             ))
+
+        blocks.append(generate_cooldown_block(cooldown_duration))
 
     # =====================================================================
     # STANDARD INTERVALS (VO2, Threshold, Anaerobic, Sprint)
@@ -1113,39 +1329,42 @@ def generate_blocks_from_archetype(archetype: Dict, level: int) -> str:
         repeats, duration = level_data["intervals"]
         on_power = level_data.get("on_power", 1.0)
         off_power = level_data.get("off_power", 0.55)
-        off_duration = level_data.get("off_duration", level_data.get("duration", 180))
+        off_dur = level_data.get("off_duration", level_data.get("duration", 180))
         actual_duration = level_data.get("duration", duration)
-        cadence = level_data.get("cadence", 90)
 
-        blocks.append(generate_warmup_block())
+        blocks.append(generate_warmup_block(warmup_duration))
         blocks.append(generate_intervals_block(
-            repeats, actual_duration, on_power, off_duration, off_power, cadence
+            repeats, actual_duration, on_power, off_dur, off_power, cadence
         ))
+        blocks.append(generate_cooldown_block(cooldown_duration))
 
     # =====================================================================
     # PYRAMID / DESCENDING EFFORTS
     # =====================================================================
     elif "pyramid" in level_data or "descending" in level_data:
-        recovery_duration = level_data.get("recovery_duration", 180)
+        recovery_dur = level_data.get("recovery_duration", 180)
         efforts = level_data.get("efforts", [])
         sets = level_data.get("sets", 1)
         set_recovery = level_data.get("set_recovery", 300)
 
-        blocks.append(generate_warmup_block())
+        blocks.append(generate_warmup_block(warmup_duration))
 
         for set_num in range(int(sets)):
             for i, effort in enumerate(efforts):
                 if isinstance(effort, dict):
                     duration = effort.get("duration", 300)
                     power = effort.get("power", 1.0)
-                    blocks.append(generate_steady_state_block(duration, power))
+                    text = f"Effort {i+1} of {len(efforts)}" if i == 0 else None
+                    blocks.append(generate_steady_state_block(duration, power, cadence, text))
 
                     if i < len(efforts) - 1:
-                        blocks.append(generate_steady_state_block(recovery_duration, 0.55))
+                        blocks.append(generate_steady_state_block(recovery_dur, 0.55, cadence))
 
             # Set recovery (if multiple sets)
             if sets > 1 and set_num < int(sets) - 1:
-                blocks.append(generate_steady_state_block(set_recovery, 0.55))
+                blocks.append(generate_steady_state_block(set_recovery, 0.55, cadence))
+
+        blocks.append(generate_cooldown_block(cooldown_duration))
 
     # =====================================================================
     # SINGLE SUSTAINED EFFORT (Long Threshold)
@@ -1154,8 +1373,11 @@ def generate_blocks_from_archetype(archetype: Dict, level: int) -> str:
         duration = level_data.get("duration", 1200)
         power = level_data.get("power", 1.0)
 
-        blocks.append(generate_warmup_block(1200))  # Longer warmup for TT
-        blocks.append(generate_steady_state_block(duration, power, cadence=90))
+        blocks.append(generate_warmup_block(warmup_duration))
+        blocks.append(generate_steady_state_block(
+            duration, power, cadence=cadence, text="Sustained effort - find your rhythm"
+        ))
+        blocks.append(generate_cooldown_block(cooldown_duration))
 
     # =====================================================================
     # RAMP INTERVALS (Threshold Ramps)
@@ -1170,14 +1392,17 @@ def generate_blocks_from_archetype(archetype: Dict, level: int) -> str:
 
         start_power = level_data.get("start_power", 0.88)
         end_power = level_data.get("end_power", 1.00)
-        off_duration = level_data.get("off_duration", 300)
+        off_dur = level_data.get("off_duration", 300)
 
-        blocks.append(generate_warmup_block())
+        blocks.append(generate_warmup_block(warmup_duration))
 
         for rep in range(repeats):
-            blocks.append(generate_ramp_block(ramp_duration, start_power, end_power))
+            text = f"Ramp {rep+1} of {repeats}" if rep == 0 else None
+            blocks.append(generate_ramp_block(ramp_duration, start_power, end_power, text))
             if rep < repeats - 1:
-                blocks.append(generate_steady_state_block(off_duration, 0.55))
+                blocks.append(generate_steady_state_block(off_dur, 0.55, cadence))
+
+        blocks.append(generate_cooldown_block(cooldown_duration))
 
     # =====================================================================
     # LOADED RECOVERY (VO2 + Tempo)
@@ -1189,19 +1414,22 @@ def generate_blocks_from_archetype(archetype: Dict, level: int) -> str:
         else:
             repeats = 3
 
-        on_duration = level_data.get("duration", 180)
+        on_dur = level_data.get("duration", 180)
         on_power = level_data.get("on_power", 1.15)
-        loaded_duration = level_data.get("loaded_duration", 120)
+        loaded_dur = level_data.get("loaded_duration", 120)
         loaded_power = level_data.get("loaded_power", 0.85)
-        off_duration = level_data.get("off_duration", 180)
+        off_dur = level_data.get("off_duration", 180)
 
-        blocks.append(generate_warmup_block())
+        blocks.append(generate_warmup_block(warmup_duration))
 
         for rep in range(repeats):
-            blocks.append(generate_steady_state_block(on_duration, on_power))
-            blocks.append(generate_steady_state_block(loaded_duration, loaded_power))
+            text = f"VO2 effort {rep+1}" if rep == 0 else None
+            blocks.append(generate_steady_state_block(on_dur, on_power, cadence, text))
+            blocks.append(generate_steady_state_block(loaded_dur, loaded_power, cadence))
             if rep < repeats - 1:
-                blocks.append(generate_steady_state_block(off_duration, 0.50))
+                blocks.append(generate_steady_state_block(off_dur, 0.50, cadence))
+
+        blocks.append(generate_cooldown_block(cooldown_duration))
 
     # =====================================================================
     # PEAK AND FADE (Sprint)
@@ -1213,38 +1441,44 @@ def generate_blocks_from_archetype(archetype: Dict, level: int) -> str:
         else:
             repeats = 4
 
-        peak_duration = level_data.get("peak_duration", 10)
+        peak_dur = level_data.get("peak_duration", 10)
         peak_power = level_data.get("peak_power", 2.0)
-        fade_duration = level_data.get("fade_duration", 20)
+        fade_dur = level_data.get("fade_duration", 20)
         fade_power = level_data.get("fade_power", 1.2)
-        off_duration = level_data.get("off_duration", 180)
+        off_dur = level_data.get("off_duration", 180)
 
-        blocks.append(generate_warmup_block())
+        blocks.append(generate_warmup_block(warmup_duration))
 
         for rep in range(repeats):
-            blocks.append(generate_steady_state_block(peak_duration, peak_power))
-            blocks.append(generate_steady_state_block(fade_duration, fade_power))
+            text = f"Sprint {rep+1} - MAX!" if rep == 0 else None
+            blocks.append(generate_steady_state_block(peak_dur, peak_power, cadence, text))
+            blocks.append(generate_steady_state_block(fade_dur, fade_power, cadence))
             if rep < repeats - 1:
-                blocks.append(generate_steady_state_block(off_duration, 0.50))
+                blocks.append(generate_steady_state_block(off_dur, 0.50, cadence))
+
+        blocks.append(generate_cooldown_block(cooldown_duration))
 
     # =====================================================================
     # BREAKAWAY SIMULATION
     # =====================================================================
     elif "breakaway" in level_data:
         repeats = level_data.get("intervals", 2)
-        attack_duration = level_data.get("attack_duration", 300)
+        attack_dur = level_data.get("attack_duration", 300)
         attack_power = level_data.get("attack_power", 1.10)
-        hold_duration = level_data.get("hold_duration", 600)
+        hold_dur = level_data.get("hold_duration", 600)
         hold_power = level_data.get("hold_power", 0.88)
-        recovery_duration = level_data.get("recovery_duration", 300)
+        recovery_dur = level_data.get("recovery_duration", 300)
 
-        blocks.append(generate_warmup_block())
+        blocks.append(generate_warmup_block(warmup_duration))
 
         for rep in range(repeats):
-            blocks.append(generate_steady_state_block(attack_duration, attack_power))
-            blocks.append(generate_steady_state_block(hold_duration, hold_power))
+            text = "Attack!" if rep == 0 else None
+            blocks.append(generate_steady_state_block(attack_dur, attack_power, cadence, text))
+            blocks.append(generate_steady_state_block(hold_dur, hold_power, cadence, "Hold the break"))
             if rep < repeats - 1:
-                blocks.append(generate_steady_state_block(recovery_duration, 0.55))
+                blocks.append(generate_steady_state_block(recovery_dur, 0.55, cadence))
+
+        blocks.append(generate_cooldown_block(cooldown_duration))
 
     # =====================================================================
     # SECTOR SIMULATION
@@ -1252,133 +1486,156 @@ def generate_blocks_from_archetype(archetype: Dict, level: int) -> str:
     elif "sector_sim" in level_data:
         sectors_per_set = level_data.get("sectors_per_set", 2)
         sets = level_data.get("sets", 2)
-        sector_duration = level_data.get("sector_duration", 90)
+        sector_dur = level_data.get("sector_duration", 90)
         sector_power = level_data.get("sector_power", 1.30)
         sector_recovery = level_data.get("sector_recovery", 180)
         sector_recovery_power = level_data.get("sector_recovery_power", 0.75)
         set_recovery = level_data.get("set_recovery", 300)
 
-        blocks.append(generate_warmup_block())
+        blocks.append(generate_warmup_block(warmup_duration))
 
         for set_num in range(sets):
             for sector in range(sectors_per_set):
-                blocks.append(generate_steady_state_block(sector_duration, sector_power))
-                blocks.append(generate_steady_state_block(sector_recovery, sector_recovery_power))
+                text = f"Sector {sector+1}" if sector == 0 else None
+                blocks.append(generate_steady_state_block(sector_dur, sector_power, cadence, text))
+                blocks.append(generate_steady_state_block(sector_recovery, sector_recovery_power, cadence))
 
             if set_num < sets - 1:
-                blocks.append(generate_steady_state_block(set_recovery, 0.65))
+                blocks.append(generate_steady_state_block(set_recovery, 0.65, cadence))
+
+        blocks.append(generate_cooldown_block(cooldown_duration))
 
     # =====================================================================
     # OPENERS
     # =====================================================================
     elif "openers" in level_data:
-        warmup_duration = level_data.get("warmup_duration", 1200)
+        opener_warmup = level_data.get("warmup_duration", 1200)
         warmup_power = level_data.get("warmup_power", 0.65)
         efforts_data = level_data.get("efforts", (3, 30))
         if isinstance(efforts_data, tuple):
-            effort_count, effort_duration = efforts_data
+            effort_count, effort_dur = efforts_data
         else:
-            effort_count, effort_duration = 3, 30
+            effort_count, effort_dur = 3, 30
         effort_power = level_data.get("effort_power", 1.10)
         effort_recovery = level_data.get("effort_recovery", 120)
-        cooldown_duration = level_data.get("cooldown_duration", 300)
+        opener_cooldown = level_data.get("cooldown_duration", 300)
 
-        blocks.append(generate_steady_state_block(warmup_duration, warmup_power))
+        blocks.append(generate_steady_state_block(
+            opener_warmup, warmup_power, cadence, text="Easy warmup for openers"
+        ))
 
         for i in range(effort_count):
-            blocks.append(generate_steady_state_block(effort_duration, effort_power))
+            text = f"Opener {i+1} of {effort_count}" if i == 0 else None
+            blocks.append(generate_steady_state_block(effort_dur, effort_power, cadence, text))
             if i < effort_count - 1:
-                blocks.append(generate_steady_state_block(effort_recovery, 0.55))
+                blocks.append(generate_steady_state_block(effort_recovery, 0.55, cadence))
 
-        blocks.append(generate_steady_state_block(cooldown_duration, 0.50))
-        return "".join(blocks)  # Return early - no standard cooldown
+        blocks.append(generate_steady_state_block(opener_cooldown, 0.50, cadence, "Spin out"))
+        return "".join(blocks)  # Openers have custom structure
 
     # =====================================================================
     # PROGRESSIVE FATIGUE
     # =====================================================================
     elif "progressive_fatigue" in level_data:
         num_intervals = level_data.get("intervals", 3)
-        effort_duration = level_data.get("effort_duration", 600)
+        effort_dur = level_data.get("effort_duration", 600)
         on_power = level_data.get("on_power", 0.98)
         recovery_sequence = level_data.get("recovery_sequence", [300, 240, 180])
 
-        blocks.append(generate_warmup_block())
+        blocks.append(generate_warmup_block(warmup_duration))
 
         for i in range(num_intervals):
-            blocks.append(generate_steady_state_block(effort_duration, on_power))
+            text = f"Threshold {i+1} - recovery gets shorter!" if i == 0 else None
+            blocks.append(generate_steady_state_block(effort_dur, on_power, cadence, text))
             if i < len(recovery_sequence):
-                blocks.append(generate_steady_state_block(recovery_sequence[i], 0.55))
+                blocks.append(generate_steady_state_block(recovery_sequence[i], 0.55, cadence))
+
+        blocks.append(generate_cooldown_block(cooldown_duration))
 
     # =====================================================================
     # G-SPOT CRISS-CROSS
     # =====================================================================
     elif "criss_cross" in level_data:
-        total_duration = level_data.get("total_duration", 1200)
+        total_dur = level_data.get("total_duration", 1200)
         high_power = level_data.get("high_power", 0.92)
         low_power = level_data.get("low_power", 0.85)
-        interval_duration = level_data.get("interval_duration", 120)
+        interval_dur = level_data.get("interval_duration", 120)
         sets = level_data.get("sets", 1)
         set_recovery = level_data.get("set_recovery", 300)
 
-        blocks.append(generate_warmup_block())
+        blocks.append(generate_warmup_block(warmup_duration))
 
         for set_num in range(sets):
-            num_intervals = total_duration // (interval_duration * 2)
+            num_intervals = total_dur // (interval_dur * 2)
+            text = "Criss-cross - alternate high/low" if set_num == 0 else None
             for i in range(int(num_intervals)):
-                blocks.append(generate_steady_state_block(interval_duration, high_power))
-                blocks.append(generate_steady_state_block(interval_duration, low_power))
+                blocks.append(generate_steady_state_block(
+                    interval_dur, high_power, cadence, text if i == 0 else None
+                ))
+                blocks.append(generate_steady_state_block(interval_dur, low_power, cadence))
             if sets > 1 and set_num < sets - 1:
-                blocks.append(generate_steady_state_block(set_recovery, 0.55))
+                blocks.append(generate_steady_state_block(set_recovery, 0.55, cadence))
+
+        blocks.append(generate_cooldown_block(cooldown_duration))
 
     # =====================================================================
     # LT1/MAF CAPPED ENDURANCE
     # =====================================================================
     elif "lt1_capped" in level_data or "maf_test" in level_data:
-        duration = level_data.get("duration", 3600)
+        lt1_dur = level_data.get("duration", 3600)
         power = level_data.get("power", 0.70)
-        test_duration = level_data.get("test_duration", 0)
-        warmup_dur = level_data.get("warmup_duration", 600)
+        test_dur = level_data.get("test_duration", 0)
+        lt1_warmup = level_data.get("warmup_duration", 600)
 
-        if test_duration > 0:  # MAF test protocol
-            blocks.append(generate_steady_state_block(warmup_dur, 0.60))
-            blocks.append(generate_steady_state_block(test_duration, power))
+        if test_dur > 0:  # MAF test protocol
+            blocks.append(generate_steady_state_block(lt1_warmup, 0.60, cadence, "MAF test warmup"))
+            blocks.append(generate_steady_state_block(test_dur, power, cadence, "MAF test - hold HR steady"))
             blocks.append(generate_cooldown_block(300))
             return "".join(blocks)
         else:
             blocks.append(generate_warmup_block(600))
-            blocks.append(generate_steady_state_block(duration, power))
+            blocks.append(generate_steady_state_block(lt1_dur, power, cadence, "LT1 capped - stay aerobic"))
+            blocks.append(generate_cooldown_block(cooldown_duration))
 
     # =====================================================================
     # HVLI EXTENDED Z2
     # =====================================================================
     elif "hvli" in level_data:
-        duration = level_data.get("duration", 10800)
+        hvli_dur = level_data.get("duration", 10800)
         power = level_data.get("power", 0.68)
 
         blocks.append(generate_warmup_block(900))
-        blocks.append(generate_steady_state_block(duration - 1500, power))  # Duration minus warmup/cooldown
+        blocks.append(generate_steady_state_block(
+            hvli_dur - 1500, power, cadence, text="Long Z2 - stay comfortable"
+        ))
+        blocks.append(generate_cooldown_block(cooldown_duration))
 
     # =====================================================================
     # HVLI TERRAIN SIMULATION
     # =====================================================================
     elif "hvli_terrain" in level_data:
-        duration = level_data.get("duration", 10800)
+        terrain_dur = level_data.get("duration", 10800)
         high_power = level_data.get("high_power", 0.72)
         low_power = level_data.get("low_power", 0.65)
-        interval_duration = level_data.get("interval_duration", 600)
+        interval_dur = level_data.get("interval_duration", 600)
 
         blocks.append(generate_warmup_block(900))
 
         # Alternating terrain blocks
-        remaining = duration - 1500
+        remaining = terrain_dur - 1500
+        first_block = True
         while remaining > 0:
-            high_dur = min(interval_duration, remaining)
-            blocks.append(generate_steady_state_block(high_dur, high_power))
+            high_dur = min(interval_dur, remaining)
+            text = "Terrain sim - rolling hills" if first_block else None
+            blocks.append(generate_steady_state_block(high_dur, high_power, cadence, text))
+            first_block = False
             remaining -= high_dur
             if remaining > 0:
-                low_dur = min(interval_duration, remaining)
-                blocks.append(generate_steady_state_block(low_dur, low_power))
+                low_dur = min(interval_dur, remaining)
+                blocks.append(generate_steady_state_block(low_dur, low_power, cadence))
                 remaining -= low_dur
+
+        blocks.append(generate_cooldown_block(cooldown_duration))
 
     # =====================================================================
     # NORWEGIAN DOUBLE-THRESHOLD
@@ -1386,21 +1643,24 @@ def generate_blocks_from_archetype(archetype: Dict, level: int) -> str:
     elif "norwegian" in level_data:
         intervals_data = level_data.get("intervals", (4, 480))
         if isinstance(intervals_data, tuple):
-            repeats, duration = intervals_data
+            repeats, norw_dur = intervals_data
         else:
             repeats = 4
-            duration = 480
+            norw_dur = 480
 
         on_power = level_data.get("on_power", 0.90)
-        off_duration = level_data.get("off_duration", 120)
+        off_dur = level_data.get("off_duration", 120)
         off_power = level_data.get("off_power", 0.55)
 
-        blocks.append(generate_warmup_block(1200))  # Longer warmup for Norwegian
+        blocks.append(generate_warmup_block(Durations.WARMUP_LONG))  # Longer warmup for Norwegian
 
         for rep in range(repeats):
-            blocks.append(generate_steady_state_block(duration, on_power, cadence=88))
+            text = f"Norwegian 4x8 - interval {rep+1}" if rep == 0 else None
+            blocks.append(generate_steady_state_block(norw_dur, on_power, cadence=88, text=text))
             if rep < repeats - 1:
-                blocks.append(generate_steady_state_block(off_duration, off_power))
+                blocks.append(generate_steady_state_block(off_dur, off_power, cadence))
+
+        blocks.append(generate_cooldown_block(cooldown_duration))
 
     # =====================================================================
     # ABOVE CP / CRITICAL POWER REPEATS
@@ -1710,14 +1970,14 @@ def generate_nate_workout(
     """
     # Validate level
     if not 1 <= level <= 6:
-        logger.warning(f"Level {level} out of range [1-6], clamping to valid range")
+        get_logger().warning(f"Level {level} out of range [1-6], clamping to valid range")
         level = max(1, min(6, level))
 
     # Select archetype
     archetype = select_archetype_for_workout(workout_type, methodology, variation)
 
     if archetype is None:
-        logger.info(
+        get_logger().info(
             f"No archetype found for workout_type='{workout_type}', "
             f"methodology='{methodology}', variation={variation}. "
             f"This may be intentional (e.g., Polarized avoids G-Spot)."
@@ -1776,7 +2036,7 @@ def generate_nate_zwo(
     )
 
     if name is None or blocks is None:
-        logger.debug(
+        get_logger().debug(
             f"ZWO generation failed: workout_type='{workout_type}', "
             f"methodology='{methodology}'"
         )

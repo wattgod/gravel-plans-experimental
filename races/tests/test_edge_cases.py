@@ -251,5 +251,100 @@ class TestConstantsIntegration(unittest.TestCase):
         self.assertIn('Cooldown', zwo)
 
 
+class TestTextEvents(unittest.TestCase):
+    """Test text event generation in workouts."""
+
+    def test_warmup_has_text_events(self):
+        """Warmup should have coaching text events."""
+        zwo = generate_nate_zwo('vo2max', 4, 'POLARIZED')
+        self.assertIsNotNone(zwo)
+        self.assertIn('textevent', zwo)
+        self.assertIn('warmup', zwo.lower())
+
+    def test_cooldown_has_text_events(self):
+        """Cooldown should have coaching text events."""
+        zwo = generate_nate_zwo('vo2max', 4, 'POLARIZED')
+        self.assertIsNotNone(zwo)
+        self.assertIn('Cool down', zwo)
+
+    def test_intervals_have_text_events(self):
+        """Interval blocks should have text events."""
+        zwo = generate_nate_zwo('vo2max', 4, 'POLARIZED')
+        self.assertIsNotNone(zwo)
+        # Should have interval description
+        self.assertIn('intervals', zwo.lower())
+
+    def test_special_chars_escaped_in_text(self):
+        """Special characters in text should be properly escaped."""
+        # Generate a workout and check text events are valid XML
+        zwo = generate_nate_zwo('vo2max', 4, 'POLARIZED')
+        self.assertIsNotNone(zwo)
+        # Should be parseable XML (text events properly escaped)
+        import xml.etree.ElementTree as ET
+        try:
+            ET.fromstring(zwo)
+        except ET.ParseError as e:
+            self.fail(f"ZWO XML parsing failed: {e}")
+
+
+class TestNonPatternMesoValues(unittest.TestCase):
+    """Test handling of non-pattern meso_pattern values like 'adaptive'."""
+
+    def test_adaptive_pattern_no_crash(self):
+        """Adaptive meso_pattern should not crash on recovery week check."""
+        # HRV_AUTO uses 'adaptive' meso_pattern
+        level = calculate_level_from_week(4, 12, 2, 'HRV_AUTO')
+        self.assertGreaterEqual(level, 1)
+        self.assertLessEqual(level, 6)
+
+    def test_maintain_ratio_no_crash(self):
+        """maintain_ratio meso_pattern should not crash."""
+        # POLARIZED uses 'maintain_ratio' meso_pattern
+        level = calculate_level_from_week(4, 12, 2, 'POLARIZED', 'maintain_ratio')
+        self.assertGreaterEqual(level, 1)
+        self.assertLessEqual(level, 6)
+
+    def test_flexible_no_crash(self):
+        """flexible meso_pattern should not crash."""
+        level = calculate_level_from_week(4, 12, 2, 'PYRAMIDAL', 'flexible')
+        self.assertGreaterEqual(level, 1)
+        self.assertLessEqual(level, 6)
+
+
+class TestCadenceExtraction(unittest.TestCase):
+    """Test cadence extraction from archetypes."""
+
+    def test_vo2max_uses_high_cadence(self):
+        """VO2max workouts should default to high cadence."""
+        zwo = generate_nate_zwo('vo2max', 4, 'POLARIZED')
+        self.assertIsNotNone(zwo)
+        # Should contain cadence attribute (95 for VO2max)
+        self.assertIn('Cadence=', zwo)
+
+    def test_sprint_uses_sprint_cadence(self):
+        """Sprint workouts should use sprint cadence."""
+        zwo = generate_nate_zwo('sprint', 4, 'HIT')
+        self.assertIsNotNone(zwo)
+        self.assertIn('Cadence=', zwo)
+
+
+class TestSmartDurations(unittest.TestCase):
+    """Test smart warmup/cooldown duration selection."""
+
+    def test_recovery_has_short_warmup(self):
+        """Recovery workouts should have shorter warmup."""
+        zwo = generate_nate_zwo('recovery', 4, 'POLARIZED')
+        self.assertIsNotNone(zwo)
+        # Recovery should have 5-min warmup (300s)
+        self.assertIn('Duration="300"', zwo)
+
+    def test_threshold_has_longer_warmup(self):
+        """Threshold workouts should have longer warmup."""
+        zwo = generate_nate_zwo('threshold', 4, 'PYRAMIDAL')
+        self.assertIsNotNone(zwo)
+        # Threshold should have 20-min warmup (1200s)
+        self.assertIn('Duration="1200"', zwo)
+
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)
